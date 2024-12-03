@@ -1,0 +1,125 @@
+/* Dashboard.css */
+.dashboard-container {
+    max-width: 95%; /* Cover more of the page, but centered */
+    margin: 0 auto; /* Center the content horizontally */
+  }
+  
+  .filter-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .filter-item {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+  }
+  
+  .filter-select, .filter-date {
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+  
+  .filter-select:focus, .filter-date:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+  .portfolio-cards {
+    margin-top: 30px; /* Add some spacing between header and cards */
+  }
+  
+  .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  
+  .btn {
+    margin-right: 10px; /* Add margin to buttons */
+  }
+  
+  h2 {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .card-footer {
+    background-color: #f8f9fa; /* Light gray footer background */
+    border-top: 1px solid #ddd; /* Subtle border to separate footer */
+    padding: 10px 15px; /* Padding for comfortable click area */
+  }
+  
+  .card-footer .icon-view {
+    font-size: 1.5em; /* Adjust icon size */
+    transition: color 0.2s ease; /* Smooth transition */
+  }
+  
+  .card-footer .icon-edit {
+    font-size: 1.5em;
+    transition: color 0.2s ease;
+  }
+  
+  .card-footer .icon-submit {
+    font-size: 1.5em;
+    transition: color 0.2s ease;
+  }
+  
+  .card-footer .icon-delete {
+    font-size: 1.5em;
+    transition: color 0.2s ease;
+  }
+  
+  .card-footer .icon-view:hover {
+    color: #0056b3; /* Darker blue on hover */
+  }
+  
+  .card-footer .icon-edit:hover {
+    color: #e0a800; /* Darker yellow on hover */
+  }
+  
+  .card-footer .icon-submit:hover {
+    color: #218838; /* Darker green on hover */
+  }
+  
+  .card-footer .icon-delete:hover {
+    color: #c82333; /* Darker red on hover */
+  }
+  
+  
+  .action-icons {
+    display: flex;
+    gap: 10px; /* Add space between icons */
+  }
+  
+  .action-icons .icon-view {
+    color: #007bff; /* Blue for view */
+    cursor: pointer;
+  }
+  
+  .action-icons .icon-edit {
+    color: #ffc107; /* Yellow for edit */
+    cursor: pointer;
+  }
+  
+  .action-icons .icon-submit {
+    color: #28a745; /* Green for submit */
+    cursor: pointer;
+  }
+  
+  .action-icons .icon-delete {
+    color: #dc3545; /* Red for delete */
+    cursor: pointer;
+  }
+  
+  .action-icons .icon-view:hover,
+  .action-icons .icon-edit:hover,
+  .action-icons .icon-submit:hover,
+  .action-icons .icon-delete:hover {
+    opacity: 0.8;
+  }
+  

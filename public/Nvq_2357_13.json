@@ -1,0 +1,263 @@
+{
+    "performance_units": [
+      {
+        "unit": "311",
+        "title": "Prepare to Install Electrical Wiring Systems and Equipment",
+        "learning_outcomes": [
+          {
+            "LO_number": 1,
+            "description": "Be able to check for damage and suitability of tools and equipment before use",
+            "assessment_criteria": [
+              {
+                "AC_number": 1.1,
+                "description": "Check that tools and equipment are suitable for the task."
+              },
+              {
+                "AC_number": 1.2,
+                "description": "Check that tools and equipment are not damaged."
+              }
+            ]
+          },
+          {
+            "LO_number": 2,
+            "description": "Be able to prepare work areas for electrical installations",
+            "assessment_criteria": [
+              {
+                "AC_number": 2.1,
+                "description": "Clear the work area of obstructions before commencing work."
+              },
+              {
+                "AC_number": 2.2,
+                "description": "Ensure work area is prepared for safe electrical installation."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unit": "312",
+        "title": "Install Electrical Wiring Systems and Equipment",
+        "learning_outcomes": [
+          {
+            "LO_number": 1,
+            "description": "Be able to install electrical wiring systems",
+            "assessment_criteria": [
+              {
+                "AC_number": 1.1,
+                "description": "Install wiring systems in accordance with design specifications."
+              },
+              {
+                "AC_number": 1.2,
+                "description": "Comply with health and safety regulations while installing wiring."
+              }
+            ]
+          },
+          {
+            "LO_number": 2,
+            "description": "Be able to install electrical equipment",
+            "assessment_criteria": [
+              {
+                "AC_number": 2.1,
+                "description": "Install electrical equipment in accordance with manufacturer's instructions."
+              },
+              {
+                "AC_number": 2.2,
+                "description": "Confirm the correct installation of electrical equipment with tests."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unit": "313",
+        "title": "Inspect, Test, and Commission Electrical Systems",
+        "learning_outcomes": [
+          {
+            "LO_number": 1,
+            "description": "Be able to inspect electrical systems and equipment",
+            "assessment_criteria": [
+              {
+                "AC_number": 1.1,
+                "description": "Perform visual inspection of installed systems."
+              },
+              {
+                "AC_number": 1.2,
+                "description": "Document inspection findings in accordance with regulatory requirements."
+              }
+            ]
+          },
+          {
+            "LO_number": 2,
+            "description": "Be able to test electrical systems and equipment",
+            "assessment_criteria": [
+              {
+                "AC_number": 2.1,
+                "description": "Carry out continuity tests on electrical systems."
+              },
+              {
+                "AC_number": 2.2,
+                "description": "Conduct insulation resistance tests."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unit": "315",
+        "title": "Diagnose and Correct Electrical Faults",
+        "learning_outcomes": [
+          {
+            "LO_number": 1,
+            "description": "Be able to diagnose faults in electrical systems",
+            "assessment_criteria": [
+              {
+                "AC_number": 1.1,
+                "description": "Identify common electrical faults in systems and equipment."
+              },
+              {
+                "AC_number": 1.2,
+                "description": "Use diagnostic tools and methods to pinpoint electrical faults."
+              }
+            ]
+          },
+          {
+            "LO_number": 2,
+            "description": "Be able to correct faults in electrical systems",
+            "assessment_criteria": [
+              {
+                "AC_number": 2.1,
+                "description": "Carry out repairs or replacements of faulty electrical components."
+              },
+              {
+                "AC_number": 2.2,
+                "description": "Confirm that faults have been corrected through appropriate testing."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unit": "316",
+        "title": "Plan and Prepare to Install Electrical Systems",
+        "learning_outcomes": [
+          {
+            "LO_number": 1,
+            "description": "Be able to plan for electrical installations",
+            "assessment_criteria": [
+              {
+                "AC_number": 1.1,
+                "description": "Interpret technical drawings and specifications for electrical installations."
+              },
+              {
+                "AC_number": 1.2,
+                "description": "Select appropriate materials and equipment based on installation requirements."
+              }
+            ]
+          },
+          {
+            "LO_number": 2,
+            "description": "Be able to prepare the work area for installation",
+            "assessment_criteria": [
+              {
+                "AC_number": 2.1,
+                "description": "Ensure work area is safe and free from hazards."
+              },
+              {
+                "AC_number": 2.2,
+                "description": "Lay out materials and equipment in a logical manner to facilitate efficient installation."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unit": "317",
+        "title": "Inspect and Test Electrical Installations",
+        "learning_outcomes": [
+          {
+            "LO_number": 1,
+            "description": "Be able to perform visual inspection of electrical installations",
+            "assessment_criteria": [
+              {
+                "AC_number": 1.1,
+                "description": "Inspect electrical systems to ensure compliance with BS 7671."
+              },
+              {
+                "AC_number": 1.2,
+                "description": "Identify and document any non-compliant or unsafe installations."
+              }
+            ]
+          },
+          {
+            "LO_number": 2,
+            "description": "Be able to perform electrical tests on installations",
+            "assessment_criteria": [
+              {
+                "AC_number": 2.1,
+                "description": "Carry out dead and live testing on electrical installations."
+              },
+              {
+                "AC_number": 2.2,
+                "description": "Document test results according to industry standards."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unit": "318",
+        "title": "Apply Health and Safety in Electrotechnical Environments",
+        "learning_outcomes": [
+          {
+            "LO_number": 1,
+            "description": "Understand and apply health and safety regulations",
+            "assessment_criteria": [
+              {
+                "AC_number": 1.1,
+                "description": "Identify and comply with relevant health and safety legislation."
+              },
+              {
+                "AC_number": 1.2,
+                "description": "Ensure safe working practices are implemented in the work environment."
+              }
+            ]
+          },
+          {
+            "LO_number": 2,
+            "description": "Be able to assess and minimize risks",
+            "assessment_criteria": [
+              {
+                "AC_number": 2.1,
+                "description": "Carry out risk assessments for electrotechnical work."
+              },
+              {
+                "AC_number": 2.2,
+                "description": "Apply control measures to reduce or eliminate identified risks."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "unit": "399",
+        "title": "Understanding Environmental Legislation and Sustainable Practices",
+        "learning_outcomes": [
+          {
+            "LO_number": 1,
+            "description": "Be able to apply environmental and sustainability regulations",
+            "assessment_criteria": [
+              {
+                "AC_number": 1.1,
+                "description": "Identify the key principles of environmental legislation."
+              },
+              {
+                "AC_number": 1.2,
+                "description": "Ensure sustainable practices are followed in all electrical work."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  
