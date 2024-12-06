@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Container, Card, Col, Row, Form, Button, Badge } from 'react-bootstrap';
 import { AiOutlineEye, AiOutlineCheck, AiOutlineDelete, AiOutlineSend } from 'react-icons/ai'; // Import icons
-
 import { Link } from 'react-router-dom';
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/portfolios`;
 
 const AssessorDashboard = () => {
   const [portfolios, setPortfolios] = useState({
@@ -18,7 +18,7 @@ const AssessorDashboard = () => {
   useEffect(() => {
     const fetchPortfolios = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/portfolios/assessor/portfolios', {
+        const { data } = await axios.get(`${API_URL}/api/portfolios/assessor/portfolios`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
@@ -59,7 +59,7 @@ const AssessorDashboard = () => {
   const markAsDone = async (id) => {
     try {
       await axios.post(
-        `http://localhost:5000/api/portfolios/${id}/feedback`,
+        `${API_URL}/api/portfolios/${id}/feedback`,
         { status: 'Done' },
         {
           headers: {

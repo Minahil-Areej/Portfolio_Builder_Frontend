@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import './Portfolio.css'; // Ensure this file has the styles for error highlighting
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/portfolios`;
 
 const Portfolio = () => {
   const [title, setTitle] = useState('');
@@ -91,7 +92,7 @@ const Portfolio = () => {
     });
 
     try {
-      const response = await fetch('http://localhost:5000/api/portfolios/save', {
+      const response = await fetch(`${API_URL}/api/portfolios/save`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Form, Button } from 'react-bootstrap';
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/portfolios`;
 
 const AssessorPortfolio = () => {
   const { id } = useParams();  // Get portfolio ID from URL
@@ -13,7 +14,7 @@ const AssessorPortfolio = () => {
   useEffect(() => {
     const fetchPortfolio = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/portfolios/assessor/${id}`, {
+        const { data } = await axios.get(`${API_URL}/api/portfolios/assessor/${id}`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
@@ -53,7 +54,7 @@ const AssessorPortfolio = () => {
   const handleFeedbackSubmit = async (statusToUpdate) => {
     try {
       await axios.post(
-        `http://localhost:5000/api/portfolios/${id}/feedback`,
+        `${API_URL}/api/portfolios/${id}/feedback`,
         { assessorComments: feedback, status: statusToUpdate },
         {
           headers: {
@@ -89,7 +90,7 @@ const AssessorPortfolio = () => {
   const markAsUndone = async () => {
     try {
       await axios.post(
-        `http://localhost:5000/api/portfolios/${id}/feedback`,
+        `${API_URL}/api/portfolios/${id}/feedback`,
         { status: 'Reviewed' },
         {
           headers: {
@@ -124,7 +125,7 @@ const AssessorPortfolio = () => {
 
       <h2>Images</h2>
       {portfolio.images.map((image, index) => (
-        <img key={index} src={`http://localhost:5000/${image}`} alt="Portfolio" style={{ width: '200px', margin: '10px' }} />
+        <img key={index} src={`${API_URL}/${image}`} alt="Portfolio" style={{ width: '200px', margin: '10px' }} />
       ))}
 
       <h2>Student Comments</h2>

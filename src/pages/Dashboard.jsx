@@ -287,6 +287,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card, Button, Form, Container, Row, Col, Badge } from 'react-bootstrap';
 import { AiOutlineEye, AiOutlineEdit, AiOutlineDelete, AiOutlineSend } from 'react-icons/ai'; // Import icons
 import './Dashboard.css';
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/portfolios`;
 
 const Dashboard = () => {
   const [portfolios, setPortfolios] = useState({
@@ -304,7 +305,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchPortfolios = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/portfolios/user-portfolios', {
+        const response = await fetch(`${API_URL}/api/portfolios/user-portfolios`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
@@ -349,7 +350,7 @@ const Dashboard = () => {
 
   const handleMoveToToBeReviewed = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/portfolios/${id}`, {
+      await fetch(`${API_URL}/api/portfolios/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -459,7 +460,7 @@ const Dashboard = () => {
 
   const handleMoveToDraft = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/portfolios/${id}`, {
+      const response = await fetch(`${API_URL}/api/portfolios/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -472,7 +473,7 @@ const Dashboard = () => {
         //const updatedPortfolio = await response.json();
 
         // Fetch updated data from the server
-        const portfoliosResponse = await fetch('http://localhost:5000/api/portfolios/user-portfolios', {
+        const portfoliosResponse = await fetch(`${API_URL}/api/portfolios/user-portfolios`, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
           },
@@ -501,7 +502,7 @@ const Dashboard = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this portfolio?')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/portfolios/${id}`, {
+        const response = await fetch(`${API_URL}/api/portfolios/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,

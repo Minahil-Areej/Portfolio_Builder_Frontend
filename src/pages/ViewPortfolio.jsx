@@ -4,6 +4,7 @@ import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
 import { FaSearchPlus } from 'react-icons/fa';
 import axios from 'axios';
 import './ViewPortfolio.css'; // Custom CSS for styling
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/portfolios`;
 
 const ViewPortfolio = () => {
     const { id } = useParams(); // Get portfolio ID from URL params
@@ -13,7 +14,7 @@ const ViewPortfolio = () => {
 
     useEffect(() => {
         const fetchPortfolio = async () => {
-            const response = await axios.get(`http://localhost:5000/api/portfolios/${id}`, {
+            const response = await axios.get(`${API_URL}/api/portfolios/${id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
@@ -32,7 +33,7 @@ const ViewPortfolio = () => {
 
     const exportPdf = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/portfolios/${id}/export-pdf`, {
+            const response = await fetch(`${API_URL}/api/portfolios/${id}/export-pdf`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -59,7 +60,7 @@ const ViewPortfolio = () => {
     const moveToToBeReviewed = async () => {
         try {
             await axios.post(
-                `http://localhost:5000/api/portfolios/${id}/feedback`,
+                `${API_URL}/api/portfolios/${id}/feedback`,
                 { status: 'To Be Reviewed' },
                 {
                     headers: {
@@ -143,14 +144,14 @@ const ViewPortfolio = () => {
                         {portfolio.images.map((image, index) => (
                             <div key={index} className="portfolio-image-container">
                                 <img
-                                    src={`http://localhost:5000/${image}`}
+                                    src={`${API_URL}/${image}`}
                                     alt="Portfolio"
                                     className="portfolio-image"
-                                    onClick={() => handleImageClick(`http://localhost:5000/${image}`)}
+                                    onClick={() => handleImageClick(`${API_URL}/${image}`)}
                                 />
                                 <FaSearchPlus
                                     className="portfolio-image-icon"
-                                    onClick={() => handleImageClick(`http://localhost:5000/${image}`)}
+                                    onClick={() => handleImageClick(`${API_URL}/${image}`)}
                                     size={20}
                                 />
                             </div>

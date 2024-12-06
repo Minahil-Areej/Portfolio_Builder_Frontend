@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Form, Button, Col, Row } from 'react-bootstrap';
+const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/portfolios`;
 
 const EditPortfolio = () => {
   const { id } = useParams();
@@ -22,7 +23,7 @@ const EditPortfolio = () => {
     // Fetch portfolio data
     const fetchPortfolio = async () => {
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/portfolios/${id}`, {
+        const { data } = await axios.get(`${API_URL}/api/portfolios/${id}`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
@@ -89,7 +90,7 @@ const EditPortfolio = () => {
     }
 
     try {
-      await axios.put(`http://localhost:5000/api/portfolios/${id}`, formData, {
+      await axios.put(`${API_URL}/api/portfolios/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
           'Content-Type': 'multipart/form-data',
@@ -253,7 +254,7 @@ const EditPortfolio = () => {
             {portfolioData.images.map((image, index) => (
               <img
                 key={index}
-                src={`http://localhost:5000/${image}`}
+                src={`${API_URL}/${image}`}
                 alt="Portfolio"
                 style={{ width: '100px', margin: '10px' }}
               />
