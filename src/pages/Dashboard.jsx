@@ -287,7 +287,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card, Button, Form, Container, Row, Col, Badge } from 'react-bootstrap';
 import { AiOutlineEye, AiOutlineEdit, AiOutlineDelete, AiOutlineSend } from 'react-icons/ai'; // Import icons
 import './Dashboard.css';
-const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/portfolios`;
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Dashboard = () => {
   const [portfolios, setPortfolios] = useState({

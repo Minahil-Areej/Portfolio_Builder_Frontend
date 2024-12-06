@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import './Portfolio.css'; // Ensure this file has the styles for error highlighting
-const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/portfolios`;
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Portfolio = () => {
   const [title, setTitle] = useState('');

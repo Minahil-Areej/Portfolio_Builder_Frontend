@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Form, Button, Col, Row } from 'react-bootstrap';
-const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/portfolios`;
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const EditPortfolio = () => {
   const { id } = useParams();

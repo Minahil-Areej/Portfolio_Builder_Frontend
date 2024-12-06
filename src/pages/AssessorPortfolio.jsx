@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Form, Button } from 'react-bootstrap';
-const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/portfolios`;
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const AssessorPortfolio = () => {
   const { id } = useParams();  // Get portfolio ID from URL

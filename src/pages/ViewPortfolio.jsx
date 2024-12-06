@@ -4,7 +4,7 @@ import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap';
 import { FaSearchPlus } from 'react-icons/fa';
 import axios from 'axios';
 import './ViewPortfolio.css'; // Custom CSS for styling
-const API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/portfolios`;
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const ViewPortfolio = () => {
     const { id } = useParams(); // Get portfolio ID from URL params
