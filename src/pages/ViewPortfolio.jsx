@@ -25,6 +25,7 @@ const ViewPortfolio = () => {
     }, [id]);
 
     const handleImageClick = (image) => {
+        console.log(portfolio.images);
         setSelectedImage(image); // Set the image to display in modal
         setShowModal(true); // Show the modal
     };
@@ -79,6 +80,7 @@ const ViewPortfolio = () => {
     };
 
     if (!portfolio) return <p>Loading...</p>;
+   
 
     return (
         <Container className="mt-4 view-portfolio-container">
@@ -140,23 +142,47 @@ const ViewPortfolio = () => {
             <Row className="mb-4">
                 <Col>
                     <h2 className="portfolio-section-title">Images</h2>
-                    <div className="d-flex flex-wrap">
+                    {/* <div className="d-flex flex-wrap">
                         {portfolio.images.map((image, index) => (
                             <div key={index} className="portfolio-image-container">
                                 <img
-                                    src={`${API_URL}/${image}`}
+                                    src={`http://localhost:5000/uploads/${image}`}
                                     alt="Portfolio"
                                     className="portfolio-image"
-                                    onClick={() => handleImageClick(`${API_URL}/${image}`)}
+                                    onClick={() => handleImageClick(`http://localhost:5000/uploads/${image}`)}
                                 />
                                 <FaSearchPlus
                                     className="portfolio-image-icon"
-                                    onClick={() => handleImageClick(`${API_URL}/${image}`)}
+                                    onClick={() => handleImageClick(`http://localhost:5000/uploads/${image}`)}
                                     size={20}
                                 />
                             </div>
                         ))}
-                    </div>
+                    </div> */}
+                   <div className="d-flex flex-wrap">
+  {portfolio.images.map((image, index) => {
+   console.log(`${API_URL}/${image.replace(/\\/g, '/')}`);
+
+
+    return (
+      <div key={index} className="portfolio-image-container">
+       <img
+    src={`${API_URL}/${image.replace(/\\/g, '/')}`} // Replace backslashes with forward slashes
+    alt="Portfolio"
+    className="portfolio-image"
+    onClick={() => handleImageClick(`${API_URL}/${image.replace(/\\/g, '/')}`)}
+/>
+        <FaSearchPlus
+          className="portfolio-image-icon"
+          onClick={() => handleImageClick(`${API_URL}/${image.replace(/\\/g, '/')}`)}
+          size={20}
+        />
+      </div>
+    );
+  })}
+</div>
+
+
                 </Col>
             </Row>
 
