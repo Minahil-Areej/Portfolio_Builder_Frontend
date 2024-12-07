@@ -161,20 +161,20 @@ const ViewPortfolio = () => {
                     </div> */}
                    <div className="d-flex flex-wrap">
   {portfolio.images.map((image, index) => {
-   console.log(`${API_URL}/${image.replace(/\\/g, '/')}`);
-
+  
 
     return (
       <div key={index} className="portfolio-image-container">
-       <img
-    src={`${API_URL}/${image.replace(/\\/g, '/')}`} // Replace backslashes with forward slashes
+      <img
+    key={index}
+    src={`${API_URL}/${image}`} // Use relative path saved in the database
     alt="Portfolio"
     className="portfolio-image"
-    onClick={() => handleImageClick(`${API_URL}/${image.replace(/\\/g, '/')}`)}
-/>
+    onClick={() => handleImageClick(`${API_URL}/${image}`)}
+  />
         <FaSearchPlus
           className="portfolio-image-icon"
-          onClick={() => handleImageClick(`${API_URL}/${image.replace(/\\/g, '/')}`)}
+          onClick={() => handleImageClick(`${API_URL}/${image}`)}
           size={20}
         />
       </div>
