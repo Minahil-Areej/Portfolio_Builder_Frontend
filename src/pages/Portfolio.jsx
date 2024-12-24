@@ -20,6 +20,11 @@ const Portfolio = () => {
   const [locationError, setLocationError] = useState(null); // Error message for invalid postcode
   const [isPostcodeValid, setIsPostcodeValid] = useState(true); // State to track validity
   const [status, setStatus] = useState('Draft'); // Default to 'Draft'
+  // New fields
+  const [taskDescription, setTaskDescription] = useState('');
+  const [jobType, setJobType] = useState('');
+  const [reasonForTask, setReasonForTask] = useState('');
+  const [objectiveOfJob, setObjectiveOfJob] = useState('');
 
   // Fetch the JSON data from the public folder
   useEffect(() => {
@@ -86,10 +91,16 @@ const Portfolio = () => {
     formData.append('comments', comments);
     formData.append('dateTime', new Date(dateTime).toISOString()); // Convert to ISO format
     formData.append('status', isSubmitForReview ? 'To Be Reviewed' : 'Draft'); // Set status based on action
-
+    // Append new fields
+    formData.append('taskDescription', taskDescription);
+    formData.append('jobType', jobType);
+    formData.append('reasonForTask', reasonForTask);
+    formData.append('objectiveOfJob', objectiveOfJob);
     images.forEach((image) => {
       formData.append('images', image);
     });
+
+    console.log([...formData.entries()]); // Log form data before sending
 
     try {
       const response = await fetch(`${API_URL}/api/portfolios/save`, {
@@ -227,6 +238,54 @@ const Portfolio = () => {
               </Form.Group>
             </Col>
           </Row>
+          <Form.Group>
+            <Form.Label>Task Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Describe the task"
+              value={taskDescription}
+              onChange={(e) => setTaskDescription(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Job Type</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Enter job type"
+              value={jobType}
+              onChange={(e) => setJobType(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+
+          <Form.Group>
+            <Form.Label>Reason for Task</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Reason for performing the task"
+              value={reasonForTask}
+              onChange={(e) => setReasonForTask(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Objective of Job</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Objective of the job"
+              value={objectiveOfJob}
+              onChange={(e) => setObjectiveOfJob(e.target.value)}
+              required
+            />
+          </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label>Comments</Form.Label>
