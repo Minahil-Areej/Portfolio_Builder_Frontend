@@ -12,7 +12,7 @@ const EditPortfolio = () => {
     learningOutcome: { number: '', description: '' }, // Updated to an object
     criteria: { number: '', description: '' }, // Updated to an object
     postcode: '',
-    statement: '',
+    // statement: '',
     comments: '',
     images: [], // Existing images
     taskDescription: '', // New field
@@ -82,7 +82,7 @@ const EditPortfolio = () => {
     formData.append('learningOutcome', JSON.stringify(portfolioData.learningOutcome)); // Send learningOutcome as an object
     formData.append('criteria', JSON.stringify(portfolioData.criteria)); // Send criteria as an object
     formData.append('postcode', portfolioData.postcode);
-    formData.append('statement', portfolioData.statement);
+    // formData.append('statement', portfolioData.statement);
     formData.append('comments', portfolioData.comments);
     formData.append('taskDescription', portfolioData.taskDescription); // Added to submission
     formData.append('jobType', portfolioData.jobType);                 // Added to submission
@@ -233,7 +233,7 @@ const EditPortfolio = () => {
           </Col>
         </Row>
 
-        <Form.Group className="mb-3" controlId="formStatement">
+        {/* <Form.Group className="mb-3" controlId="formStatement">
           <Form.Label>Statement</Form.Label>
           <Form.Control
             as="textarea"
@@ -242,7 +242,7 @@ const EditPortfolio = () => {
             value={portfolioData.statement}
             onChange={handleChange}
           />
-        </Form.Group>
+        </Form.Group> */}
 
         <Row>
           <Col>
@@ -261,8 +261,9 @@ const EditPortfolio = () => {
             <Form.Group className="mb-3" controlId="formJobType">
               <Form.Label>Job Type</Form.Label>
               <Form.Control
-                type="text"
+                as="textarea"
                 name="jobType"
+                rows={2}
                 value={portfolioData.jobType}
                 onChange={handleChange}
               />
