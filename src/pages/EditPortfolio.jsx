@@ -15,6 +15,10 @@ const EditPortfolio = () => {
     statement: '',
     comments: '',
     images: [], // Existing images
+    taskDescription: '', // New field
+    jobType: '',         // New field
+    reasonForTask: '',   // New field
+    objectiveOfJob: '',  // New field
   });
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [qualificationUnitsData, setQualificationUnitsData] = useState([]);
@@ -80,6 +84,10 @@ const EditPortfolio = () => {
     formData.append('postcode', portfolioData.postcode);
     formData.append('statement', portfolioData.statement);
     formData.append('comments', portfolioData.comments);
+    formData.append('taskDescription', portfolioData.taskDescription); // Added to submission
+    formData.append('jobType', portfolioData.jobType);                 // Added to submission
+    formData.append('reasonForTask', portfolioData.reasonForTask);     // Added to submission
+    formData.append('objectiveOfJob', portfolioData.objectiveOfJob);   // Added to submission
 
     // Pass existing images as a stringified array
     formData.append('existingImages', JSON.stringify(portfolioData.images));
@@ -236,6 +244,59 @@ const EditPortfolio = () => {
           />
         </Form.Group>
 
+        <Row>
+          <Col>
+            <Form.Group className="mb-3" controlId="formTaskDescription">
+              <Form.Label>Task Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                name="taskDescription"
+                rows={2}
+                value={portfolioData.taskDescription}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-3" controlId="formJobType">
+              <Form.Label>Job Type</Form.Label>
+              <Form.Control
+                type="text"
+                name="jobType"
+                value={portfolioData.jobType}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col>
+            <Form.Group className="mb-3" controlId="formReasonForTask">
+              <Form.Label>Reason for Task</Form.Label>
+              <Form.Control
+                as="textarea"
+                name="reasonForTask"
+                rows={2}
+                value={portfolioData.reasonForTask}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group className="mb-3" controlId="formObjectiveOfJob">
+              <Form.Label>Objective of Job</Form.Label>
+              <Form.Control
+                as="textarea"
+                name="objectiveOfJob"
+                rows={2}
+                value={portfolioData.objectiveOfJob}
+                onChange={handleChange}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+        
         <Form.Group className="mb-3" controlId="formComments">
           <Form.Label>Comments</Form.Label>
           <Form.Control
