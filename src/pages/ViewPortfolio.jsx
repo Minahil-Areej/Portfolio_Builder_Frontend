@@ -108,8 +108,21 @@ const ViewPortfolio = () => {
                                 <strong>Statement:</strong> {portfolio.statement}
                             </Card.Text>
                             <Card.Text className="portfolio-text">
-                                <strong>Postcode:</strong> {portfolio.postcode}
+                                <strong>Location:</strong> {portfolio.postcode}
                             </Card.Text>
+                            <Card.Text className="portfolio-text">
+    <strong>Task Description:</strong> {portfolio.taskDescription || 'N/A'}
+</Card.Text>
+<Card.Text className="portfolio-text">
+    <strong>Job Type:</strong> {portfolio.jobType || 'N/A'}
+</Card.Text>
+<Card.Text className="portfolio-text">
+    <strong>Reason for Task:</strong> {portfolio.reasonForTask || 'N/A'}
+</Card.Text>
+<Card.Text className="portfolio-text">
+    <strong>Objective of Job:</strong> {portfolio.objectiveOfJob || 'N/A'}
+</Card.Text>
+
                         </Card.Body>
                     </Card>
                 </Col>
