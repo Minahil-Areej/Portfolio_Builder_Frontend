@@ -80,7 +80,7 @@ const ViewPortfolio = () => {
     };
 
     if (!portfolio) return <p>Loading...</p>;
-   
+
 
     return (
         <Container className="mt-4 view-portfolio-container">
@@ -105,23 +105,20 @@ const ViewPortfolio = () => {
                                 <strong>Criteria:</strong> {portfolio.criteria?.number} - {portfolio.criteria?.description}
                             </Card.Text>
                             <Card.Text className="portfolio-text">
-                                <strong>Statement:</strong> {portfolio.statement}
-                            </Card.Text>
-                            <Card.Text className="portfolio-text">
                                 <strong>Location:</strong> {portfolio.postcode}
                             </Card.Text>
                             <Card.Text className="portfolio-text">
-    <strong>Task Description:</strong> {portfolio.taskDescription || 'N/A'}
-</Card.Text>
-<Card.Text className="portfolio-text">
-    <strong>Job Type:</strong> {portfolio.jobType || 'N/A'}
-</Card.Text>
-<Card.Text className="portfolio-text">
-    <strong>Reason for Task:</strong> {portfolio.reasonForTask || 'N/A'}
-</Card.Text>
-<Card.Text className="portfolio-text">
-    <strong>Objective of Job:</strong> {portfolio.objectiveOfJob || 'N/A'}
-</Card.Text>
+                                <strong>Task Description:</strong> {portfolio.taskDescription || 'N/A'}
+                            </Card.Text>
+                            <Card.Text className="portfolio-text">
+                                <strong>Job Type:</strong> {portfolio.jobType || 'N/A'}
+                            </Card.Text>
+                            <Card.Text className="portfolio-text">
+                                <strong>Reason for Task:</strong> {portfolio.reasonForTask || 'N/A'}
+                            </Card.Text>
+                            <Card.Text className="portfolio-text">
+                                <strong>Objective of Job:</strong> {portfolio.objectiveOfJob || 'N/A'}
+                            </Card.Text>
 
                         </Card.Body>
                     </Card>
@@ -172,28 +169,28 @@ const ViewPortfolio = () => {
                             </div>
                         ))}
                     </div> */}
-                   <div className="d-flex flex-wrap">
-  {portfolio.images.map((image, index) => {
-  
+                    <div className="d-flex flex-wrap">
+                        {portfolio.images.map((image, index) => {
 
-    return (
-      <div key={index} className="portfolio-image-container">
-      <img
-    key={index}
-    src={`${API_URL}/${image}`} // Use relative path saved in the database
-    alt="Portfolio"
-    className="portfolio-image"
-    onClick={() => handleImageClick(`${API_URL}/${image}`)}
-  />
-        <FaSearchPlus
-          className="portfolio-image-icon"
-          onClick={() => handleImageClick(`${API_URL}/${image}`)}
-          size={20}
-        />
-      </div>
-    );
-  })}
-</div>
+
+                            return (
+                                <div key={index} className="portfolio-image-container">
+                                    <img
+                                        key={index}
+                                        src={`${API_URL}/${image}`} // Use relative path saved in the database
+                                        alt="Portfolio"
+                                        className="portfolio-image"
+                                        onClick={() => handleImageClick(`${API_URL}/${image}`)}
+                                    />
+                                    <FaSearchPlus
+                                        className="portfolio-image-icon"
+                                        onClick={() => handleImageClick(`${API_URL}/${image}`)}
+                                        size={20}
+                                    />
+                                </div>
+                            );
+                        })}
+                    </div>
 
 
                 </Col>
@@ -222,7 +219,7 @@ const ViewPortfolio = () => {
                 </Modal.Footer>
             </Modal>
         </Container>
-    );  
+    );
 };
 
 export default ViewPortfolio;
