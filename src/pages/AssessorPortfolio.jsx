@@ -3,12 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Row, Col, Card, Button, Modal, Form } from 'react-bootstrap';
+import { FaSearchPlus } from 'react-icons/fa';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 import './ViewPortfolio.css'; // Custom CSS for styling
 
 const AssessorPortfolio = () => {
   const { id } = useParams();  // Get portfolio ID from URL
   const [portfolio, setPortfolio] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('');
   const [feedback, setFeedback] = useState('');  // For assessor feedback
   const [status, setStatus] = useState('');  // Track portfolio status
 
@@ -51,6 +54,13 @@ const AssessorPortfolio = () => {
   //     console.error('Error submitting feedback', error);
   //   }
   // };
+
+  const handleImageClick = (image) => {
+    setSelectedImage(image);
+    setShowModal(true);
+  };
+
+  const handleModalClose = () => setShowModal(false);
 
   const handleFeedbackSubmit = async (statusToUpdate) => {
     try {
@@ -110,7 +120,7 @@ const AssessorPortfolio = () => {
   if (!portfolio) return <p>Loading...</p>;
 
   return (
-    <Container>
+    <Container className="mt-4 view-portfolio-container">
      <Row className="mb-4">
         <Col>
           <h1 className="text-center portfolio-title">{portfolio.title}</h1>
