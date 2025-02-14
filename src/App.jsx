@@ -7,6 +7,7 @@ import EditPortfolio from './pages/EditPortfolio'; // Import the edit page
 import ViewPortfolio from './pages/ViewPortfolio'; // Import the new ViewPortfolio component
 import AssessorDashboard from './pages/AssessorDashboard';
 import AssessorPortfolio from './pages/AssessorPortfolio';
+import AdminDashboard from './pages/AdminDashboard';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
         <Route path="/portfolio/view/:id" element={<ViewPortfolio />} /> {/* Add ViewPortfolio route */}
         <Route path="/assessor" element={<AssessorDashboard />} />  {/* Assessor Dashboard */}
         <Route path="/portfolio/assessor/:id" element={<AssessorPortfolio />} />  {/* Assessor Portfolio Review */}
-        <Route path="/admin-dashboard" element={user?.role === 'admin' ? <AdminDashboard /> : <Navigate to="/login" />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} /> {/* No user role check here */}
         {/* Add a fallback for undefined routes */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
