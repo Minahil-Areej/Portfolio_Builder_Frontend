@@ -79,7 +79,7 @@ const AssessorPortfolio = () => {
       console.error(`Error ${statusToUpdate === 'Reviewed' ? 'submitting' : 'saving'} feedback`, error);
     }
   };
-  
+
   // const markAsDone = async () => {
 
   //   try {
@@ -116,12 +116,37 @@ const AssessorPortfolio = () => {
     }
   };
 
-  
+  const exportPdf = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/portfolios/${id}/export-pdf`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Error exporting PDF');
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${portfolio.title}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+    }
+  };
+
   if (!portfolio) return <p>Loading...</p>;
 
   return (
     <Container className="mt-4 view-portfolio-container">
-     <Row className="mb-4">
+      <Row className="mb-4">
         <Col>
           <h1 className="text-center portfolio-title">{portfolio.title}</h1>
         </Col>
@@ -167,49 +192,49 @@ const AssessorPortfolio = () => {
               <Card.Text className="portfolio-text">{portfolio.comments}</Card.Text>
               <h5 className="portfolio-subtitle">Assessor Feedback</h5>
               <Form onSubmit={handleFeedbackSubmit}>
-        <Form.Group controlId="feedback">
-          <Form.Label>Assessor Feedback</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            value={feedback}
-            onChange={(e) => {
-              setFeedback(e.target.value);
-              // Check if feedback is different from original feedback
-              //setFeedbackSubmitted(e.target.value === originalFeedback);
-            }}
-            readOnly={portfolio.status === 'Done'}
-          />
-        </Form.Group>
-        {portfolio.status === 'Done' ? (
-          <Button variant="warning" onClick={markAsUndone}>
-          Mark as Undone
-        </Button>
-          ) : (
-            <>
-            <Button 
-              variant="primary" 
-              onClick={(e) => {
-                e.preventDefault();
-                handleFeedbackSubmit('Reviewed');
-              }}
-              className="mt-2 me-2"
-              >
-              Submit Feedback
-            </Button>
-            <Button 
-              variant="info" 
-              className="mt-2"
-              onClick={(e) => {
-                e.preventDefault();
-                handleFeedbackSubmit('To Be Reviewed');
-              }}
-            >
-              Save Feedback
-            </Button>
-          </>
-        )}
-      </Form>
+                <Form.Group controlId="feedback">
+                  <Form.Label>Assessor Feedback</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    value={feedback}
+                    onChange={(e) => {
+                      setFeedback(e.target.value);
+                      // Check if feedback is different from original feedback
+                      //setFeedbackSubmitted(e.target.value === originalFeedback);
+                    }}
+                    readOnly={portfolio.status === 'Done'}
+                  />
+                </Form.Group>
+                {portfolio.status === 'Done' ? (
+                  <Button variant="warning" onClick={markAsUndone}>
+                    Mark as Undone
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      variant="primary"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleFeedbackSubmit('Reviewed');
+                      }}
+                      className="mt-2 me-2"
+                    >
+                      Submit Feedback
+                    </Button>
+                    <Button
+                      variant="info"
+                      className="mt-2"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleFeedbackSubmit('To Be Reviewed');
+                      }}
+                    >
+                      Save Feedback
+                    </Button>
+                  </>
+                )}
+              </Form>
             </Card.Body>
           </Card>
         </Col>
@@ -240,7 +265,7 @@ const AssessorPortfolio = () => {
 
       <Row>
         <Col className="text-center">
-          <Button variant="primary" className="mt-3">
+          <Button variant="primary" onClick={exportPdf} className="mt-3">
             Export as PDF
           </Button>
         </Col>
