@@ -22,6 +22,7 @@ function App() {
         <Route path="/portfolio/view/:id" element={<ViewPortfolio />} /> {/* Add ViewPortfolio route */}
         <Route path="/assessor" element={<AssessorDashboard />} />  {/* Assessor Dashboard */}
         <Route path="/portfolio/assessor/:id" element={<AssessorPortfolio />} />  {/* Assessor Portfolio Review */}
+        <Route path="/admin-dashboard" element={user?.role === 'admin' ? <AdminDashboard /> : <Navigate to="/login" />} />
         {/* Add a fallback for undefined routes */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
