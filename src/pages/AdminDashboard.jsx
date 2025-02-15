@@ -82,7 +82,7 @@ const AdminDashboard = () => {
                 setUsers(userResponse.data);
 
                 // Fetch Portfolios
-                const portfolioResponse = await axios.get(`${API_URL}/api/portfolios`, {
+                const portfolioResponse = await axios.get(`${API_URL}/api/portfolios/admin/all`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
                 setPortfolios(portfolioResponse.data);
