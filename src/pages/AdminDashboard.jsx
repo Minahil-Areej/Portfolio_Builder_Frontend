@@ -28,7 +28,7 @@
 //         <Container className="mt-4">
 //             <h1>Admin Dashboard</h1>
 //             <Button variant="success" onClick={() => navigate('/register')}>Register New User</Button>
-            
+
 //             <Table striped bordered hover className="mt-4">
 //                 <thead>
 //                     <tr>
@@ -98,7 +98,7 @@ const AdminDashboard = () => {
                 // Fetch recent portfolio images
                 const images = portfolioResponse.data
                     .flatMap(portfolio => portfolio.images)
-                    .slice(0, 5); // Show only the latest 5 images
+                    .slice(0, 10); // Show only the latest 5 images
                 setRecentImages(images);
             } catch (error) {
                 console.error('Error fetching dashboard data:', error);
@@ -192,13 +192,13 @@ const AdminDashboard = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-    {Object.entries(portfolioCounts).map(([userName, count]) => (
-        <tr key={userName}>
-            <td>{userName}</td>  {/* Display name instead of Object */}
-            <td>{count}</td>
-        </tr>
-    ))}
-</tbody>
+                                    {Object.entries(portfolioCounts).map(([userName, count]) => (
+                                        <tr key={userName}>
+                                            <td>{userName}</td>  {/* Display name instead of Object */}
+                                            <td>{count}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
                             </Table>
                         </Card.Body>
                     </Card>
