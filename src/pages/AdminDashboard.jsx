@@ -90,7 +90,8 @@ const AdminDashboard = () => {
                 // Count Portfolios by User
                 const counts = {};
                 portfolioResponse.data.forEach(portfolio => {
-                    counts[portfolio.userId] = (counts[portfolio.userId] || 0) + 1;
+                    const userName = portfolio.userId?.name || 'Unknown User'; // Fetch name or default
+                    counts[userName] = (counts[userName] || 0) + 1;
                 });
                 setPortfolioCounts(counts);
 
@@ -191,13 +192,13 @@ const AdminDashboard = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Object.entries(portfolioCounts).map(([userId, count]) => (
-                                        <tr key={userId}>
-                                            <td>{userId}</td>
-                                            <td>{count}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
+    {Object.entries(portfolioCounts).map(([userName, count]) => (
+        <tr key={userName}>
+            <td>{userName}</td>  {/* Display name instead of Object */}
+            <td>{count}</td>
+        </tr>
+    ))}
+</tbody>
                             </Table>
                         </Card.Body>
                     </Card>
