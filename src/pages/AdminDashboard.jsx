@@ -145,7 +145,7 @@ const AdminDashboard = () => {
             {/* Top Statistics */}
             <Row className="mb-4">
                 <Col md={3}>
-                    <Card className="text-center shadow-sm">
+                    <Card className="text-center shadow-sm bg-primary text-white">
                         <Card.Body>
                             <Card.Title>Total Users</Card.Title>
                             <h3>{users.length}</h3>
@@ -153,7 +153,7 @@ const AdminDashboard = () => {
                     </Card>
                 </Col>
                 <Col md={3}>
-                    <Card className="text-center shadow-sm">
+                    <Card className="text-center shadow-sm bg-success text-white">
                         <Card.Body>
                             <Card.Title>Total Portfolios</Card.Title>
                             <h3>{portfolios.length}</h3>
@@ -161,7 +161,7 @@ const AdminDashboard = () => {
                     </Card>
                 </Col>
                 <Col md={3}>
-                    <Card className="text-center shadow-sm">
+                    <Card className="text-center shadow-sm bg-warning text-dark">
                         <Card.Body>
                             <Card.Title>Assessors</Card.Title>
                             <h3>{users.filter(user => user.role === 'assessor').length}</h3>
@@ -169,7 +169,7 @@ const AdminDashboard = () => {
                     </Card>
                 </Col>
                 <Col md={3}>
-                    <Card className="text-center shadow-sm">
+                    <Card className="text-center shadow-sm bg-danger text-white">
                         <Card.Body>
                             <Card.Title>Students</Card.Title>
                             <h3>{users.filter(user => user.role === 'student').length}</h3>
@@ -177,6 +177,7 @@ const AdminDashboard = () => {
                     </Card>
                 </Col>
             </Row>
+
 
             {/* Leaderboard */}
             <Row className="mb-4">
