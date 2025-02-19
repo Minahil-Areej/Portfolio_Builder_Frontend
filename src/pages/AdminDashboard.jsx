@@ -76,10 +76,10 @@ const AdminDashboard = () => {
                 const token = localStorage.getItem('token');
 
                 // Fetch Users
-                const userResponse = await axios.get(`${API_URL}/api/users`, {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-                setUsers(userResponse.data);
+                // const userResponse = await axios.get(`${API_URL}/api/users`, {
+                //     headers: { Authorization: `Bearer ${token}` },
+                // });
+                // setUsers(userResponse.data);
 
                 // Fetch Portfolios
                 const portfolioResponse = await axios.get(`${API_URL}/api/portfolios/admin/all`, {
@@ -114,6 +114,23 @@ const AdminDashboard = () => {
         }
     }, [portfolioCounts]);
 
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await axios.get(`${API_URL}/api/users`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+    
+                setUsers(response.data); // Ensure we store the latest data, including `isActive`
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        };
+    
+        fetchUsers();
+    }, []);
+    
     const renderChart = () => {
         const ctx = document.getElementById('portfolioChart').getContext('2d');
 
@@ -143,21 +160,24 @@ const AdminDashboard = () => {
         try {
             const token = localStorage.getItem('token');
             const response = await axios.put(`${API_URL}/api/users/deactivate/${userId}`, 
-                { isActive: !currentStatus }, // Toggle status
+                { isActive: !currentStatus }, // Send toggled status
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-
-            alert(response.data.message);
-            // Fetch users again after updating status to ensure persistence
-        const updatedUsers = users.map(user => 
-            user._id === userId ? { ...user, isActive: !user.isActive } : user
-        );
-        
-        setUsers(updatedUsers);
+    
+            // Ensure correct message is shown in alert
+            alert(response.data.message); 
+    
+            // Update user state correctly
+            setUsers(prevUsers => 
+                prevUsers.map(user => 
+                    user._id === userId ? { ...user, isActive: !currentStatus } : user
+                )
+            );
         } catch (error) {
             console.error('Error toggling user status:', error);
         }
     };
+    
 
     return (
         <Container className="mt-4">
