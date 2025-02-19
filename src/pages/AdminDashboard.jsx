@@ -287,7 +287,7 @@ const AdminDashboard = () => {
                                                 <Button
                                                     variant={user.isActive ? 'danger' : 'success'}
                                                     size="sm"
-                                                    onClick={() => toggleUserStatus(user._id, user.isActive)}
+                                                    onClick={() => toggleUserStatus(user._id, !user.isActive)}
                                                 >
                                                     {user.isActive ? 'Deactivate' : 'Activate'}
                                                 </Button>
