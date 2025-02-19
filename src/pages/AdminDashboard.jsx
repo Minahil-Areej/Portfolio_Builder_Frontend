@@ -148,9 +148,12 @@ const AdminDashboard = () => {
             );
 
             alert(response.data.message);
-            setUsers(users.map(user =>
-                user._id === userId ? { ...user, isActive: !user.isActive } : user
-            ));
+            // Fetch users again after updating status to ensure persistence
+        const updatedUsers = users.map(user => 
+            user._id === userId ? { ...user, isActive: !user.isActive } : user
+        );
+        
+        setUsers(updatedUsers);
         } catch (error) {
             console.error('Error toggling user status:', error);
         }
