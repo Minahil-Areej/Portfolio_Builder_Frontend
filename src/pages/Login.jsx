@@ -81,10 +81,8 @@ const Login = () => {
                 navigate('/dashboard');  // Redirect to Student Dashboard
             }
         } catch (err) {
-            // console.error('Login error:', err);
-           // setError('Login failed. Please check your credentials.');
-           const errorMessage = err.response?.data?.message || 'Login failed. Please check your credentials.';
-           setError(errorMessage);
+            console.error('Login error:', err);
+            setError('Login failed. Please check your credentials.');
         }
     };
 
