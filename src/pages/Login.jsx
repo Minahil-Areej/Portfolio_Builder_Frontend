@@ -75,16 +75,16 @@ const Login = () => {
             localStorage.setItem('token', response.token);
 
             // Redirect based on role received from backend
-            if (response.user.role === 'admin') {
-                navigate('/admin-dashboard');  // ✅ Redirect to Admin Dashboard
-            } else if (response.user.role === 'assessor') {
+            if (response.user.role === 'assessor') {
                 navigate('/assessor');  // Redirect to Assessor Dashboard
             } else if (response.user.role === 'student') {
                 navigate('/dashboard');  // Redirect to Student Dashboard
             }
         } catch (err) {
-            console.error('Login error:', err);
-            setError('Login failed. Please check your credentials.');
+            // console.error('Login error:', err);
+           // setError('Login failed. Please check your credentials.');
+           const errorMessage = err.response?.data?.message || 'Login failed. Please check your credentials.';
+           setError(errorMessage);
         }
     };
 
