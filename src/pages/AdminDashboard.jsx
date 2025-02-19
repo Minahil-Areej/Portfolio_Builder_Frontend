@@ -138,6 +138,24 @@ const AdminDashboard = () => {
         });
     };
 
+    // ✅ Using the Already Existing API
+    const toggleUserStatus = async (userId, currentStatus) => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await axios.put(`${API_URL}/api/users/deactivate/${userId}`, 
+                { isActive: !currentStatus }, // Toggle status
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+
+            alert(response.data.message);
+            setUsers(users.map(user =>
+                user._id === userId ? { ...user, isActive: !user.isActive } : user
+            ));
+        } catch (error) {
+            console.error('Error toggling user status:', error);
+        }
+    };
+
     return (
         <Container className="mt-4">
             <h1>Admin Dashboard</h1>
@@ -254,6 +272,8 @@ const AdminDashboard = () => {
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -262,6 +282,16 @@ const AdminDashboard = () => {
                                             <td>{user.name}</td>
                                             <td>{user.email}</td>
                                             <td>{user.role}</td>
+                                            <td>{user.isActive ? 'Active' : 'Inactive'}</td>
+                                            <td>
+                                                <Button
+                                                    variant={user.isActive ? 'danger' : 'success'}
+                                                    size="sm"
+                                                    onClick={() => toggleUserStatus(user._id, user.isActive)}
+                                                >
+                                                    {user.isActive ? 'Deactivate' : 'Activate'}
+                                                </Button>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
