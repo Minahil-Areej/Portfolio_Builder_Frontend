@@ -122,6 +122,7 @@ const AdminDashboard = () => {
                     headers: { Authorization: `Bearer ${token}` },
                 });
     
+                console.log('Fetched users:', response.data); // Log fetched users
                 setUsers(response.data); // Ensure we store the latest data, including `isActive`
             } catch (error) {
                 console.error('Error fetching users:', error);
@@ -158,12 +159,16 @@ const AdminDashboard = () => {
     // ✅ Using the Already Existing API
     const toggleUserStatus = async (userId, currentStatus) => {
         try {
+            console.log(`Sending request to toggle user ${userId} to ${!currentStatus}`); // Log request data
+
             const token = localStorage.getItem('token');
             const response = await axios.put(`${API_URL}/api/users/deactivate/${userId}`, 
                 { isActive: !currentStatus }, // Send toggled status
                 { headers: { Authorization: `Bearer ${token}` } }
             );
     
+            console.log('API response:', response.data); // Log API response
+
             // Ensure correct message is shown in alert
             alert(response.data.message); 
     
