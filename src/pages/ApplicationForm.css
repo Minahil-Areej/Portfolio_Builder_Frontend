@@ -1,0 +1,17 @@
+.card {
+    border-radius: 10px;
+  }
+  
+  .card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .card .form-label {
+    font-weight: 600;
+  }
+  
+  button {
+    min-width: 100px;
+  }
+  

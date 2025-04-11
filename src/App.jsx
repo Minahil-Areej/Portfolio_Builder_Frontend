@@ -8,6 +8,8 @@ import ViewPortfolio from './pages/ViewPortfolio'; // Import the new ViewPortfol
 import AssessorDashboard from './pages/AssessorDashboard';
 import AssessorPortfolio from './pages/AssessorPortfolio';
 import AdminDashboard from './pages/AdminDashboard';
+import ApplicationForm from './pages/ApplicationForm';
+import ApplicationSuccess from './pages/ApplicationSuccess';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -24,6 +26,8 @@ function App() {
         <Route path="/assessor" element={<AssessorDashboard />} />  {/* Assessor Dashboard */}
         <Route path="/portfolio/assessor/:id" element={<AssessorPortfolio />} />  {/* Assessor Portfolio Review */}
         <Route path="/admin-dashboard" element={<AdminDashboard />} /> {/* No user role check here */}
+        <Route path="/application-form" element={<ApplicationForm />} />
+        <Route path="/application-success" element={<ApplicationSuccess />} />
         {/* Add a fallback for undefined routes */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
