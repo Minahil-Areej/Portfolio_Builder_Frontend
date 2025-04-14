@@ -82,10 +82,10 @@ const ApplicationForm = () => {
 
     const nextStep = () => {
         if (step < 8) {
-          setStep(step + 1);
+            setStep(step + 1);
         }
-      };
-      
+    };
+
     const prevStep = () => setStep(prev => prev - 1);
 
     const handleSubmit = async (e) => {
@@ -112,27 +112,107 @@ const ApplicationForm = () => {
     };
 
     const renderStep = () => {
-        console.log("Rendering Step:", step);
+        //console.log("Rendering Step:", step);
 
         switch (step) {
             case 1:
                 return (
                     <>
                         <h3>Personal Details</h3>
-                        {['familyName', 'firstName', 'permanentAddress', 'postcode', 'homePhone', 'mobile', 'email', 'passportNumber', 'gender', 'nationality', 'countryOfResidence', 'courseToStudy'].map(field => (
-                            <Form.Group className="mb-3" key={field}>
-                                <Form.Label>{field.replace(/([A-Z])/g, ' $1')}</Form.Label>
-                                <Form.Control value={formData[field]} onChange={e => handleChange(field, e.target.value)} />
-                            </Form.Group>
-                        ))}
+
+                        <Form.Group className="mb-3"><Form.Label>Family Name</Form.Label>
+                            <Form.Control value={formData.familyName} onChange={(e) => handleChange('familyName', e.target.value)} />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3"><Form.Label>First Name</Form.Label>
+                            <Form.Control value={formData.firstName} onChange={(e) => handleChange('firstName', e.target.value)} />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3"><Form.Label>Permanent Address</Form.Label>
+                            <Form.Control value={formData.permanentAddress} onChange={(e) => handleChange('permanentAddress', e.target.value)} />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3"><Form.Label>Postcode</Form.Label>
+                            <Form.Control value={formData.postcode} onChange={(e) => handleChange('postcode', e.target.value)} />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3"><Form.Label>Mobile</Form.Label>
+                            <Form.Control value={formData.mobile} onChange={(e) => handleChange('mobile', e.target.value)} />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3"><Form.Label>Email</Form.Label>
+                            <Form.Control value={formData.email} onChange={(e) => handleChange('email', e.target.value)} />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3"><Form.Label>Passport Number</Form.Label>
+                            <Form.Control value={formData.passportNumber} onChange={(e) => handleChange('passportNumber', e.target.value)} />
+                        </Form.Group>
+
+                        <Form.Group className="mb-3"><Form.Label>Gender</Form.Label>
+                            <Form.Select value={formData.gender} onChange={(e) => handleChange('gender', e.target.value)}>
+                                <option value="">Select Gender</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Prefer not to say</option>
+                            </Form.Select>
+                        </Form.Group>
+
+                        <Form.Group className="mb-3"><Form.Label>Nationality</Form.Label>
+                            <Form.Select value={formData.nationality} onChange={(e) => handleChange('nationality', e.target.value)}>
+                                <option value="">Select Country</option>
+                                {[
+                                    "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
+                                    "Bangladesh", "Belgium", "Brazil", "Canada", "China", "Colombia", "Croatia", "Czech Republic", "Denmark", "Egypt",
+                                    "Finland", "France", "Germany", "Ghana", "Greece", "Hong Kong", "Hungary", "India", "Indonesia", "Iran", "Iraq",
+                                    "Ireland", "Israel", "Italy", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kuwait", "Lebanon", "Malaysia", "Mexico",
+                                    "Morocco", "Nepal", "Netherlands", "New Zealand", "Nigeria", "Norway", "Oman", "Pakistan", "Peru", "Philippines",
+                                    "Poland", "Portugal", "Qatar", "Romania", "Russia", "Saudi Arabia", "Singapore", "Slovakia", "South Africa", "South Korea",
+                                    "Spain", "Sri Lanka", "Sudan", "Sweden", "Switzerland", "Syria", "Thailand", "Tunisia", "Turkey", "UAE", "Uganda",
+                                    "Ukraine", "United Kingdom", "United States", "Uzbekistan", "Venezuela", "Vietnam", "Yemen", "Zimbabwe"
+                                ].map((country) => (
+                                    <option key={country} value={country}>{country}</option>
+                                ))}
+                            </Form.Select>
+                        </Form.Group>
+
                         <Form.Group className="mb-3">
-                            <Form.Label>Date of Birth</Form.Label>
+  <Form.Label>Course to Study</Form.Label>
+  <Form.Select
+    value={formData.courseToStudy}
+    onChange={(e) => handleChange('courseToStudy', e.target.value)}
+  >
+    <option value="">Select Course</option>
+    <option>Functional Skills – English</option>
+    <option>Functional Skills – Mathematics</option>
+    <option>GCSE English</option>
+    <option>GCSE Mathematics</option>
+    <option>English Language Course – ESOL</option>
+    <option>Level 2 Diploma in Electrical Installations (2365-02)</option>
+    <option>Level 3 Diploma in Electrical Installations (2365-03)</option>
+    <option>NVQ Level 3 Electrical Installation (2357-44)</option>
+    <option>AM2 Assessment Preparation</option>
+  </Form.Select>
+</Form.Group>
+
+                        <Form.Group className="mb-3"><Form.Label>Date of Birth</Form.Label>
                             <Form.Control type="date" value={formData.dateOfBirth} onChange={(e) => handleChange('dateOfBirth', e.target.value)} />
                         </Form.Group>
-                        <Form.Check label="Disability" checked={formData.hasDisability} onChange={(e) => handleChange('hasDisability', e.target.checked)} />
-                        <Form.Check label="Criminal Conviction" checked={formData.hasCriminalConviction} onChange={(e) => handleChange('hasCriminalConviction', e.target.checked)} />
+
+                        <Form.Check
+                            type="checkbox"
+                            label="Disability"
+                            checked={formData.hasDisability}
+                            onChange={(e) => handleChange('hasDisability', e.target.checked)}
+                        />
+                        <Form.Check
+                            type="checkbox"
+                            label="Criminal Conviction"
+                            checked={formData.hasCriminalConviction}
+                            onChange={(e) => handleChange('hasCriminalConviction', e.target.checked)}
+                        />
                     </>
                 );
+
 
             case 2:
                 return (
