@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import './Portfolio.css'; // Ensure this file has the styles for error highlighting
+import { useNavigate } from 'react-router-dom';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Portfolio = () => {
@@ -25,6 +26,7 @@ const Portfolio = () => {
   const [jobType, setJobType] = useState('');
   const [reasonForTask, setReasonForTask] = useState('');
   const [objectiveOfJob, setObjectiveOfJob] = useState('');
+  const navigate = useNavigate();
 
   // Fetch the JSON data from the public folder
   useEffect(() => {
@@ -114,6 +116,7 @@ const Portfolio = () => {
       const result = await response.json();
       if (response.ok) {
         alert(`Portfo lio ${isSubmitForReview ? 'submitted for review' : 'saved as draft'} successfully!`);
+        navigate('/dashboard');
       } else {
         alert('Error creating portfolio: ' + result.message);
       }
