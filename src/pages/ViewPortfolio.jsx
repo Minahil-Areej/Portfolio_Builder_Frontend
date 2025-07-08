@@ -136,14 +136,14 @@ const ViewPortfolio = () => {
                                     <Card.Text className="portfolio-text">{portfolio.assessorComments}</Card.Text>
                                 </>
                             )}
-                            {portfolio.status === 'Reviewed' && (
+                            {/* {portfolio.status === 'Reviewed' && (
                                 <div className="mt-3">
                                     <p>If you want to make changes, please move the portfolio to "To Be Reviewed" section first:</p>
                                     <Button variant="info" onClick={moveToToBeReviewed}>
                                         Move to "To Be Reviewed"
                                     </Button>
                                 </div>
-                            )}
+                            )} */}
                         </Card.Body>
                     </Card>
                 </Col>
