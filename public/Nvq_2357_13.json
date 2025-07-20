@@ -2,262 +2,512 @@
     "performance_units": [
       {
         "unit": "311",
-        "title": "Prepare to Install Electrical Wiring Systems and Equipment",
+        "title": "Applying Health and Safety legislation and working practices (installing and maintaining electrotechnical systems and equipment) (ELTP01)",
         "learning_outcomes": [
           {
             "LO_number": 1,
-            "description": "Be able to check for damage and suitability of tools and equipment before use",
+            "description": "Apply relevant Health and Safety legislation in the workplace",
             "assessment_criteria": [
-              {
-                "AC_number": 1.1,
-                "description": "Check that tools and equipment are suitable for the task."
-              },
-              {
-                "AC_number": 1.2,
-                "description": "Check that tools and equipment are not damaged."
-              }
+              { "AC_number": "1.1", "description": "Identify which workplace health and safety procedures are relevant to the working environment and comply with their duties and obligations as defined by current legislation and organisational procedures" },
+              { "AC_number": "1.2", "description": "Produce a risk assessment and method statement in accordance with organisational procedures and the limits of their responsibility" },
+              { "AC_number": "1.3a", "description": "Work within the requirements of: Risk assessments" },
+              { "AC_number": "1.3b", "description": "Work within the requirements of: Method statements" },
+              { "AC_number": "1.3c", "description": "Work within the requirements of: Safe systems of work" }
             ]
           },
           {
             "LO_number": 2,
-            "description": "Be able to prepare work areas for electrical installations",
+            "description": "Assess the work environment for hazards and identify remedial actions in accordance with Health and Safety legislation",
             "assessment_criteria": [
-              {
-                "AC_number": 2.1,
-                "description": "Clear the work area of obstructions before commencing work."
-              },
-              {
-                "AC_number": 2.2,
-                "description": "Ensure work area is prepared for safe electrical installation."
-              }
+              { "AC_number": "2.1", "description": "Identify unsafe situations and conditions and take remedial actions" },
+              { "AC_number": "2.2a", "description": "Assess the work environment and revise work practices accordingly to take into account hazards which could cause harm including the handling of potentially hazardous: Materials" },
+              { "AC_number": "2.2b", "description": "Assess the work environment and revise work practices accordingly to take into account hazards which could cause harm including the handling of potentially hazardous: Tools" },
+              { "AC_number": "2.2c", "description": "Assess the work environment and revise work practices accordingly to take into account hazards which could cause harm including the handling of potentially hazardous: Equipment" },
+              { "AC_number": "2.3", "description": "Identify any hazards which may present a high risk and report their presence to relevant persons who have overall responsibility for health and safety in the workplace" },
+              { "AC_number": "2.4", "description": "Apply measures to control health and safety hazards in accordance with the limits of their capabilities and job responsibility" },
+              { "AC_number": "2.5", "description": "Select and use correct Personal Protective Equipment and protection measures to ensure the health and safety of themselves and others in the work environment" }
+            ]
+          },
+          {
+            "LO_number": 3,
+            "description": "Apply methods and procedures to ensure work on site is in accordance with Health and Safety legislation",
+            "assessment_criteria": [
+              { "AC_number": "3.1", "description": "Demonstrate personal conduct and behaviour around the workplace to ensure that the health and safety of themselves and others is not endangered" },
+              { "AC_number": "3.2a", "description": "Apply procedures to ensure the safe use maintenance and storage of tools plant and equipment as stipulated in: Workplace policies (company and site)" },
+              { "AC_number": "3.2b", "description": "Apply procedures to ensure the safe use maintenance and storage of tools plant and equipment as stipulated in: Supplier information" },
+              { "AC_number": "3.2c", "description": "Apply procedures to ensure the safe use maintenance and storage of tools plant and equipment as stipulated in: Manufacturer's instructions" },
+              { "AC_number": "3.3", "description": "Comply with hazard warning mandatory instruction and prohibition notices" },
+              { "AC_number": "3.4", "description": "Apply procedures to ensure the safety of the work location through the correct use of guards and notices" },
+              { "AC_number": "3.5", "description": "Use access equipment correctly" }
+            ]
+          },
+          {
+            "LO_number": 4,
+            "description": "Apply procedures to deal with and report health and safety in accordance with Health and Safety legislation",
+            "assessment_criteria": [
+              { "AC_number": "4.1", "description": "Demonstrate the correct procedures to follow in the event of injury to themselves or others" }
             ]
           }
         ]
       },
       {
         "unit": "312",
-        "title": "Install Electrical Wiring Systems and Equipment",
+        "title": "Applying environmental legislation, working practices and the principles of environmental technology systems (ELTP02)",
         "learning_outcomes": [
           {
             "LO_number": 1,
-            "description": "Be able to install electrical wiring systems",
+            "description": "Apply environmental legislation, working practices and principles for electrotechnical services",
             "assessment_criteria": [
-              {
-                "AC_number": 1.1,
-                "description": "Install wiring systems in accordance with design specifications."
-              },
-              {
-                "AC_number": 1.2,
-                "description": "Comply with health and safety regulations while installing wiring."
-              }
+              { "AC_number": "1.1a", "description": "Demonstrate workplace procedures for the safe handling storage and disposal of hazardous materials and products in accordance with: Environmental Protection Act" },
+              { "AC_number": "1.1b", "description": "Demonstrate workplace procedures for the safe handling storage and disposal of hazardous materials and products in accordance with: The Hazardous Waste Regulations" },
+              { "AC_number": "1.1c", "description": "Demonstrate workplace procedures for the safe handling storage and disposal of hazardous materials and products in accordance with: Pollution Prevention and Control Act" },
+              { "AC_number": "1.1d", "description": "Demonstrate workplace procedures for the safe handling storage and disposal of hazardous materials and products in accordance with: Control of Pollution Act" },
+              { "AC_number": "1.1e", "description": "Demonstrate workplace procedures for the safe handling storage and disposal of hazardous materials and products in accordance with: The Control of Noise at Work Regulations" },
+              { "AC_number": "1.1f", "description": "Demonstrate workplace procedures for the safe handling storage and disposal of hazardous materials and products in accordance with: Packaging (Essential Requirements) Regulations" },
+              { "AC_number": "1.1g", "description": "Demonstrate workplace procedures for the safe handling storage and disposal of hazardous materials and products in accordance with: Environment Act" },
+              { "AC_number": "1.1h", "description": "Demonstrate workplace procedures for the safe handling storage and disposal of hazardous materials and products in accordance with: The Waste Electrical and Electronic Equipment Regulations" },
+              { "AC_number": "1.2", "description": "Demonstrate work practices and procedures which are in accordance with the requirements for electrical systems and equipment as specified in the relevant sections of the Building Regulations and the Guide for Sustainable Homes" },
+              { "AC_number": "1.3", "description": "Demonstrate appropriate organisational procedures for reporting environmental hazards" }
             ]
           },
           {
             "LO_number": 2,
-            "description": "Be able to install electrical equipment",
+            "description": "Apply work methods and procedures to reduce material wastage and the impact of work activities on the work environment",
             "assessment_criteria": [
-              {
-                "AC_number": 2.1,
-                "description": "Install electrical equipment in accordance with manufacturer's instructions."
-              },
-              {
-                "AC_number": 2.2,
-                "description": "Confirm the correct installation of electrical equipment with tests."
-              }
+              { "AC_number": "2.1", "description": "Demonstrate prefabrication and installation methods which can help to reduce material wastage" },
+              { "AC_number": "2.2", "description": "Identify and use environmentally friendly materials products and procedures for the installation and maintenance of electrotechnical systems and equipment" }
+            ]
+          },
+          {
+            "LO_number": 3,
+            "description": "Supply information on environmental technology systems in the work location",
+            "assessment_criteria": [
+              { "AC_number": "3.1", "description": "Provide information on the operational requirements and benefits of environmental technology systems" }
             ]
           }
         ]
       },
       {
         "unit": "313",
-        "title": "Inspect, Test, and Commission Electrical Systems",
+        "title": "Overseeing and organising the work environment (electrical installation) (ELTP03)",
         "learning_outcomes": [
           {
             "LO_number": 1,
-            "description": "Be able to inspect electrical systems and equipment",
+            "description": "Provide relevant people with technical and functional information for work on electrical systems and equipment",
             "assessment_criteria": [
-              {
-                "AC_number": 1.1,
-                "description": "Perform visual inspection of installed systems."
-              },
-              {
-                "AC_number": 1.2,
-                "description": "Document inspection findings in accordance with regulatory requirements."
-              }
+              { "AC_number": "1.1", "description": "Identify the relevant people (such as customers/ clients) that need to be supplied with technical and functional information" },
+              { "AC_number": "1.2", "description": "Identify any additional information that may also be required" },
+              { "AC_number": "1.3", "description": "Liaise with relevant people to determine the information they require to ensure that systems equipment or components can be operated safely and effectively" },
+              { "AC_number": "1.4", "description": "Identify appropriate technical and functional information that is required for the work activity" },
+              { "AC_number": "1.5", "description": "Provide information in a timely courteous and professional manner in accordance with organisational procedures" }
             ]
           },
           {
             "LO_number": 2,
-            "description": "Be able to test electrical systems and equipment",
+            "description": "Oversee Health and Safety during work on electrical systems and equipment",
             "assessment_criteria": [
-              {
-                "AC_number": 2.1,
-                "description": "Carry out continuity tests on electrical systems."
-              },
-              {
-                "AC_number": 2.2,
-                "description": "Conduct insulation resistance tests."
-              }
+              { "AC_number": "2.1", "description": "Produce risk assessments and method statements to cover their own work and others working the area (colleagues and other operatives) in accordance with their level of responsibility" },
+              { "AC_number": "2.2", "description": "Follow procedures to confirm that work is being completed in accordance with Health and Safety legislation and industry standards" }
+            ]
+          },
+          {
+            "LO_number": 3,
+            "description": "Co-ordinate liaison with other relevant persons during work activities",
+            "assessment_criteria": [
+              { "AC_number": "3.1", "description": "Comply with approved procedures to ensure effective co-ordination with other workers/contractors including steps to resolve issues which are outside the scope of their job role" },
+              { "AC_number": "3.2", "description": "Apply communication techniques that are clear accurate and appropriate to the situation" }
+            ]
+          },
+          {
+            "LO_number": 4,
+            "description": "Organise and oversee work activities and operations",
+            "assessment_criteria": [
+              { "AC_number": "4.1", "description": "Organise operatives by allocating duties and responsibilities to make the best use of their competence" },
+              { "AC_number": "4.2a", "description": "Monitor the work of operatives to ensure it is in accordance with: Industry working practices" },
+              { "AC_number": "4.2b", "description": "Monitor the work of operatives to ensure it is in accordance with: Programme of work" },
+              { "AC_number": "4.2c", "description": "Monitor the work of operatives to ensure it is in accordance with: Health and Safety requirements" },
+              { "AC_number": "4.2d", "description": "Monitor the work of operatives to ensure it is in accordance with: Cost effectiveness" },
+              { "AC_number": "4.3", "description": "Apply the correct procedures when a non compliance is identified during the completion of work activities" }
+            ]
+          },
+          {
+            "LO_number": 5,
+            "description": "Organise a programme for working on electrical systems and equipment",
+            "assessment_criteria": [
+              { "AC_number": "5.1a", "description": "Produce a programme of work from the work specification including requirements for: Estimate of the amount of time required for completion of the work" },
+              { "AC_number": "5.1b", "description": "Produce a programme of work from the work specification including requirements for: Liaison with other trades where necessary" },
+              { "AC_number": "5.2", "description": "Communicate with others clearly and concisely" },
+              { "AC_number": "5.3", "description": "Identify situations when it is necessary to liaise with other relevant parties to resolve issues which are outside the scope of their job role" }
+            ]
+          },
+          {
+            "LO_number": 6,
+            "description": "Organise the resource requirements for work on electrical systems and equipment",
+            "assessment_criteria": [
+              { "AC_number": "6.1", "description": "Demonstrate procedures for organising provision of resources" },
+              { "AC_number": "6.2a", "description": "Demonstrate procedures for confirming that materials available are: The right type" },
+              { "AC_number": "6.2b", "description": "Demonstrate procedures for confirming that materials available are: Fit for purpose" },
+              { "AC_number": "6.2c", "description": "Demonstrate procedures for confirming that materials available are: In the correct quantity" },
+              { "AC_number": "6.2d", "description": "Demonstrate procedures for confirming that materials available are: Suitable for work to be completed cost efficiently" },
+              { "AC_number": "6.3", "description": "Apply procedures to ensure that resources are delivered on time and confirm that they are undamaged at the point of delivery" },
+              { "AC_number": "6.4", "description": "Demonstrate procedures which ensure the safe and effective storage of materials tools and equipment in the work location" }
             ]
           }
         ]
       },
       {
         "unit": "315",
-        "title": "Diagnose and Correct Electrical Faults",
+        "title": "Planning, preparing and installing wiring systems and associated equipment in buildings, structures and the environment (ELTP04)",
         "learning_outcomes": [
           {
             "LO_number": 1,
-            "description": "Be able to diagnose faults in electrical systems",
+            "description": "Prepare the working environment for the installation of wiring systems, enclosures and associated equipment",
             "assessment_criteria": [
-              {
-                "AC_number": 1.1,
-                "description": "Identify common electrical faults in systems and equipment."
-              },
-              {
-                "AC_number": 1.2,
-                "description": "Use diagnostic tools and methods to pinpoint electrical faults."
-              }
+              { "AC_number": "1.1", "description": "Ensure the health and safety of themselves and others within the work location" },
+              { "AC_number": "1.2", "description": "Identify and use suitable personal protective equipment throughout the completion of work activities" },
+              { "AC_number": "1.3", "description": "Complete preparatory work for the installation of electrical systems enclosures and associated equipment" }
             ]
           },
           {
             "LO_number": 2,
-            "description": "Be able to correct faults in electrical systems",
+            "description": "Correctly interpret appropriate information for the installation of wiring systems, enclosures and associated equipment",
             "assessment_criteria": [
-              {
-                "AC_number": 2.1,
-                "description": "Carry out repairs or replacements of faulty electrical components."
-              },
-              {
-                "AC_number": 2.2,
-                "description": "Confirm that faults have been corrected through appropriate testing."
-              }
+              { "AC_number": "2.1", "description": "Use information and documentation that is current and relevant to the work required" },
+              { "AC_number": "2.2", "description": "Use documentation to confirm that materials and equipment is of the correct quantity and is free from damage" }
+            ]
+          },
+          {
+            "LO_number": 3,
+            "description": "Confirm that planned work is in accordance with the installation specification",
+            "assessment_criteria": [
+              { "AC_number": "3.1a", "description": "Use appropriate procedures to record: Contract variations" },
+              { "AC_number": "3.1b", "description": "Use appropriate procedures to record: Site instructions" },
+              { "AC_number": "3.1c", "description": "Use appropriate procedures to record: Site events/diary" },
+              { "AC_number": "3.2", "description": "Demonstrate that authorisation has been obtained from the relevant person(s) prior to commencement of the work" },
+              { "AC_number": "3.3", "description": "Produce a record of any pre-work damage or defects to existing equipment or building features and report to the relevant person (Customer; Client; Site Manager; Line Manager)" }
+            ]
+          },
+          {
+            "LO_number": 4,
+            "description": "Confirm the electrical supply is in accordance with the installation specification",
+            "assessment_criteria": [
+              { "AC_number": "4.1", "description": "Verify the compatibility of the electrical supply to the requirements of the installation specification" },
+              { "AC_number": "4.2", "description": "Identify the earthing arrangement for the electrical installation" }
+            ]
+          },
+          {
+            "LO_number": 5,
+            "description": "Measure and mark-out the fixing and fitting locations for wiring systems, wiring-enclosures and equipment in accordance with current relevant statutory and non-statutory regulations",
+            "assessment_criteria": [
+              { "AC_number": "5.1", "description": "Ensure that the planned locations for the wiring system(s) and its associated equipment are compatible with other site services requirements" },
+              { "AC_number": "5.2", "description": "Use different measuring and marking out techniques which are appropriate to the wiring system wiring enclosure and/or associated equipment that is being installed" },
+              { "AC_number": "5.3", "description": "Ensure that the planned locations are visually acceptable and in accordance with the installation specification" }
+            ]
+          },
+          {
+            "LO_number": 6,
+            "description": "Fit and fix wiring systems wiring enclosures and associated equipment safely in accordance with the installation specification",
+            "assessment_criteria": [
+              { "AC_number": "6.1a", "description": "Produce a planned programme of work for the fitting and fixing of wiring systems wiring enclosures and associated equipment in accordance with: A safe system of work" },
+              { "AC_number": "6.1b", "description": "Produce a planned programme of work for the fitting and fixing of wiring systems wiring enclosures and associated equipment in accordance with: Co-ordination with other site services" },
+              { "AC_number": "6.1c", "description": "Produce a planned programme of work for the fitting and fixing of wiring systems wiring enclosures and associated equipment in accordance with: Relevant regulations (e.g. IEE Wiring Regulations; Building Regulations)" },
+              { "AC_number": "6.1d", "description": "Produce a planned programme of work for the fitting and fixing of wiring systems wiring enclosures and associated equipment in accordance with: Installation specification" },
+              { "AC_number": "6.1e", "description": "Produce a planned programme of work for the fitting and fixing of wiring systems wiring enclosures and associated equipment in accordance with: Manufacturers' instructions" },
+              { "AC_number": "6.2a", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: Thermosetting insulated cables including flexes" },
+              { "AC_number": "6.2b", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: Single and multicore thermoplastic (PVC) and thermosetting insulated cables" },
+              { "AC_number": "6.2c", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: PVC/PVC flat profile cable" },
+              { "AC_number": "6.2d", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: MICC (with and without PVC sheath)" },
+              { "AC_number": "6.2e", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: SWA cables (PILC XLPE PVC)" },
+              { "AC_number": "6.2f", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: Armoured/braided flexible cables and cords" },
+              { "AC_number": "6.2g", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: Data cables" },
+              { "AC_number": "6.2h", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: Fibre optic cable" },
+              { "AC_number": "6.2i", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: Fire resistant cable" },
+              { "AC_number": "6.3a", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: Conduit (PVC and Metallic)" },
+              { "AC_number": "6.3b", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: Trunking (PVC and Metallic)" },
+              { "AC_number": "6.3c", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: Cable Tray" },
+              { "AC_number": "6.3d", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: Cable Basket" },
+              { "AC_number": "6.3e", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: Ladder systems" },
+              { "AC_number": "6.3f", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: Ducting" },
+              { "AC_number": "6.3g", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: Modular wiring systems" },
+              { "AC_number": "6.3h", "description": "Install the following in accordance with the IEE Wiring Regulations the installation specification and agreed planned programme of work: Busbar systems and Powertrack" },
+              { "AC_number": "6.4", "description": "Determine the cable carrying capacity of conduit trunking and ducting in accordance with the IEE Wiring Regulations and the installation specification" },
+              { "AC_number": "6.5a", "description": "Install the following types of electrical equipment and accessories in accordance with the IEE Wiring Regulations the installation specification manufacturers' instructions and the agreed planned programme of work: Isolators and switches" },
+              { "AC_number": "6.5b", "description": "Install the following types of electrical equipment and accessories in accordance with the IEE Wiring Regulations the installation specification manufacturers' instructions and the agreed planned programme of work: Socket-outlets" },
+              { "AC_number": "6.5c", "description": "Install the following types of electrical equipment and accessories in accordance with the IEE Wiring Regulations the installation specification manufacturers' instructions and the agreed planned programme of work: Distribution-boards" },
+              { "AC_number": "6.5d", "description": "Install the following types of electrical equipment and accessories in accordance with the IEE Wiring Regulations the installation specification manufacturers' instructions and the agreed planned programme of work: Consumer units" },
+              { "AC_number": "6.5e", "description": "Install the following types of electrical equipment and accessories in accordance with the IEE Wiring Regulations the installation specification manufacturers' instructions and the agreed planned programme of work: Earthing fault and overcurrent protective devices" },
+              { "AC_number": "6.5f", "description": "Install the following types of electrical equipment and accessories in accordance with the IEE Wiring Regulations the installation specification manufacturers' instructions and the agreed planned programme of work: Luminaires" },
+              { "AC_number": "6.5g", "description": "Install the following types of electrical equipment and accessories in accordance with the IEE Wiring Regulations the installation specification manufacturers' instructions and the agreed planned programme of work: Control equipment" },
+              { "AC_number": "6.5h", "description": "Install the following types of electrical equipment and accessories in accordance with the IEE Wiring Regulations the installation specification manufacturers' instructions and the agreed planned programme of work: Data socket outlets" },
+              { "AC_number": "6.5i", "description": "Install the following types of electrical equipment and accessories in accordance with the IEE Wiring Regulations the installation specification manufacturers' instructions and the agreed planned programme of work: Auxiliary equipment (e.g. heating/water system components)" },
+              { "AC_number": "6.6", "description": "Dispose of unwanted material and equipment in accordance with site procedures and statutory requirements" }
+            ]
+          },
+          {
+            "LO_number": 7,
+            "description": "Confirm any variations to the installation specification or planned programme of work",
+            "assessment_criteria": [
+              { "AC_number": "7.1", "description": "Confirm that where variations to the installation specification and/or work programme have been identified appropriate action has been taken after agreement of relevant persons (e.g. Customer; Client; Site Manager)" },
+              { "AC_number": "7.2", "description": "Verify that that the completed system meets specified requirements in terms of ensuring that components and equipment of the correct type fit for purpose and are installed in accordance with the IEE Wiring Regulations the installation specification and as appropriate with manufacturer instructions" }
             ]
           }
         ]
       },
       {
         "unit": "316",
-        "title": "Plan and Prepare to Install Electrical Systems",
+        "title": "Terminating and connecting conductors, cables and flexible cords in electrical systems (ELTP05)",
         "learning_outcomes": [
           {
             "LO_number": 1,
-            "description": "Be able to plan for electrical installations",
+            "description": "Confirm safety of system prior to completion of any termination and connection in accordance with statutory and non-statutory regulations",
             "assessment_criteria": [
-              {
-                "AC_number": 1.1,
-                "description": "Interpret technical drawings and specifications for electrical installations."
-              },
-              {
-                "AC_number": 1.2,
-                "description": "Select appropriate materials and equipment based on installation requirements."
-              }
+              { "AC_number": "1.1", "description": "Carry out safe isolation safe isolation of electrical circuits and complete electrical installations in accordance with regulatory requirements" },
+              { "AC_number": "1.2a", "description": "Ensure the health and safety of themselves and others within the work location in terms of: Selection and use of tools" },
+              { "AC_number": "1.2b", "description": "Ensure the health and safety of themselves and others within the work location in terms of: PPE" },
+              { "AC_number": "1.2c", "description": "Ensure the health and safety of themselves and others within the work location in terms of: Risk assessment" },
+              { "AC_number": "1.2d", "description": "Ensure the health and safety of themselves and others within the work location in terms of: Reporting of unsafe situations" },
+              { "AC_number": "1.2e", "description": "Ensure the health and safety of themselves and others within the work location in terms of: Adherence to relevant statutory and non-statutory regulations" },
+              { "AC_number": "1.3a", "description": "Check the safety of electrical systems and equipment prior to the completion of termination and connections in terms of: Presence of supply" },
+              { "AC_number": "1.3b", "description": "Check the safety of electrical systems and equipment prior to the completion of termination and connections in terms of: Mechanical soundness" }
             ]
           },
           {
             "LO_number": 2,
-            "description": "Be able to prepare the work area for installation",
+            "description": "Terminate and connect conductors, cables and flexible cords in electrical wiring systems and equipment",
             "assessment_criteria": [
-              {
-                "AC_number": 2.1,
-                "description": "Ensure work area is safe and free from hazards."
-              },
-              {
-                "AC_number": 2.2,
-                "description": "Lay out materials and equipment in a logical manner to facilitate efficient installation."
-              }
+              { "AC_number": "2.1", "description": "Terminate and connect the following types of conductors cables and flexible cords in accordance with the installation specification, manufacturer instructions and IEE Wiring Regulations." },
+              { "AC_number": "2.2", "description": "Connect to the following types of electrical equipment and accessories in accordance with the installation specification, manufacturer instructions and IEE Wiring Regulations." },
+              { "AC_number": "2.3a", "description": "Terminate and connect conductors cables and cords using the following techniques: Screwing" },
+              { "AC_number": "2.3b", "description": "Terminate and connect conductors cables and cords using the following techniques: Crimping" },
+              { "AC_number": "2.3c", "description": "Terminate and connect conductors cables and cords using the following techniques: Soldering" },
+              { "AC_number": "2.3d", "description": "Terminate and connect conductors cables and cords using the following techniques: Non-screw compression" }
+            ]
+          },
+          {
+            "LO_number": 3,
+            "description": "Confirm that terminations and connections are safe and free from defects in accordance with statutory and non-statutory regulations",
+            "assessment_criteria": [
+              { "AC_number": "3.1", "description": "Ensure that terminations and connections are electrically and mechanically sound" },
+              { "AC_number": "3.2", "description": "Complete the necessary identification of cables conductors and flexible cords in accordance with regulatory requirements and organisational procedures" },
+              { "AC_number": "3.3", "description": "Dispose of unwanted material and equipment in accordance with site procedures and statutory requirements" }
             ]
           }
         ]
       },
       {
         "unit": "317",
-        "title": "Inspect and Test Electrical Installations",
+        "title": "Inspecting, testing, commissioning and certifying electrotechnical systems and equipment in buildings, structures and the environment (ELTP06)",
         "learning_outcomes": [
           {
             "LO_number": 1,
-            "description": "Be able to perform visual inspection of electrical installations",
+            "description": "Confirm safety of the system and equipment prior to completion of inspection testing and commissioning in accordance with statutory and non-statutory regulations",
             "assessment_criteria": [
-              {
-                "AC_number": 1.1,
-                "description": "Inspect electrical systems to ensure compliance with BS 7671."
-              },
-              {
-                "AC_number": 1.2,
-                "description": "Identify and document any non-compliant or unsafe installations."
-              }
+              { "AC_number": "1.1", "description": "Carry out safe isolation procedures in accordance with regulatory requirements for electrical installations" },
+              { "AC_number": "1.2", "description": "Ensure the health and safety of themselves and others within the work location during inspection testing and commissioning" },
+              { "AC_number": "1.3", "description": "Check the safety of electrical systems prior to the commencement of inspection testing and commissioning" }
             ]
           },
           {
             "LO_number": 2,
-            "description": "Be able to perform electrical tests on installations",
+            "description": "Inspect electrotechnical systems and equipment",
             "assessment_criteria": [
-              {
-                "AC_number": 2.1,
-                "description": "Carry out dead and live testing on electrical installations."
-              },
-              {
-                "AC_number": 2.2,
-                "description": "Document test results according to industry standards."
-              }
+              { "AC_number": "2.1", "description": "Assess whether the safe system of work is appropriate to the work activity" },
+              { "AC_number": "2.2a", "description": "Carry out a visual inspection in accordance with the requirements of the installation specification the IEE Wiring Regulations and IEE Guidance Note 3 that includes: The installation methods of wiring systems and equipment" },
+              { "AC_number": "2.2b", "description": "Carry out a visual inspection in accordance with the requirements of the installation specification the IEE Wiring Regulations and IEE Guidance Note 3 that includes: The selection of conductors cables and cords" },
+              { "AC_number": "2.2c", "description": "Carry out a visual inspection in accordance with the requirements of the installation specification the IEE Wiring Regulations and IEE Guidance Note 3 that includes: The selection of protective and isolation devices" },
+              { "AC_number": "2.2d", "description": "Carry out a visual inspection in accordance with the requirements of the installation specification the IEE Wiring Regulations and IEE Guidance Note 3 that includes: Routing and identification/labelling of conductors cables and flexible cords" },
+              { "AC_number": "2.2e", "description": "Carry out a visual inspection in accordance with the requirements of the installation specification the IEE Wiring Regulations and IEE Guidance Note 3 that includes: Presence of means of earthing" },
+              { "AC_number": "2.2f", "description": "Carry out a visual inspection in accordance with the requirements of the installation specification the IEE Wiring Regulations and IEE Guidance Note 3 that includes: Presence of protective conductors and bonding" },
+              { "AC_number": "2.2g", "description": "Carry out a visual inspection in accordance with the requirements of the installation specification the IEE Wiring Regulations and IEE Guidance Note 3 that includes: Isolation" },
+              { "AC_number": "2.2h", "description": "Carry out a visual inspection in accordance with the requirements of the installation specification the IEE Wiring Regulations and IEE Guidance Note 3 that includes: Type and rating of overcurrent protective devices" },
+              { "AC_number": "2.3", "description": "Complete a Schedule of Inspections in accordance with the IEE Wiring Regulations and IEE Guidance Note 3" }
+            ]
+          },
+          {
+            "LO_number": 3,
+            "description": "Test electrotechnical systems and equipment",
+            "assessment_criteria": [
+              { "AC_number": "3.1", "description": "Select the test instruments and their accessories for tests." },
+              { "AC_number": "3.2", "description": "Carry out the following tests in accordance with the installation specification and the IEE Wiring Regulations and manufacturer's instructions." },
+              { "AC_number": "3.3", "description": "Verify test results and report all findings to relevant persons as appropriate." },
+              { "AC_number": "3.4a", "description": "Complete in accordance with the IEE Wiring Regulations and IEE Guidance Note 3: Electrical Installation Certificates" },
+              { "AC_number": "3.4b", "description": "Complete in accordance with the IEE Wiring Regulations and IEE Guidance Note 3: Minor Electrical Installation Works Certificates" },
+              { "AC_number": "3.4c", "description": "Complete in accordance with the IEE Wiring Regulations and IEE Guidance Note 3: Schedules of Inspections" },
+              { "AC_number": "3.4d", "description": "Complete in accordance with the IEE Wiring Regulations and IEE Guidance Note 3: Schedules of Test results" },
+              { "AC_number": "3.5a", "description": "Conform in accordance with the IEE Wiring Regulations and IEE Guidance Note 3 and where appropriate customer/client requirements to the procedures and requirements for the recording and retention of completed: Electrical Installation Certificates" },
+              { "AC_number": "3.5b", "description": "Conform in accordance with the IEE Wiring Regulations and IEE Guidance Note 3 and where appropriate customer/client requirements to the procedures and requirements for the recording and retention of completed: Minor Electrical Installation Works Certificates" },
+              { "AC_number": "3.5c", "description": "Conform in accordance with the IEE Wiring Regulations and IEE Guidance Note 3 and where appropriate customer/client requirements to the procedures and requirements for the recording and retention of completed: Schedules of Inspections" },
+              { "AC_number": "3.5d", "description": "Conform in accordance with the IEE Wiring Regulations and IEE Guidance Note 3 and where appropriate customer/client requirements to the procedures and requirements for the recording and retention of completed: Schedules of Test results" }
+            ]
+          },
+          {
+            "LO_number": 4,
+            "description": "Commission electrotechnical systems and equipment",
+            "assessment_criteria": [
+              { "AC_number": "4.1", "description": "Clarify the commissioning procedures with relevant persons on site." },
+              { "AC_number": "4.2a", "description": "Carry out the commissioning of circuits equipment and components to confirm functionality fit for purpose and safety in accordance with: The installation specification" },
+              { "AC_number": "4.2b", "description": "Carry out the commissioning of circuits equipment and components to confirm functionality fit for purpose and safety in accordance with: IEE Wiring Regulations" },
+              { "AC_number": "4.2c", "description": "Carry out the commissioning of circuits equipment and components to confirm functionality fit for purpose and safety in accordance with: Manufacturer's instructions" },
+              { "AC_number": "4.2d", "description": "Carry out the commissioning of circuits equipment and components to confirm functionality fit for purpose and safety in accordance with: Maintenance schedules" },
+              { "AC_number": "4.2e", "description": "Carry out the commissioning of circuits equipment and components to confirm functionality fit for purpose and safety in accordance with: Health and Safety requirements" },
+              { "AC_number": "4.3", "description": "Demonstrate to the customer/client that the operation of the circuits equipment and components are in accordance with the installation specification and customer/client requirements." },
+              { "AC_number": "4.4", "description": "Complete the handover of electrotechnical systems and equipment to relevant persons including the provision of accurate and complete documentation regarding the completed inspection testing commissioning and customer satisfaction" }
             ]
           }
         ]
       },
       {
         "unit": "318",
-        "title": "Apply Health and Safety in Electrotechnical Environments",
+        "title": "Diagnosing and correcting electrical faults in electrical systems and equipment in buildings, structures and the environment (ELTP07)",
         "learning_outcomes": [
           {
             "LO_number": 1,
-            "description": "Understand and apply health and safety regulations",
+            "description": "Confirm safety of the system and equipment prior to diagnosing and correcting electrical faults in accordance with statutory and non-statutory regulations",
             "assessment_criteria": [
-              {
-                "AC_number": 1.1,
-                "description": "Identify and comply with relevant health and safety legislation."
-              },
-              {
-                "AC_number": 1.2,
-                "description": "Ensure safe working practices are implemented in the work environment."
-              }
+              { "AC_number": "1.1", "description": "Carry out safe isolation procedures in accordance with regulatory requirements for electrical installations" },
+              { "AC_number": "1.2", "description": "Ensure the health and safety of themselves and others within the work location during inspection testing and commissioning" },
+              { "AC_number": "1.3", "description": "Select and use appropriate warning notices and barriers" },
+              { "AC_number": "1.4", "description": "Check the safety of electrical systems prior to the commencement of diagnosing and correcting electrical faults" }
             ]
           },
           {
             "LO_number": 2,
-            "description": "Be able to assess and minimize risks",
+            "description": "Carry out procedures to identify faults on electrical systems and equipment",
             "assessment_criteria": [
-              {
-                "AC_number": 2.1,
-                "description": "Carry out risk assessments for electrotechnical work."
-              },
-              {
-                "AC_number": 2.2,
-                "description": "Apply control measures to reduce or eliminate identified risks."
-              }
+              { "AC_number": "2.1", "description": "Use effective methods of communication to ascertain clear and detailed information about reported faults and any components which require replacing" },
+              { "AC_number": "2.2", "description": "Identify and use appropriate system specification documents which relate to the electrotechnical systems and equipment being worked upon" },
+              { "AC_number": "2.3", "description": "Report information about potential disruption that may be a consequence of fault diagnosis and correction work to relevant people." },
+              { "AC_number": "2.4", "description": "Assess the safe working practices which apply in the working environment to confirm that it is safe for fault identification work to take place" },
+              { "AC_number": "2.5", "description": "Perform suitable diagnostic tests on the installed electrotechnical systems to successfully identify faults." },
+              { "AC_number": "2.6", "description": "Use appropriate methods for locating faults on electrical systems and equipment." },
+              { "AC_number": "2.7", "description": "Use appropriate tools and instruments correctly to complete fault diagnosis work." },
+              { "AC_number": "2.8", "description": "Confirm test instruments are fit for purpose functioning correctly and are correctly calibrated" }
+            ]
+          },
+          {
+            "LO_number": 3,
+            "description": "Correct faults on electrical systems and equipment",
+            "assessment_criteria": [
+              { "AC_number": "3.1a", "description": "Confirm appropriate repairs removals and replacements and their implications with relevant people including: Other workers/colleagues" },
+              { "AC_number": "3.1b", "description": "Confirm appropriate repairs removals and replacements and their implications with relevant people including: Customers/clients" },
+              { "AC_number": "3.1c", "description": "Confirm appropriate repairs removals and replacements and their implications with relevant people including: Representatives of other services" },
+              { "AC_number": "3.2", "description": "Perform fault correction procedures correctly and safely using appropriate tools equipment and material" },
+              { "AC_number": "3.3a", "description": "Perform the removal and replacement of components and associated equipment from electrotechnical systems to ensure: Ease of access to enable future maintenance" },
+              { "AC_number": "3.3b", "description": "Perform the removal and replacement of components and associated equipment from electrotechnical systems to ensure: Accordance with - relevant regulations" },
+              { "AC_number": "3.3c", "description": "Perform the removal and replacement of components and associated equipment from electrotechnical systems to ensure: Accordance with - manufacturer’s instructions" },
+              { "AC_number": "3.3d", "description": "Perform the removal and replacement of components and associated equipment from electrotechnical systems to ensure: Accordance with - organisational procedures" },
+              { "AC_number": "3.4", "description": "Apply appropriate procedures to ensure electrotechnical systems equipment and components are left safe in accordance with industry regulations if the fault cannot be corrected immediately" },
+              { "AC_number": "3.5", "description": "Perform appropriate inspection and testing procedures to confirm that systems equipment and components are functioning correctly after completion of fault correction work" },
+              { "AC_number": "3.6a", "description": "Record test results and other appropriate information regarding the fault correction work clearly and accurately and report to relevant people such as: Other workers/colleagues" },
+              { "AC_number": "3.6b", "description": "Record test results and other appropriate information regarding the fault correction work clearly and accurately and report to relevant people such as: Customers/clients" },
+              { "AC_number": "3.6c", "description": "Record test results and other appropriate information regarding the fault correction work clearly and accurately and report to relevant people such as: Representatives of other services" }
             ]
           }
         ]
       },
       {
         "unit": "399",
-        "title": "Understanding Environmental Legislation and Sustainable Practices",
+        "title": "Electrotechnical occupational competence (ELT OC1)",
         "learning_outcomes": [
           {
             "LO_number": 1,
-            "description": "Be able to apply environmental and sustainability regulations",
+            "description": "Interpret specifications drawings and diagrams",
             "assessment_criteria": [
-              {
-                "AC_number": 1.1,
-                "description": "Identify the key principles of environmental legislation."
-              },
-              {
-                "AC_number": 1.2,
-                "description": "Ensure sustainable practices are followed in all electrical work."
-              }
+              { "AC_number": "1.1", "description": "Interpret specifications and technical data for the installation of: Protective Earthing Systems" },
+              { "AC_number": "1.2", "description": "Interpret specifications and technical data for the installation of: A ring final circuit" },
+              { "AC_number": "1.3", "description": "Interpret specifications and technical data for the installation of: A general lighting circuit" },
+              { "AC_number": "1.4", "description": "Interpret specifications and technical data for the installation of: A control system for a three-phase motor" },
+              { "AC_number": "1.5", "description": "Interpret specifications and technical data for the installation of: A central heating/sustainable energy system" },
+              { "AC_number": "1.6", "description": "Interpret specifications and technical data for the installation of: A safety service circuit" },
+              { "AC_number": "1.7", "description": "Interpret specifications and technical data for the installation of: A data cabling system" },
+              { "AC_number": "1.8", "description": "Interpret specifications and technical data for the installation of: A three-phase socket-outlet" }
+            ]
+          },
+          {
+            "LO_number": 2,
+            "description": "Undertake risk assessments",
+            "assessment_criteria": [
+              { "AC_number": "2.1", "description": "Review safe working practices" },
+              { "AC_number": "2.2", "description": "Undertake a risk assessment" },
+              { "AC_number": "2.3", "description": "Complete risk assessment documentation in accordance with organisational procedures" }
+            ]
+          },
+          {
+            "LO_number": 3,
+            "description": "Carry out the safe isolation of electrical circuits and complete electrical installations",
+            "assessment_criteria": [
+              { "AC_number": "3.1", "description": "Locate correct means of isolation" },
+              { "AC_number": "3.2", "description": "Follow correct procedures for the isolation of electrical circuit(s) and complete electrical installations" },
+              { "AC_number": "3.3", "description": "Isolate circuit (s) in correct sequence" },
+              { "AC_number": "3.4", "description": "Select correct test and measuring instruments" },
+              { "AC_number": "3.5", "description": "Correctly test for the presence of an electrical supply" }
+            ]
+          },
+          {
+            "LO_number": 4,
+            "description": "Plan and prepare to install terminate and connect wiring systems",
+            "assessment_criteria": [
+              { "AC_number": "4.1", "description": "In accordance with an installation specification select the correct cables accessories equipment components and protective devices for the installation of: protective earthing systems" },
+              { "AC_number": "4.2", "description": "In accordance with an installation specification select the correct cables accessories equipment components and protective devices for the installation of: a ring final circuit" },
+              { "AC_number": "4.3", "description": "In accordance with an installation specification select the correct cables accessories equipment components and protective devices for the installation of: a general lighting circuit" },
+              { "AC_number": "4.4", "description": "In accordance with an installation specification select the correct cables accessories equipment components and protective devices for the installation of: the control of a three-phase motor" },
+              { "AC_number": "4.5", "description": "In accordance with an installation specification select the correct cables accessories equipment components and protective devices for the installation of: a central heating/sustainable energy system" },
+              { "AC_number": "4.6", "description": "In accordance with an installation specification select the correct cables accessories equipment components and protective devices for the installation of: a safety service circuit" },
+              { "AC_number": "4.7", "description": "In accordance with an installation specification select the correct cables accessories equipment components and protective devices for the installation of: a data cabling system" },
+              { "AC_number": "4.8", "description": "In accordance with an installation specification select the correct cables accessories equipment components and protective devices for the installation of: A three-phase socket-outlet" }
+            ]
+          },
+          {
+            "LO_number": 5,
+            "description": "Complete the installation termination and connection of wiring systems in accordance with industry requirements",
+            "assessment_criteria": [
+              { "AC_number": "5.1", "description": "In accordance with an installation specification install terminate and connect cables accessories equipment components and protective devices for the installation of: Protective Earthing Systems" },
+              { "AC_number": "5.2", "description": "In accordance with an installation specification install terminate and connect cables accessories equipment components and protective devices for the installation of: a ring final circuit" },
+              { "AC_number": "5.3", "description": "In accordance with an installation specification install terminate and connect cables accessories equipment components and protective devices for the installation of: a general lighting circuit" },
+              { "AC_number": "5.4", "description": "In accordance with an installation specification install terminate and connect cables accessories equipment components and protective devices for the installation of: the control of a three-phase motor" },
+              { "AC_number": "5.5", "description": "In accordance with an installation specification install terminate and connect cables accessories equipment components and protective devices for the installation of: a central heating/sustainable energy system" },
+              { "AC_number": "5.6", "description": "In accordance with an installation specification install terminate and connect cables accessories equipment components and protective devices for the installation of: a safety service circuit" },
+              { "AC_number": "5.7", "description": "In accordance with an installation specification install terminate and connect cables accessories equipment components and protective devices for the installation of: a data cabling system" },
+              { "AC_number": "5.8", "description": "In accordance with an installation specification install terminate and connect cables accessories equipment components and protective devices for the installation of: a three-phase socket-outlet." }
+            ]
+          },
+          {
+            "LO_number": 6,
+            "description": "Complete the visual inspection initial verification and certification of an electrical installation",
+            "assessment_criteria": [
+              { "AC_number": "6.1", "description": "Comply with correct procedures" },
+              { "AC_number": "6.2", "description": "Record relevant findings on correct documentation" }
+            ]
+          },
+          {
+            "LO_number": 7,
+            "description": "Complete the testing and certification of an electrical installation in accordance with industry requirements",
+            "assessment_criteria": [
+              { "AC_number": "7.1", "description": "Select and use the correct measuring instruments" },
+              { "AC_number": "7.2", "description": "Confirm instruments function accurately" },
+              { "AC_number": "7.3", "description": "Measure the continuity of protective conductors" },
+              { "AC_number": "7.4", "description": "Measure the continuity of ring final circuit conductors" },
+              { "AC_number": "7.5", "description": "Measure the insulation resistance of the installation and its circuits" },
+              { "AC_number": "7.6", "description": "Confirm the polarity of the installation's electrical Outlets and components" },
+              { "AC_number": "7.7", "description": "Determine the installation's earth fault-loop impedance (EFLI)" },
+              { "AC_number": "7.8", "description": "Determine the installation's prospective fault current (PFC)" },
+              { "AC_number": "7.9", "description": "Carry out functional tests on the installation's equipment and components" },
+              { "AC_number": "7.10", "description": "Complete the correct documentation in accordance with statutory and non-statutory regulations" }
+            ]
+          },
+          {
+            "LO_number": 8,
+            "description": "Diagnose and recommend how to rectify electrical faults in an electrical installation in accordance with industry requirements",
+            "assessment_criteria": [
+              { "AC_number": "8.1", "description": "Undertake an assessment of risk accordingly" },
+              { "AC_number": "8.2", "description": "Carry out safe isolation in the correct sequence as appropriate to fault diagnosis procedures" },
+              { "AC_number": "8.3", "description": "Select and use correctly fit for purpose tools equipment and instruments" },
+              { "AC_number": "8.4", "description": "Carry out relevant checks and preparations" },
+              { "AC_number": "8.5", "description": "Locate faults from given information" },
+              { "AC_number": "8.6", "description": "State how the indentified faults can be rectified" }
             ]
           }
         ]
       }
     ]
   }
-  
