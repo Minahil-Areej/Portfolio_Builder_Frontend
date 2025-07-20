@@ -198,13 +198,18 @@ const Portfolio = () => {
             <Col md={4}>
               <Form.Group>
                 <Form.Label>Select Learning Outcome</Form.Label>
+                // Learning Outcome dropdown
                 <Form.Select
                   value={learningOutcome.number}
                   onChange={(e) => {
                     const selectedLO = getLearningOutcomes(unit.number).find(
-                      (lo) => lo.LO_number === parseFloat(e.target.value)
+                      (lo) => lo.LO_number === e.target.value
                     );
-                    setLearningOutcome({ number: selectedLO.LO_number, description: selectedLO.description });
+                    if (selectedLO) {
+                      setLearningOutcome({ number: selectedLO.LO_number, description: selectedLO.description });
+                    } else {
+                      setLearningOutcome({ number: '', description: '' });
+                    }
                   }}
                 >
                   <option value="">Select a Learning Outcome</option>
@@ -213,7 +218,6 @@ const Portfolio = () => {
                       {`LO ${lo.LO_number}: ${lo.description}`}
                     </option>
                   ))}
-                  required
                 </Form.Select>
               </Form.Group>
             </Col>
@@ -221,13 +225,18 @@ const Portfolio = () => {
             <Col md={4}>
               <Form.Group>
                 <Form.Label>Select Criteria</Form.Label>
+                // Criteria dropdown
                 <Form.Select
                   value={criteria.number}
                   onChange={(e) => {
                     const selectedCriteria = getCriteria(unit.number, learningOutcome.number).find(
-                      (c) => c.AC_number === parseFloat(e.target.value)
+                      (c) => c.AC_number === e.target.value
                     );
-                    setCriteria({ number: selectedCriteria.AC_number, description: selectedCriteria.description });
+                    if (selectedCriteria) {
+                      setCriteria({ number: selectedCriteria.AC_number, description: selectedCriteria.description });
+                    } else {
+                      setCriteria({ number: '', description: '' });
+                    }
                   }}
                 >
                   <option value="">Select Criteria</option>
@@ -236,7 +245,6 @@ const Portfolio = () => {
                       {`AC ${criteria.AC_number}: ${criteria.description}`}
                     </option>
                   ))}
-                  required
                 </Form.Select>
               </Form.Group>
             </Col>
