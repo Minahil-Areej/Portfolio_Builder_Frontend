@@ -44,7 +44,7 @@ const Portfolio = () => {
   const getCriteria = (unitNumber, learningOutcomeNumber) => {
     const selectedUnitData = qualificationUnitsData.find((u) => u.unit === unitNumber);
     const selectedLO = selectedUnitData?.learning_outcomes.find(
-      (lo) => lo.LO_number === parseInt(learningOutcomeNumber)
+      (lo) => lo.LO_number === learningOutcomeNumber
     );
     return selectedLO ? selectedLO.assessment_criteria : [];
   };
@@ -182,6 +182,8 @@ const Portfolio = () => {
                   onChange={(e) => {
                     const selectedUnit = qualificationUnitsData.find((u) => u.unit === e.target.value);
                     setUnit({ number: selectedUnit.unit, title: selectedUnit.title });
+                    setLearningOutcome({ number: '', description: '' }); // reset LO
+                    setCriteria({ number: '', description: '' }); // reset criteria
                   }}
                 >
                   <option value="">Select a Unit</option>
@@ -209,6 +211,8 @@ const Portfolio = () => {
                     } else {
                       setLearningOutcome({ number: '', description: '' });
                     }
+                    setCriteria({ number: '', description: '' }); // reset criteria
+
                   }}
                 >
                   <option value="">Select a Learning Outcome</option>
