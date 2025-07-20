@@ -198,7 +198,6 @@ const Portfolio = () => {
             <Col md={4}>
               <Form.Group>
                 <Form.Label>Select Learning Outcome</Form.Label>
-                // Learning Outcome dropdown
                 <Form.Select
                   value={learningOutcome.number}
                   onChange={(e) => {
@@ -225,7 +224,6 @@ const Portfolio = () => {
             <Col md={4}>
               <Form.Group>
                 <Form.Label>Select Criteria</Form.Label>
-                // Criteria dropdown
                 <Form.Select
                   value={criteria.number}
                   onChange={(e) => {
