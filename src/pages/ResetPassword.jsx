@@ -25,7 +25,7 @@ const ResetPassword = () => {
         setMessage('');
 
         try {
-            const res = await userService.resetPassword(token, { password });
+            const res = await userService.resetPassword(token, password);
             setMessage(res.message || 'Password has been reset. You can now log in.');
             setTimeout(() => navigate('/login'), 3000);
         } catch (err) {

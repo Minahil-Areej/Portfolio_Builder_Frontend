@@ -17,7 +17,7 @@ const ForgotPassword = () => {
         setMessage('');
 
         try {
-            const res = await userService.sendPasswordResetEmail({ email });
+            const res = await userService.sendPasswordResetEmail(email);
             setMessage(res.message || 'If an account exists, a reset email has been sent.');
         } catch (err) {
             setError('Error sending reset email.');
