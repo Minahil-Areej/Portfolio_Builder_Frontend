@@ -18,7 +18,25 @@ const login = async (userData) => {
   return response.data;
 };
 
+// Send password reset email
+const sendPasswordResetEmail = async (email) => {
+  const response = await axios.post(`${API_URL}/forgot-password`, { email }, {
+    headers: { 'Content-Type': 'application/json' },
+  });
+  return response.data;
+};
+
+// Reset password
+const resetPassword = async (token, password) => {
+  const response = await axios.post(`${API_URL}/reset-password/${token}`, { password }, {
+    headers: { 'Content-Type': 'application/json' },
+  });
+  return response.data;
+};
+
 export default {
   register,
   login,
+  sendPasswordResetEmail,
+  resetPassword,
 };

@@ -11,6 +11,8 @@ import AdminDashboard from './pages/AdminDashboard';
 import ApplicationForm from './pages/ApplicationForm';
 import ApplicationSuccess from './pages/ApplicationSuccess';
 import ViewApplication from './pages/ViewApplication';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -30,7 +32,10 @@ function App() {
         <Route path="/admin-dashboard" element={<AdminDashboard />} /> {/* No user role check here */}
         <Route path="/application-form" element={<ApplicationForm />} />
         <Route path="/application-success" element={<ApplicationSuccess />} />
-        <Route path="/admin/application/:id" element={<ViewApplication />} /> 
+        <Route path="/admin/application/:id" element={<ViewApplication />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+
         {/* Add a fallback for undefined routes */}
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
