@@ -15,6 +15,11 @@ const AdminDashboard = () => {
   const [applications, setApplications] = useState([]);
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
+
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
@@ -135,7 +140,12 @@ const AdminDashboard = () => {
 
   return (
     <Container className="mt-4">
-      <h1>Admin Dashboard</h1>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h1>Admin Dashboard</h1>
+        <Button variant="outline-danger" onClick={handleLogout}>
+          Logout
+        </Button>
+      </div>#
 
       {/* Top Statistics */}
       <Row className="mb-4">
