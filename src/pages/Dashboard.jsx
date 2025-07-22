@@ -263,11 +263,13 @@ const Dashboard = () => {
 
   return (
     <Container className="mt-5 dashboard-container">
-      <Col md="auto">
-          <Button variant="outline-danger" onClick={handleLogout}>
-            Logout
-          </Button>
-        </Col>
+      <Row>
+      <Col className="text-end">
+        <Button variant="outline-danger" onClick={handleLogout}>
+          Logout
+        </Button>
+      </Col>
+    </Row>
       <Row className="justify-content-between align-items-center mb-3">
         <Col md="auto">
           <h2>Portfolio</h2>

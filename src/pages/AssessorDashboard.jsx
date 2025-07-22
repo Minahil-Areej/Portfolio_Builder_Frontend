@@ -88,14 +88,16 @@ const AssessorDashboard = () => {
 
   return (
     <Container className="mt-5 dashboard-container">
-      <Col md="auto">
+      <Row className="align-items-center mb-3">
+      <Col>
         <h2>Assessor Dashboard</h2>
       </Col>
-       <Col md="auto">
-          <Button variant="outline-danger" onClick={handleLogout}>
-            Logout
-          </Button>
-        </Col>
+      <Col className="text-end">
+        <Button variant="outline-danger" onClick={handleLogout}>
+          Logout
+        </Button>
+      </Col>
+    </Row>
       {/* Filter section */}
       <Row className="mb-3">
         <Col md="auto">
