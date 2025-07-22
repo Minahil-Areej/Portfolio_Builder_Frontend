@@ -199,7 +199,6 @@ const Portfolio = () => {
 
             <Col md={4}>
               <Form.Group>
-                
                 <Form.Label>Select Learning Outcome</Form.Label>
                 <Form.Select
                   value={learningOutcome.number}
