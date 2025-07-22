@@ -14,6 +14,13 @@ const AssessorDashboard = () => {
   const [selectedStudent, setSelectedStudent] = useState(''); // For student filter
   const [selectedUnit, setSelectedUnit] = useState(''); // For unit filter
   const [studentOptions, setStudentOptions] = useState([]); // For dropdown options
+  const navigate = useNavigate(); 
+
+  // Add logout handler
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/login');
+  };
 
   useEffect(() => {
     const fetchPortfolios = async () => {
@@ -84,6 +91,11 @@ const AssessorDashboard = () => {
       <Col md="auto">
         <h2>Assessor Dashboard</h2>
       </Col>
+       <Col md="auto">
+          <Button variant="outline-danger" onClick={handleLogout}>
+            Logout
+          </Button>
+        </Col>
       {/* Filter section */}
       <Row className="mb-3">
         <Col md="auto">
