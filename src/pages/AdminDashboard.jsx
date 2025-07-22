@@ -397,6 +397,7 @@ const AdminDashboard = () => {
     const [portfolios, setPortfolios] = useState([]);
     const [portfolioCounts, setPortfolioCounts] = useState({});
     const [recentImages, setRecentImages] = useState([]);
+      const [applications, setApplications] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -423,6 +424,10 @@ const AdminDashboard = () => {
                     counts[userName] = (counts[userName] || 0) + 1;
                 });
                 setPortfolioCounts(counts);
+
+                // Fetch Applications
+        const applicationResponse = await axios.get(`${API_URL}/api/application-form`);
+        setApplications(applicationResponse.data);
 
                 // Fetch recent portfolio images
                 const images = portfolioResponse.data
@@ -613,6 +618,44 @@ const AdminDashboard = () => {
                 </Col>
             </Row>
 
+{/* Applications Section */}
+       <Row className="mb-4">
+         <Col>
+           <Card className="shadow-sm">
+             <Card.Body>
+               <Card.Title>Submitted Applications</Card.Title>
+               <Table striped bordered hover className="mt-4">
+                 <thead>
+                   <tr>
+                     <th>Family Name</th>
+                     <th>First Name</th>
+                     <th>Email</th>
+                     <th>Course</th>
+                     <th>Submitted</th>
+                     <th>Action</th>
+                   </tr>
+                 </thead>
+                 <tbody>
+                  {applications.map(app => (
+                    <tr key={app._id}>
+                      <td>{app.familyName}</td>
+                      <td>{app.firstName}</td>
+                      <td>{app.email}</td>
+                      <td>{app.courseToStudy}</td>
+                      <td>{new Date(app.createdAt).toLocaleDateString()}</td>
+                      <td>
+                        <Button variant="info" onClick={() => navigate(`/admin/application/${app._id}`)}>
+                          View
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
             {/* Users Table */}
             <Row>
                 <Col>
