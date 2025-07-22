@@ -199,20 +199,15 @@ const Portfolio = () => {
 
             <Col md={4}>
               <Form.Group>
+                
                 <Form.Label>Select Learning Outcome</Form.Label>
                 <Form.Select
                   value={learningOutcome.number}
                   onChange={(e) => {
                     const selectedLO = getLearningOutcomes(unit.number).find(
-                      (lo) => lo.LO_number === e.target.value
+                      (lo) => lo.LO_number === parseFloat(e.target.value)
                     );
-                    if (selectedLO) {
-                      setLearningOutcome({ number: selectedLO.LO_number, description: selectedLO.description });
-                    } else {
-                      setLearningOutcome({ number: '', description: '' });
-                    }
-                    setCriteria({ number: '', description: '' }); // reset criteria
-
+                    setLearningOutcome({ number: selectedLO.LO_number, description: selectedLO.description });
                   }}
                 >
                   <option value="">Select a Learning Outcome</option>
@@ -221,6 +216,7 @@ const Portfolio = () => {
                       {`LO ${lo.LO_number}: ${lo.description}`}
                     </option>
                   ))}
+                  required
                 </Form.Select>
               </Form.Group>
             </Col>
