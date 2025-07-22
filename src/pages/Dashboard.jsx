@@ -263,15 +263,16 @@ const Dashboard = () => {
 
   return (
     <Container className="mt-5 dashboard-container">
-      <Row className="justify-content-between align-items-center mb-3">
-        <Col md="auto">
-          <h2>Portfolio</h2>
-        </Col>
-<Col md="auto">
+      <Col md="auto">
           <Button variant="outline-danger" onClick={handleLogout}>
             Logout
           </Button>
         </Col>
+      <Row className="justify-content-between align-items-center mb-3">
+        <Col md="auto">
+          <h2>Portfolio</h2>
+        </Col>
+
         <Col md="auto">
           <Form.Group className="mb-3" controlId="formUnit">
             <Form.Label>Filter by Unit</Form.Label>
