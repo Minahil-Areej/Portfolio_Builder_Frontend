@@ -51,13 +51,13 @@ const Register = () => {
         //     console.error('Registration failed:', error);
         // }
         try {
-        const response = await userService.register(formData);
-        setRegisterMessage(response.data.message); // Show backend message
-        // Optionally, navigate to login after a delay
-        setTimeout(() => navigate('/login'), 3000);
-    } catch (error) {
-        setRegisterMessage(error.response?.data?.message || 'Registration failed');
-    }
+            const response = await userService.register(formData);
+            setRegisterMessage(response.message); // Show backend message
+            // Optionally, navigate to login after a delay
+            setTimeout(() => navigate('/login'), 3000);
+        } catch (error) {
+            setRegisterMessage(error.response?.data?.message || 'Registration failed');
+        }
     };
 
     return (
@@ -194,7 +194,9 @@ const Register = () => {
                         Register
                     </Button>
                 </Form>
-
+                {registerMessage && (
+                    <div className="alert alert-info text-center">{registerMessage}</div>
+                )}
             </Card>
         </Container>
     );
