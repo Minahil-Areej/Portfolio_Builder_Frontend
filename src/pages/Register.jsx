@@ -14,6 +14,7 @@ const Register = () => {
     const [referenceNo, setReferenceNo] = useState('');
     const [role, setRole] = useState('student');
     const [image, setImage] = useState(null);
+    const [registerMessage, setRegisterMessage] = useState('');
 
     const navigate = useNavigate();
 
