@@ -43,12 +43,20 @@ const Register = () => {
         for (let [key, value] of formData.entries()) {
             console.log(key, value); // This will print all key-value pairs in FormData
         }
+        // try {
+        //     await userService.register(formData);
+        //     navigate('/login'); // Redirect to login after successful registration
+        // } catch (error) {
+        //     console.error('Registration failed:', error);
+        // }
         try {
-            await userService.register(formData);
-            navigate('/login'); // Redirect to login after successful registration
-        } catch (error) {
-            console.error('Registration failed:', error);
-        }
+        const response = await userService.register(formData);
+        setRegisterMessage(response.data.message); // Show backend message
+        // Optionally, navigate to login after a delay
+        setTimeout(() => navigate('/login'), 3000);
+    } catch (error) {
+        setRegisterMessage(error.response?.data?.message || 'Registration failed');
+    }
     };
 
     return (
