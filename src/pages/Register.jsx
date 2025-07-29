@@ -114,6 +114,9 @@ const Register = () => {
         <Container fluid className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh', padding: '2rem', backgroundImage: 'url(/background.jpg)', backgroundSize: 'cover' }}>
             <Card style={{ width: '40rem', padding: '2rem' }}>
                 <h2 className="text-center mb-4">Register</h2>
+                {registerMessage && (
+                    <div className="alert alert-info text-center">{registerMessage}</div>
+                )}
                 <Form onSubmit={handleSubmit} encType="multipart/form-data" >
                     <Row>
                         <Col>
@@ -194,9 +197,6 @@ const Register = () => {
                         Register
                     </Button>
                 </Form>
-                {registerMessage && (
-                    <div className="alert alert-info text-center">{registerMessage}</div>
-                )}
             </Card>
         </Container>
     );
