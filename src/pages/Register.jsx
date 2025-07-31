@@ -56,7 +56,7 @@ const Register = () => {
             // Optionally, navigate to login after a delay
             setTimeout(() => navigate('/login'), 3000);
         } catch (error) {
-            setRegisterMessage(error.response?.data?.message || 'Registration failed');
+            setRegisterMessage(error.response.message || 'Registration failed');
         }
     };
 
