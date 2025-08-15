@@ -165,12 +165,11 @@ const AdminDashboard = () => {
         }
       );
 
-      // Update the users state to reflect the assignment
-      setUsers(prevUsers =>
-        prevUsers.map(user =>
-          user._id === studentId ? { ...user, assignedAssessor: assessorId } : user
-        )
-      );
+      // Refresh users to get updated data with populated assessor
+      const response = await axios.get(`${API_URL}/api/users`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUsers(response.data);
 
       alert('Assessor assigned successfully!');
     } catch (error) {
@@ -356,7 +355,7 @@ const AdminDashboard = () => {
                         {user.role === 'student' ? (
                           <Form.Select
                             size="sm"
-                            value={user.assignedAssessor || ''}
+                            value={user.assignedAssessor?._id || user.assignedAssessor || ''} // Handle both populated and non-populated data
                             onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
                           >
                             <option value="">Select Assessor</option>
