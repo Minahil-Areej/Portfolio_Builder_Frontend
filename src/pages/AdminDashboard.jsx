@@ -6,6 +6,29 @@ import Chart from 'chart.js/auto';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+// Add this CSS at the top after your imports
+const dropdownStyles = {
+  assignmentBox: {
+    padding: '8px',
+    borderRadius: '4px',
+    backgroundColor: '#f8f9fa',
+    marginBottom: '8px'
+  },
+  label: {
+    fontSize: '0.8rem',
+    color: '#6c757d',
+    marginBottom: '4px'
+  },
+  currentAssessor: {
+    color: '#0d6efd',
+    fontWeight: 'bold',
+    padding: '4px 0'
+  },
+  select: {
+    fontSize: '0.9rem'
+  }
+};
+
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [portfolios, setPortfolios] = useState([]);
@@ -353,20 +376,47 @@ const AdminDashboard = () => {
                       <td>
                         {/* NEW COLUMN CONTENT */}
                         {user.role === 'student' ? (
-                          <Form.Select
-                            size="sm"
-                            value={user.assignedAssessor?._id || user.assignedAssessor || ''} // Handle both populated and non-populated data
-                            onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
-                          >
-                            <option value="">Select Assessor</option>
-                            {assessors.map((assessor) => (
-                              <option key={assessor._id} value={assessor._id}>
-                                {assessor.name}
-                              </option>
-                            ))}
-                          </Form.Select>
+                          <div style={dropdownStyles.assignmentBox}>
+                            {user.assignedAssessor ? (
+                              <>
+                                <div>
+                                  <small style={dropdownStyles.label}>Currently Assigned to:</small>
+                                  <div style={dropdownStyles.currentAssessor}>
+                                    {user.assignedAssessor.name}
+                                  </div>
+                                </div>
+                                <Form.Select
+                                  size="sm"
+                                  style={dropdownStyles.select}
+                                  className="border-primary mt-2"
+                                  value={user.assignedAssessor?._id || user.assignedAssessor || ''}
+                                  onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
+                                >
+                                  <option value="">Select Assessor</option>
+                                  {assessors.map((assessor) => (
+                                    <option key={assessor._id} value={assessor._id}>
+                                      {assessor.name}
+                                    </option>
+                                  ))}
+                                </Form.Select>
+                              </>
+                            ) : (
+                              <Form.Select
+                                size="sm"
+                                value={user.assignedAssessor?._id || user.assignedAssessor || ''}
+                                onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
+                              >
+                                <option value="">Select Assessor</option>
+                                {assessors.map((assessor) => (
+                                  <option key={assessor._id} value={assessor._id}>
+                                    {assessor.name}
+                                  </option>
+                                ))}
+                              </Form.Select>
+                            )}
+                          </div>
                         ) : (
-                          'N/A'
+                          <span className="text-muted">N/A</span>
                         )}
                       </td>
                       <td>
