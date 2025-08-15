@@ -14,7 +14,7 @@ const AssessorDashboard = () => {
   const [selectedStudent, setSelectedStudent] = useState(''); // For student filter
   const [selectedUnit, setSelectedUnit] = useState(''); // For unit filter
   const [studentOptions, setStudentOptions] = useState([]); // For dropdown options
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   // Add logout handler
   const handleLogout = () => {
@@ -25,12 +25,19 @@ const AssessorDashboard = () => {
   useEffect(() => {
     const fetchPortfolios = async () => {
       try {
-        const { data } = await axios.get(`${API_URL}/api/portfolios/assessor/portfolios`, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          },
+        // const { data } = await axios.get(`${API_URL}/api/portfolios/assessor/portfolios`, {
+        //   headers: {
+        //     'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        //   },
+        // });
+        const token = localStorage.getItem('token');
+        const assessorId = JSON.parse(atob(token.split('.')[1])).id; // Extract assessor ID from token
+
+        const response = await axios.get(`${API_URL}/api/portfolios/assessor-portfolios/${assessorId}`, {
+          headers: { Authorization: `Bearer ${token}` },
         });
 
+        const data = response.data;
         // Categorize portfolios based on status
         const categorizedPortfolios = {
           toBeReviewed: data.filter(p => p.status === 'To Be Reviewed'),
@@ -89,15 +96,15 @@ const AssessorDashboard = () => {
   return (
     <Container className="mt-5 dashboard-container">
       <Row className="align-items-center mb-3">
-      <Col>
-        <h2>Assessor Dashboard</h2>
-      </Col>
-      <Col className="text-end">
-        <Button variant="outline-danger" onClick={handleLogout}>
-          Logout
-        </Button>
-      </Col>
-    </Row>
+        <Col>
+          <h2>Assessor Dashboard</h2>
+        </Col>
+        <Col className="text-end">
+          <Button variant="outline-danger" onClick={handleLogout}>
+            Logout
+          </Button>
+        </Col>
+      </Row>
       {/* Filter section */}
       <Row className="mb-3">
         <Col md="auto">
