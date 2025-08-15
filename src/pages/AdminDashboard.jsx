@@ -1,6 +1,5 @@
-
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Container, Card, Row, Col } from 'react-bootstrap';
+import { Table, Button, Container, Card, Row, Col, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
@@ -13,6 +12,7 @@ const AdminDashboard = () => {
   const [portfolioCounts, setPortfolioCounts] = useState({});
   const [recentImages, setRecentImages] = useState([]);
   const [applications, setApplications] = useState([]);
+  const [assessors, setAssessors] = useState([]); // NEW STATE
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -83,7 +83,21 @@ const AdminDashboard = () => {
       }
     };
 
+    // NEW: Fetch assessors
+    const fetchAssessors = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${API_URL}/api/users/assessors`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setAssessors(response.data);
+      } catch (error) {
+        console.error('Error fetching assessors:', error);
+      }
+    };
+
     fetchUsers();
+    fetchAssessors(); // NEW CALL
   }, []);
 
   const renderChart = () => {
@@ -137,6 +151,33 @@ const AdminDashboard = () => {
     }
   };
 
+  // NEW FUNCTION: Handle assessor assignment
+  const handleAssignAssessor = async (studentId, assessorId) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.put(`${API_URL}/api/users/assign-assessor/${studentId}`, 
+        { assessorId },
+        { 
+          headers: { 
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          } 
+        }
+      );
+
+      // Update the users state to reflect the assignment
+      setUsers(prevUsers =>
+        prevUsers.map(user =>
+          user._id === studentId ? { ...user, assignedAssessor: assessorId } : user
+        )
+      );
+
+      alert('Assessor assigned successfully!');
+    } catch (error) {
+      console.error('Error assigning assessor:', error);
+      alert('Error assigning assessor');
+    }
+  };
 
   return (
     <Container className="mt-4">
@@ -145,7 +186,7 @@ const AdminDashboard = () => {
         <Button variant="outline-danger" onClick={handleLogout}>
           Logout
         </Button>
-      </div>#
+      </div>
 
       {/* Top Statistics */}
       <Row className="mb-4">
@@ -281,7 +322,8 @@ const AdminDashboard = () => {
           </Card>
         </Col>
       </Row>
-      {/* Users Table */}
+
+      {/* UPDATED Users Table with Assessor Assignment */}
       <Row>
         <Col>
           <Card className="shadow-sm">
@@ -298,6 +340,7 @@ const AdminDashboard = () => {
                     <th>Email</th>
                     <th>Role</th>
                     <th>Status</th>
+                    <th>Assigned Assessor</th> {/* NEW COLUMN */}
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -309,6 +352,26 @@ const AdminDashboard = () => {
                       <td>{user.role}</td>
                       <td>{user.isActive ? 'Active' : 'Inactive'}</td>
                       <td>
+                        {/* NEW COLUMN CONTENT */}
+                        {user.role === 'student' ? (
+                          <Form.Select
+                            size="sm"
+                            value={user.assignedAssessor || ''}
+                            onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
+                          >
+                            <option value="">Select Assessor</option>
+                            {assessors.map((assessor) => (
+                              <option key={assessor._id} value={assessor._id}>
+                                {assessor.name}
+                              </option>
+                            ))}
+                          </Form.Select>
+                        ) : (
+                          'N/A'
+                        )}
+                      </td>
+                      <td>
+                        {/* KEEP EXISTING ACTIVATE/DEACTIVATE BUTTON */}
                         <Button
                           variant={user.isActive ? 'danger' : 'success'}
                           size="sm"

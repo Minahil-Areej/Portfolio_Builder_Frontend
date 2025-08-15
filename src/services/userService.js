@@ -34,9 +34,26 @@ const resetPassword = async (token, password) => {
   return response.data;
 };
 
+// Get all assessors
+const getAssessors = async () => {
+  const response = await axios.get(`${API_URL}/assessors`);
+  return response.data;
+};
+
+// Assign assessor to student
+const assignAssessor = async (studentId, assessorId) => {
+  const response = await axios.put(`${API_URL}/assign-assessor/${studentId}`, 
+    { assessorId },
+    { headers: { 'Content-Type': 'application/json' } }
+  );
+  return response.data;
+};
+
 export default {
   register,
   login,
   sendPasswordResetEmail,
   resetPassword,
+  getAssessors,
+  assignAssessor,
 };
