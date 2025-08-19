@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import './Portfolio.css'; // Ensure this file has the styles for error highlighting
@@ -26,6 +25,10 @@ const Portfolio = () => {
   const [jobType, setJobType] = useState('');
   const [reasonForTask, setReasonForTask] = useState('');
   const [objectiveOfJob, setObjectiveOfJob] = useState('');
+  const [addresses, setAddresses] = useState([]);
+  const [selectedAddress, setSelectedAddress] = useState('');
+  const [showAddresses, setShowAddresses] = useState(false);
+  const [isLoadingAddresses, setIsLoadingAddresses] = useState(false); // Add new state
   const navigate = useNavigate();
 
   // Fetch the JSON data from the public folder
@@ -72,6 +75,34 @@ const Portfolio = () => {
       setLocationError('Invalid UK postcode. Please enter a valid postcode.');
     } else {
       setLocationError(null); // Valid postcode
+    }
+  };
+
+  const fetchAddresses = async (postcode) => {
+    try {
+      setIsLoadingAddresses(true);
+      const response = await fetch(`https://api.postcodes.io/postcodes/${postcode}/autocomplete`);
+      const data = await response.json();
+      
+      if (data.result) {
+        const addressResponse = await fetch(`https://api.postcodes.io/postcodes/${postcode}`);
+        const addressData = await addressResponse.json();
+        
+        if (addressData.result) {
+          const formattedAddresses = [
+            {
+              text: `${addressData.result.thoroughfare || ''} ${addressData.result.district || ''}, ${addressData.result.postcode}`,
+              postcode: addressData.result.postcode
+            }
+          ];
+          setAddresses(formattedAddresses);
+          setShowAddresses(true);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching addresses:', error);
+    } finally {
+      setIsLoadingAddresses(false);
     }
   };
 
@@ -150,13 +181,54 @@ const Portfolio = () => {
                   type="text"
                   placeholder="Enter postcode"
                   value={postcode}
-                  onChange={(e) => setPostcode(e.target.value)} // Only update state on change
-                  onBlur={(e) => validatePostcode(e.target.value)} // Validate only when the user leaves the field
-                  className={isPostcodeValid ? '' : 'is-invalid'} // Apply CSS class conditionally
+                  onChange={(e) => {
+                    setPostcode(e.target.value);
+                    if (e.target.value.length >= 3) {
+                      fetchAddresses(e.target.value);
+                    } else {
+                      setShowAddresses(false);
+                    }
+                  }}
+                  onBlur={() => {
+                    // Don't hide addresses immediately to allow for clicking
+                    setTimeout(() => setShowAddresses(false), 200);
+                  }}
+                  className={isPostcodeValid ? '' : 'is-invalid'}
                   required
                 />
                 {locationError && (
                   <Form.Text className="text-danger">{locationError}</Form.Text>
+                )}
+                
+                {/* Address Dropdown */}
+                {showAddresses && (
+                  <div className="address-dropdown">
+                    {isLoadingAddresses ? (
+                      <div className="address-loading">
+                        Looking up addresses...
+                      </div>
+                    ) : addresses.length > 0 ? (
+                      addresses.map((address, index) => (
+                        <div
+                          key={index}
+                          className="address-option"
+                          onClick={() => {
+                            setPostcode(address.postcode);
+                            setSelectedAddress(address.text);
+                            setShowAddresses(false);
+                            setLocationError(null);
+                            setIsPostcodeValid(true);
+                          }}
+                        >
+                          {address.text}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="address-empty">
+                        No addresses found
+                      </div>
+                    )}
+                  </div>
                 )}
               </Form.Group>
             </Col>
