@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Container, Card, Row, Col, Form, Badge } from 'react-bootstrap';
+import { Table, Button, Container, Card, Row, Col, Form, Badge, ProgressBar } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
@@ -51,6 +51,15 @@ const AdminDashboard = () => {
   const [sortField, setSortField] = useState('name');
   const [sortDirection, setSortDirection] = useState('asc');
   const [tableOrder, setTableOrder] = useState(['students', 'assessors', 'admins']);
+
+  // Add these new states
+  const [progressMetrics, setProgressMetrics] = useState({
+    totalSubmissions: 0,
+    approvedSubmissions: 0,
+    rejectedSubmissions: 0,
+    pendingReview: 0,
+    studentsProgress: []
+  });
 
   const navigate = useNavigate();
 
@@ -138,6 +147,33 @@ const AdminDashboard = () => {
     fetchUsers();
     fetchAssessors(); // NEW CALL
   }, []);
+
+  useEffect(() => {
+    const calculateProgress = () => {
+      const metrics = {
+        totalSubmissions: portfolios.length,
+        approvedSubmissions: portfolios.filter(p => p.status === 'Approved').length,
+        rejectedSubmissions: portfolios.filter(p => p.status === 'Rejected').length,
+        pendingReview: portfolios.filter(p => p.status === 'To Be Reviewed').length,
+        studentsProgress: users
+          .filter(user => user.role === 'student')
+          .map(student => {
+            const studentPortfolios = portfolios.filter(p => p.userId === student._id);
+            return {
+              studentId: student._id,
+              name: student.name,
+              totalSubmissions: studentPortfolios.length,
+              approved: studentPortfolios.filter(p => p.status === 'Approved').length,
+              pending: studentPortfolios.filter(p => p.status === 'To Be Reviewed').length,
+              completionRate: (studentPortfolios.filter(p => p.status === 'Approved').length / totalRequiredUnits) * 100
+            };
+          })
+      };
+      setProgressMetrics(metrics);
+    };
+
+    calculateProgress();
+  }, [portfolios, users]);
 
   const renderChart = () => {
     const ctx = document.getElementById('portfolioChart').getContext('2d');
@@ -650,6 +686,78 @@ const AdminDashboard = () => {
                     return null;
                 }
               })}
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* New Progress Overview Section */}
+      <Row className="mb-4">
+        <Col>
+          <Card>
+            <Card.Header>Progress Overview</Card.Header>
+            <Card.Body>
+              <Row>
+                <Col md={3}>
+                  <div className="text-center">
+                    <h4>{progressMetrics.totalSubmissions}</h4>
+                    <p>Total Submissions</p>
+                  </div>
+                </Col>
+                <Col md={3}>
+                  <div className="text-center">
+                    <h4>{progressMetrics.approvedSubmissions}</h4>
+                    <p>Approved</p>
+                  </div>
+                </Col>
+                <Col md={3}>
+                  <div className="text-center">
+                    <h4>{progressMetrics.pendingReview}</h4>
+                    <p>Pending Review</p>
+                  </div>
+                </Col>
+                <Col md={3}>
+                  <div className="text-center">
+                    <h4>{progressMetrics.rejectedSubmissions}</h4>
+                    <p>Rejected</p>
+                  </div>
+                </Col>
+              </Row>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* New Student Progress Table */}
+      <Row>
+        <Col>
+          <Card>
+            <Card.Header>Student Progress</Card.Header>
+            <Card.Body>
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Student Name</th>
+                    <th>Total Submissions</th>
+                    <th>Approved</th>
+                    <th>Pending</th>
+                    <th>Completion Rate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {progressMetrics.studentsProgress.map(student => (
+                    <tr key={student.studentId}>
+                      <td>{student.name}</td>
+                      <td>{student.totalSubmissions}</td>
+                      <td>{student.approved}</td>
+                      <td>{student.pending}</td>
+                      <td>
+                        <ProgressBar now={student.completionRate} label={`${student.completionRate}%`} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
             </Card.Body>
           </Card>
         </Col>
