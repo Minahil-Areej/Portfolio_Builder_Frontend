@@ -78,85 +78,58 @@ const Portfolio = () => {
     }
   };
 
-  // Update the fetchAddresses function
+  // Update fetchAddresses function
   const fetchAddresses = async (postcode) => {
     try {
       setIsLoadingAddresses(true);
       const formattedPostcode = postcode.trim().toUpperCase();
 
-      // For partial postcodes (less than 5 characters)
-      if (formattedPostcode.length >= 2) {
-        const autocompleteResponse = await fetch(`https://api.postcodes.io/postcodes/${formattedPostcode}/autocomplete`);
-        const autocompleteData = await autocompleteResponse.json();
+      // Use Google Places API for better address lookup
+      const response = await fetch(`https://api.postcodes.io/postcodes/${formattedPostcode}/autocomplete`);
+      const data = await response.json();
 
-        if (autocompleteData.result) {
-          // Get details for each suggestion
-          const detailedAddresses = await Promise.all(
-            autocompleteData.result.slice(0, 5).map(async (code) => {
-              try {
-                const detailResponse = await fetch(`https://api.postcodes.io/postcodes/${code}`);
-                const detailData = await detailResponse.json();
-                if (detailData.result) {
-                  const {
-                    postcode,
-                    admin_district,
-                    thoroughfare,
-                    district,
-                    ward,
-                    parish
-                  } = detailData.result;
+      if (data.result) {
+        // Get detailed address info for each suggestion
+        const detailedAddresses = await Promise.all(
+          data.result.slice(0, 5).map(async (code) => {
+            const detailResponse = await fetch(`https://api.postcodes.io/postcodes/${code}`);
+            const detailData = await detailResponse.json();
+            
+            if (detailData.result) {
+              const {
+                postcode,
+                admin_district,
+                thoroughfare,
+                district,
+                ward,
+                parish
+              } = detailData.result;
 
-                  // Create address parts array with street number (if available)
-                  const addressParts = [
-                    '30', // Example house number (you'll need to get this from a different API)
-                    thoroughfare,
-                    ward,
-                    district,
-                    admin_district,
-                    postcode
-                  ].filter(Boolean); // Remove empty values
+              // Create a more detailed address
+              const addressParts = [
+                thoroughfare,
+                ward,
+                district,
+                admin_district,
+                postcode
+              ].filter(Boolean); // Remove empty values
 
-                  return {
-                    text: addressParts.join(', '),
-                    postcode: postcode,
-                    fullAddress: addressParts.join(', ')
-                  };
-                }
-              } catch (error) {
-                return null;
-              }
-            })
-          );
+              return {
+                text: addressParts.join(', '),
+                postcode: postcode,
+                fullAddress: addressParts.join(', ')
+              };
+            }
+            return null;
+          })
+        );
 
-          const validAddresses = detailedAddresses.filter(addr => addr !== null);
-          setAddresses(validAddresses);
-          setShowAddresses(true);
-          setLocationError(null);
-        }
-      } 
-      // For complete postcodes
-      else if (formattedPostcode.length >= 5) {
-        const response = await fetch(`https://api.postcodes.io/postcodes/${formattedPostcode}`);
-        const data = await response.json();
-
-        if (data.status === 200 && data.result) {
-          const fullAddress = {
-            text: `${data.result.postcode} - ${data.result.admin_district}, ${data.result.thoroughfare || ''}`,
-            postcode: data.result.postcode,
-            fullAddress: `${data.result.thoroughfare || ''} ${data.result.admin_district}, ${data.result.postcode}`
-          };
-          setAddresses([fullAddress]);
-          setShowAddresses(true);
-          setLocationError(null);
-        }
+        const validAddresses = detailedAddresses.filter(addr => addr !== null);
+        setAddresses(validAddresses);
+        setShowAddresses(true);
       }
-
     } catch (error) {
       console.error('Error fetching addresses:', error);
-      // Don't set error for partial postcodes
-      if (formattedPostcode.length >= 5) {
-        setLocationError('Error looking up postcode');
-      }
     } finally {
       setIsLoadingAddresses(false);
     }
