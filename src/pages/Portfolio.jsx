@@ -80,9 +80,11 @@ const Portfolio = () => {
 
   const fetchAddresses = async (postcode) => {
     try {
+      console.log('Fetching addresses for:', postcode);
       setIsLoadingAddresses(true);
       const response = await fetch(`https://api.postcodes.io/postcodes/${postcode}/autocomplete`);
       const data = await response.json();
+      console.log('API response:', data);
       
       if (data.result) {
         const addressResponse = await fetch(`https://api.postcodes.io/postcodes/${postcode}`);
@@ -175,7 +177,7 @@ const Portfolio = () => {
               </Form.Group>
             </Col>
             <Col md={4}>
-              <Form.Group>
+              <Form.Group className="position-relative">
                 <Form.Label>Postcode</Form.Label>
                 <Form.Control
                   type="text"
@@ -183,7 +185,9 @@ const Portfolio = () => {
                   value={postcode}
                   onChange={(e) => {
                     setPostcode(e.target.value);
+                    console.log('Postcode changed:', e.target.value);
                     if (e.target.value.length >= 3) {
+                      console.log('Fetching addresses...');
                       fetchAddresses(e.target.value);
                     } else {
                       setShowAddresses(false);
