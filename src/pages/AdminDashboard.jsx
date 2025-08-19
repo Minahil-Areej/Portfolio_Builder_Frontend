@@ -172,6 +172,16 @@ const AdminDashboard = () => {
           user._id === userId ? { ...user, isActive: !currentStatus } : user
         )
       );
+
+      // If the toggled user is an assessor, refresh the assessors list
+      const toggledUser = users.find(user => user._id === userId);
+      if (toggledUser?.role === 'assessor') {
+        // Fetch updated list of active assessors
+        const assessorsResponse = await axios.get(`${API_URL}/api/users/assessors`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setAssessors(assessorsResponse.data);
+      }
     } catch (error) {
       console.error('Error toggling user status:', error);
     }
