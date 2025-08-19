@@ -78,31 +78,66 @@ const Portfolio = () => {
     }
   };
 
+  // Update the fetchAddresses function
   const fetchAddresses = async (postcode) => {
     try {
-      console.log('Fetching addresses for:', postcode);
       setIsLoadingAddresses(true);
-      const response = await fetch(`https://api.postcodes.io/postcodes/${postcode}/autocomplete`);
-      const data = await response.json();
-      console.log('API response:', data);
       
-      if (data.result) {
-        const addressResponse = await fetch(`https://api.postcodes.io/postcodes/${postcode}`);
-        const addressData = await addressResponse.json();
+      // UK Postcode formats:
+      // AA9A 9AA  | A9A 9AA | A9 9AA | A99 9AA | AA9 9AA | AA99 9AA
+      // Remove spaces and convert to uppercase
+      const formattedPostcode = postcode.trim().toUpperCase();
+      
+      // If postcode is too short, try autocomplete
+      if (formattedPostcode.length < 5) {
+        const autocompleteResponse = await fetch(`https://api.postcodes.io/postcodes/${formattedPostcode}/autocomplete`);
+        const autocompleteData = await autocompleteResponse.json();
         
-        if (addressData.result) {
-          const formattedAddresses = [
-            {
-              text: `${addressData.result.thoroughfare || ''} ${addressData.result.district || ''}, ${addressData.result.postcode}`,
-              postcode: addressData.result.postcode
-            }
-          ];
-          setAddresses(formattedAddresses);
+        if (autocompleteData.result) {
+          // Get first 5 suggestions
+          const suggestions = autocompleteData.result.slice(0, 5).map(code => ({
+            text: code,
+            postcode: code
+          }));
+          setAddresses(suggestions);
           setShowAddresses(true);
+          setLocationError(null);
+        }
+      } else {
+        // Try exact postcode lookup
+        const response = await fetch(`https://api.postcodes.io/postcodes/${formattedPostcode}`);
+        const data = await response.json();
+        
+        if (data.status === 200 && data.result) {
+          const address = {
+            text: `${data.result.postcode} - ${data.result.admin_district || 'Unknown location'}`,
+            postcode: data.result.postcode
+          };
+          setAddresses([address]);
+          setShowAddresses(true);
+          setLocationError(null);
+        } else {
+          // If exact lookup fails, try autocomplete
+          const autocompleteResponse = await fetch(`https://api.postcodes.io/postcodes/${formattedPostcode}/autocomplete`);
+          const autocompleteData = await autocompleteResponse.json();
+          
+          if (autocompleteData.result && autocompleteData.result.length > 0) {
+            const suggestions = autocompleteData.result.slice(0, 5).map(code => ({
+              text: code,
+              postcode: code
+            }));
+            setAddresses(suggestions);
+            setShowAddresses(true);
+            setLocationError(null);
+          } else {
+            setAddresses([]);
+            setLocationError('Invalid postcode');
+          }
         }
       }
     } catch (error) {
       console.error('Error fetching addresses:', error);
+      setLocationError('Error looking up postcode');
     } finally {
       setIsLoadingAddresses(false);
     }
