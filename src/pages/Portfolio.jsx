@@ -85,7 +85,7 @@ const Portfolio = () => {
       const formattedPostcode = postcode.trim().toUpperCase();
 
       // For partial postcodes (less than 5 characters)
-      if (formattedPostcode.length >= 2 && formattedPostcode.length < 5) {
+      if (formattedPostcode.length >= 2) {
         const autocompleteResponse = await fetch(`https://api.postcodes.io/postcodes/${formattedPostcode}/autocomplete`);
         const autocompleteData = await autocompleteResponse.json();
 
@@ -97,10 +97,29 @@ const Portfolio = () => {
                 const detailResponse = await fetch(`https://api.postcodes.io/postcodes/${code}`);
                 const detailData = await detailResponse.json();
                 if (detailData.result) {
+                  const {
+                    postcode,
+                    admin_district,
+                    thoroughfare,
+                    district,
+                    ward,
+                    parish
+                  } = detailData.result;
+
+                  // Create address parts array with street number (if available)
+                  const addressParts = [
+                    '30', // Example house number (you'll need to get this from a different API)
+                    thoroughfare,
+                    ward,
+                    district,
+                    admin_district,
+                    postcode
+                  ].filter(Boolean); // Remove empty values
+
                   return {
-                    text: `${detailData.result.postcode} - ${detailData.result.admin_district}, ${detailData.result.thoroughfare || ''}`,
-                    postcode: detailData.result.postcode,
-                    fullAddress: `${detailData.result.thoroughfare || ''} ${detailData.result.admin_district}, ${detailData.result.postcode}`
+                    text: addressParts.join(', '),
+                    postcode: postcode,
+                    fullAddress: addressParts.join(', ')
                   };
                 }
               } catch (error) {
