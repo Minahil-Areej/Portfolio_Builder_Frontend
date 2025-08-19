@@ -40,6 +40,8 @@ const dropdownStyles = {
   }
 };
 
+const TOTAL_REQUIRED_UNITS = 12; // Update this number based on your course requirements
+
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [portfolios, setPortfolios] = useState([]);
@@ -159,13 +161,14 @@ const AdminDashboard = () => {
           .filter(user => user.role === 'student')
           .map(student => {
             const studentPortfolios = portfolios.filter(p => p.userId === student._id);
+            const approvedPortfolios = studentPortfolios.filter(p => p.status === 'Approved');
             return {
               studentId: student._id,
               name: student.name,
               totalSubmissions: studentPortfolios.length,
-              approved: studentPortfolios.filter(p => p.status === 'Approved').length,
+              approved: approvedPortfolios.length,
               pending: studentPortfolios.filter(p => p.status === 'To Be Reviewed').length,
-              completionRate: (studentPortfolios.filter(p => p.status === 'Approved').length / totalRequiredUnits) * 100
+              completionRate: Math.round((approvedPortfolios.length / TOTAL_REQUIRED_UNITS) * 100)
             };
           })
       };
