@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Container, Card, Row, Col, Form } from 'react-bootstrap';
+import { Table, Button, Container, Card, Row, Col, Form, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
@@ -36,6 +36,9 @@ const AdminDashboard = () => {
   const [recentImages, setRecentImages] = useState([]);
   const [applications, setApplications] = useState([]);
   const [assessors, setAssessors] = useState([]); // NEW STATE
+  const [userFilter, setUserFilter] = useState('');
+  const [sortField, setSortField] = useState('name');
+  const [sortDirection, setSortDirection] = useState('asc');
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -201,6 +204,23 @@ const AdminDashboard = () => {
     }
   };
 
+  // Add this helper function inside your component
+  const filterAndSortUsers = (users, role) => {
+    return users
+      .filter(user => user.role === role)
+      .filter(user => 
+        user.name.toLowerCase().includes(userFilter.toLowerCase()) ||
+        user.email.toLowerCase().includes(userFilter.toLowerCase())
+      )
+      .sort((a, b) => {
+        const aValue = a[sortField];
+        const bValue = b[sortField];
+        return sortDirection === 'asc' 
+          ? aValue > bValue ? 1 : -1
+          : aValue < bValue ? 1 : -1;
+      });
+  };
+
   return (
     <Container className="mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -346,63 +366,99 @@ const AdminDashboard = () => {
       </Row>
 
       {/* UPDATED Users Table with Assessor Assignment */}
+      {/* Users Section */}
       <Row>
         <Col>
           <Card className="shadow-sm">
             <Card.Body>
-              <Card.Title>All Users</Card.Title>
-              <Button variant="success" onClick={() => navigate('/register')}>
-                Register New User
-              </Button>
+              <Card.Title className="d-flex justify-content-between align-items-center">
+                <span>User Management</span>
+                <Button variant="success" size="sm" onClick={() => navigate('/register')}>
+                  Register New User
+                </Button>
+              </Card.Title>
 
-              <Table striped bordered hover className="mt-4">
-                <thead>
+              {/* Filters */}
+              <div className="mb-4 p-3 bg-light rounded">
+                <Row className="align-items-center">
+                  <Col md={4}>
+                    <Form.Group>
+                      <Form.Label><small>Search Users</small></Form.Label>
+                      <Form.Control
+                        type="text"
+                        size="sm"
+                        placeholder="Search by name or email..."
+                        value={userFilter}
+                        onChange={(e) => setUserFilter(e.target.value)}
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group>
+                      <Form.Label><small>Sort By</small></Form.Label>
+                      <Form.Select
+                        size="sm"
+                        value={sortField}
+                        onChange={(e) => setSortField(e.target.value)}
+                      >
+                        <option value="name">Name</option>
+                        <option value="email">Email</option>
+                        <option value="isActive">Status</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group>
+                      <Form.Label><small>Order</small></Form.Label>
+                      <Form.Select
+                        size="sm"
+                        value={sortDirection}
+                        onChange={(e) => setSortDirection(e.target.value)}
+                      >
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </div>
+
+              {/* Students Table */}
+              <h5 className="mb-3">Students</h5>
+              <Table striped bordered hover responsive className="mb-4">
+                <thead className="bg-light">
                   <tr>
                     <th>Name</th>
                     <th>Email</th>
-                    <th>Role</th>
                     <th>Status</th>
-                    <th>Assigned Assessor</th> {/* NEW COLUMN */}
+                    <th>Assigned Assessor</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map(user => (
+                  {filterAndSortUsers(users, 'student').map(user => (
                     <tr key={user._id}>
                       <td>{user.name}</td>
                       <td>{user.email}</td>
-                      <td>{user.role}</td>
-                      <td>{user.isActive ? 'Active' : 'Inactive'}</td>
                       <td>
-                        {/* NEW COLUMN CONTENT */}
-                        {user.role === 'student' ? (
-                          <div style={dropdownStyles.assignmentBox}>
-                            {user.assignedAssessor ? (
-                              <>
-                                <div>
-                                  <small style={dropdownStyles.label}>Currently Assigned to:</small>
-                                  <div style={dropdownStyles.currentAssessor}>
-                                    {user.assignedAssessor.name}
-                                  </div>
+                        <Badge bg={user.isActive ? 'success' : 'warning'}>
+                          {user.isActive ? 'Active' : 'Inactive'}
+                        </Badge>
+                      </td>
+                      <td>
+                        <div style={dropdownStyles.assignmentBox}>
+                          {user.assignedAssessor ? (
+                            <>
+                              <div>
+                                <small style={dropdownStyles.label}>Currently Assigned to:</small>
+                                <div style={dropdownStyles.currentAssessor}>
+                                  {user.assignedAssessor.name}
                                 </div>
-                                <Form.Select
-                                  size="sm"
-                                  style={dropdownStyles.select}
-                                  className="border-primary mt-2"
-                                  value={user.assignedAssessor?._id || user.assignedAssessor || ''}
-                                  onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
-                                >
-                                  <option value="">Select Assessor</option>
-                                  {assessors.map((assessor) => (
-                                    <option key={assessor._id} value={assessor._id}>
-                                      {assessor.name}
-                                    </option>
-                                  ))}
-                                </Form.Select>
-                              </>
-                            ) : (
+                              </div>
                               <Form.Select
                                 size="sm"
+                                style={dropdownStyles.select}
+                                className="border-primary mt-2"
                                 value={user.assignedAssessor?._id || user.assignedAssessor || ''}
                                 onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
                               >
@@ -413,14 +469,94 @@ const AdminDashboard = () => {
                                   </option>
                                 ))}
                               </Form.Select>
-                            )}
-                          </div>
-                        ) : (
-                          <span className="text-muted">N/A</span>
-                        )}
+                            </>
+                          ) : (
+                            <Form.Select
+                              size="sm"
+                              value={user.assignedAssessor?._id || user.assignedAssessor || ''}
+                              onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
+                            >
+                              <option value="">Select Assessor</option>
+                              {assessors.map((assessor) => (
+                                <option key={assessor._id} value={assessor._id}>
+                                  {assessor.name}
+                                </option>
+                              ))}
+                            </Form.Select>
+                          )}
+                        </div>
                       </td>
                       <td>
-                        {/* KEEP EXISTING ACTIVATE/DEACTIVATE BUTTON */}
+                        <Button
+                          variant={user.isActive ? 'danger' : 'success'}
+                          size="sm"
+                          onClick={() => toggleUserStatus(user._id, user.isActive)}
+                        >
+                          {user.isActive ? 'Deactivate' : 'Activate'}
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+
+              {/* Assessors Table */}
+              <h5 className="mb-3">Assessors</h5>
+              <Table striped bordered hover responsive className="mb-4">
+                <thead className="bg-light">
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filterAndSortUsers(users, 'assessor').map(user => (
+                    <tr key={user._id}>
+                      <td>{user.name}</td>
+                      <td>{user.email}</td>
+                      <td>
+                        <Badge bg={user.isActive ? 'success' : 'warning'}>
+                          {user.isActive ? 'Active' : 'Inactive'}
+                        </Badge>
+                      </td>
+                      <td>
+                        <Button
+                          variant={user.isActive ? 'danger' : 'success'}
+                          size="sm"
+                          onClick={() => toggleUserStatus(user._id, user.isActive)}
+                        >
+                          {user.isActive ? 'Deactivate' : 'Activate'}
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+
+              {/* Admins Table */}
+              <h5 className="mb-3">Administrators</h5>
+              <Table striped bordered hover responsive>
+                <thead className="bg-light">
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filterAndSortUsers(users, 'admin').map(user => (
+                    <tr key={user._id}>
+                      <td>{user.name}</td>
+                      <td>{user.email}</td>
+                      <td>
+                        <Badge bg={user.isActive ? 'success' : 'warning'}>
+                          {user.isActive ? 'Active' : 'Inactive'}
+                        </Badge>
+                      </td>
+                      <td>
                         <Button
                           variant={user.isActive ? 'danger' : 'success'}
                           size="sm"
