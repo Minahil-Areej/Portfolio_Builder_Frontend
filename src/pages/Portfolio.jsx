@@ -84,12 +84,12 @@ const Portfolio = () => {
       setIsLoadingAddresses(true);
       const formattedPostcode = postcode.trim().toUpperCase();
 
-      // Use Google Places API for better address lookup
+      // First try to get postcodes that match
       const response = await fetch(`https://api.postcodes.io/postcodes/${formattedPostcode}/autocomplete`);
       const data = await response.json();
 
       if (data.result) {
-        // Get detailed address info for each suggestion
+        // Get detailed info for each matching postcode
         const detailedAddresses = await Promise.all(
           data.result.slice(0, 5).map(async (code) => {
             const detailResponse = await fetch(`https://api.postcodes.io/postcodes/${code}`);
@@ -101,18 +101,30 @@ const Portfolio = () => {
                 admin_district,
                 thoroughfare,
                 district,
-                ward,
-                parish
+                ward
               } = detailData.result;
 
-              // Create a more detailed address
-              const addressParts = [
-                thoroughfare,
-                ward,
-                district,
-                admin_district,
-                postcode
-              ].filter(Boolean); // Remove empty values
+              // Build address with street name first
+              const addressParts = [];
+              
+              // Add thoroughfare (street name) if available
+              if (thoroughfare) {
+                addressParts.push(thoroughfare);
+              }
+              
+              // Add area details
+              if (ward && ward !== thoroughfare) {
+                addressParts.push(ward);
+              }
+              if (district && district !== ward) {
+                addressParts.push(district);
+              }
+              if (admin_district && !addressParts.includes(admin_district)) {
+                addressParts.push(admin_district);
+              }
+              
+              // Always add postcode at the end
+              addressParts.push(postcode);
 
               return {
                 text: addressParts.join(', '),
@@ -127,6 +139,7 @@ const Portfolio = () => {
         const validAddresses = detailedAddresses.filter(addr => addr !== null);
         setAddresses(validAddresses);
         setShowAddresses(true);
+        setLocationError(null);
       }
     } catch (error) {
       console.error('Error fetching addresses:', error);
