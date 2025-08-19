@@ -82,62 +82,62 @@ const Portfolio = () => {
   const fetchAddresses = async (postcode) => {
     try {
       setIsLoadingAddresses(true);
-      
-      // UK Postcode formats:
-      // AA9A 9AA  | A9A 9AA | A9 9AA | A99 9AA | AA9 9AA | AA99 9AA
-      // Remove spaces and convert to uppercase
       const formattedPostcode = postcode.trim().toUpperCase();
-      
-      // If postcode is too short, try autocomplete
-      if (formattedPostcode.length < 5) {
+
+      // For partial postcodes (less than 5 characters)
+      if (formattedPostcode.length >= 2 && formattedPostcode.length < 5) {
         const autocompleteResponse = await fetch(`https://api.postcodes.io/postcodes/${formattedPostcode}/autocomplete`);
         const autocompleteData = await autocompleteResponse.json();
-        
+
         if (autocompleteData.result) {
-          // Get first 5 suggestions
-          const suggestions = autocompleteData.result.slice(0, 5).map(code => ({
-            text: code,
-            postcode: code
-          }));
-          setAddresses(suggestions);
+          // Get details for each suggestion
+          const detailedAddresses = await Promise.all(
+            autocompleteData.result.slice(0, 5).map(async (code) => {
+              try {
+                const detailResponse = await fetch(`https://api.postcodes.io/postcodes/${code}`);
+                const detailData = await detailResponse.json();
+                if (detailData.result) {
+                  return {
+                    text: `${detailData.result.postcode} - ${detailData.result.admin_district}, ${detailData.result.thoroughfare || ''}`,
+                    postcode: detailData.result.postcode,
+                    fullAddress: `${detailData.result.thoroughfare || ''} ${detailData.result.admin_district}, ${detailData.result.postcode}`
+                  };
+                }
+              } catch (error) {
+                return null;
+              }
+            })
+          );
+
+          const validAddresses = detailedAddresses.filter(addr => addr !== null);
+          setAddresses(validAddresses);
           setShowAddresses(true);
           setLocationError(null);
         }
-      } else {
-        // Try exact postcode lookup
+      } 
+      // For complete postcodes
+      else if (formattedPostcode.length >= 5) {
         const response = await fetch(`https://api.postcodes.io/postcodes/${formattedPostcode}`);
         const data = await response.json();
-        
+
         if (data.status === 200 && data.result) {
-          const address = {
-            text: `${data.result.postcode} - ${data.result.admin_district || 'Unknown location'}`,
-            postcode: data.result.postcode
+          const fullAddress = {
+            text: `${data.result.postcode} - ${data.result.admin_district}, ${data.result.thoroughfare || ''}`,
+            postcode: data.result.postcode,
+            fullAddress: `${data.result.thoroughfare || ''} ${data.result.admin_district}, ${data.result.postcode}`
           };
-          setAddresses([address]);
+          setAddresses([fullAddress]);
           setShowAddresses(true);
           setLocationError(null);
-        } else {
-          // If exact lookup fails, try autocomplete
-          const autocompleteResponse = await fetch(`https://api.postcodes.io/postcodes/${formattedPostcode}/autocomplete`);
-          const autocompleteData = await autocompleteResponse.json();
-          
-          if (autocompleteData.result && autocompleteData.result.length > 0) {
-            const suggestions = autocompleteData.result.slice(0, 5).map(code => ({
-              text: code,
-              postcode: code
-            }));
-            setAddresses(suggestions);
-            setShowAddresses(true);
-            setLocationError(null);
-          } else {
-            setAddresses([]);
-            setLocationError('Invalid postcode');
-          }
         }
       }
+
     } catch (error) {
       console.error('Error fetching addresses:', error);
-      setLocationError('Error looking up postcode');
+      // Don't set error for partial postcodes
+      if (formattedPostcode.length >= 5) {
+        setLocationError('Error looking up postcode');
+      }
     } finally {
       setIsLoadingAddresses(false);
     }
@@ -252,7 +252,7 @@ const Portfolio = () => {
                           key={index}
                           className="address-option"
                           onClick={() => {
-                            setPostcode(address.postcode);
+                            setPostcode(address.fullAddress); // Use full address instead of just postcode
                             setSelectedAddress(address.text);
                             setShowAddresses(false);
                             setLocationError(null);
