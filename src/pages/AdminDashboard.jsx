@@ -26,6 +26,17 @@ const dropdownStyles = {
   },
   select: {
     fontSize: '0.9rem'
+  },
+  // Add to your existing dropdownStyles object
+  orderControls: {
+    background: '#f8f9fa',
+    borderRadius: '4px',
+    padding: '8px',
+    marginBottom: '16px'
+  },
+  orderButton: {
+    marginRight: '8px',
+    borderColor: '#dee2e6'
   }
 };
 
@@ -39,6 +50,8 @@ const AdminDashboard = () => {
   const [userFilter, setUserFilter] = useState('');
   const [sortField, setSortField] = useState('name');
   const [sortDirection, setSortDirection] = useState('asc');
+  const [tableOrder, setTableOrder] = useState(['students', 'assessors', 'admins']);
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -212,6 +225,20 @@ const AdminDashboard = () => {
       console.error('Error assigning assessor:', error);
       alert('Error assigning assessor');
     }
+  };
+
+  // Add this helper function before your return statement
+  const moveTable = (tableId, direction) => {
+    setTableOrder(current => {
+      const newOrder = [...current];
+      const index = current.indexOf(tableId);
+      const newIndex = direction === 'up' ? index - 1 : index + 1;
+      
+      if (newIndex >= 0 && newIndex < current.length) {
+        [newOrder[index], newOrder[newIndex]] = [newOrder[newIndex], newOrder[index]];
+      }
+      return newOrder;
+    });
   };
 
   // Add this helper function inside your component
@@ -433,152 +460,196 @@ const AdminDashboard = () => {
                 </Row>
               </div>
 
-              {/* Students Table */}
-              <h5 className="mb-3">Students</h5>
-              <Table striped bordered hover responsive className="mb-4">
-                <thead className="bg-light">
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Assigned Assessor</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filterAndSortUsers(users, 'student').map(user => (
-                    <tr key={user._id}>
-                      <td>{user.name}</td>
-                      <td>{user.email}</td>
-                      <td>
-                        <Badge bg={user.isActive ? 'success' : 'warning'}>
-                          {user.isActive ? 'Active' : 'Inactive'}
-                        </Badge>
-                      </td>
-                      <td>
-                        <div style={dropdownStyles.assignmentBox}>
-                          {user.assignedAssessor ? (
-                            <>
-                              <div>
-                                <small style={dropdownStyles.label}>Currently Assigned to:</small>
-                                <div style={dropdownStyles.currentAssessor}>
-                                  {user.assignedAssessor.name}
-                                </div>
-                              </div>
-                              <Form.Select
-                                size="sm"
-                                style={dropdownStyles.select}
-                                className="border-primary mt-2"
-                                value={user.assignedAssessor?._id || user.assignedAssessor || ''}
-                                onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
-                              >
-                                <option value="">Select Assessor</option>
-                                {assessors.map((assessor) => (
-                                  <option key={assessor._id} value={assessor._id}>
-                                    {assessor.name}
-                                  </option>
-                                ))}
-                              </Form.Select>
-                            </>
-                          ) : (
-                            <Form.Select
-                              size="sm"
-                              value={user.assignedAssessor?._id || user.assignedAssessor || ''}
-                              onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
-                            >
-                              <option value="">Select Assessor</option>
-                              {assessors.map((assessor) => (
-                                <option key={assessor._id} value={assessor._id}>
-                                  {assessor.name}
-                                </option>
-                              ))}
-                            </Form.Select>
-                          )}
-                        </div>
-                      </td>
-                      <td>
-                        <Button
-                          variant={user.isActive ? 'danger' : 'success'}
-                          size="sm"
-                          onClick={() => toggleUserStatus(user._id, user.isActive)}
-                        >
-                          {user.isActive ? 'Deactivate' : 'Activate'}
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
+              {/* Tables Ordering Controls */}
+              <div className="mb-3 p-2 bg-light rounded">
+                <small className="text-muted me-2">Reorder Tables:</small>
+                {tableOrder.map((table, index) => (
+                  <Button 
+                    key={table}
+                    size="sm"
+                    variant="outline-secondary"
+                    className="me-2"
+                    onClick={() => index > 0 && moveTable(table, 'up')}
+                    disabled={index === 0}
+                    style={dropdownStyles.orderButton}
+                  >
+                    {table.charAt(0).toUpperCase() + table.slice(1)} {index > 0 ? '↑' : ''}
+                  </Button>
+                ))}
+              </div>
 
-              {/* Assessors Table */}
-              <h5 className="mb-3">Assessors</h5>
-              <Table striped bordered hover responsive className="mb-4">
-                <thead className="bg-light">
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filterAndSortUsers(users, 'assessor').map(user => (
-                    <tr key={user._id}>
-                      <td>{user.name}</td>
-                      <td>{user.email}</td>
-                      <td>
-                        <Badge bg={user.isActive ? 'success' : 'warning'}>
-                          {user.isActive ? 'Active' : 'Inactive'}
-                        </Badge>
-                      </td>
-                      <td>
-                        <Button
-                          variant={user.isActive ? 'danger' : 'success'}
-                          size="sm"
-                          onClick={() => toggleUserStatus(user._id, user.isActive)}
-                        >
-                          {user.isActive ? 'Deactivate' : 'Activate'}
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-
-              {/* Admins Table */}
-              <h5 className="mb-3">Administrators</h5>
-              <Table striped bordered hover responsive>
-                <thead className="bg-light">
-                  <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filterAndSortUsers(users, 'admin').map(user => (
-                    <tr key={user._id}>
-                      <td>{user.name}</td>
-                      <td>{user.email}</td>
-                      <td>
-                        <Badge bg={user.isActive ? 'success' : 'warning'}>
-                          {user.isActive ? 'Active' : 'Inactive'}
-                        </Badge>
-                      </td>
-                      <td>
-                        <Button
-                          variant={user.isActive ? 'danger' : 'success'}
-                          size="sm"
-                          onClick={() => toggleUserStatus(user._id, user.isActive)}
-                        >
-                          {user.isActive ? 'Deactivate' : 'Activate'}
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
+              {/* Render tables according to order */}
+              {tableOrder.map(tableType => {
+                switch(tableType) {
+                  case 'students':
+                    return (
+                      <div key="students">
+                        <h5 className="mb-3 d-flex justify-content-between align-items-center">
+                          <span>Students</span>
+                        </h5>
+                        {/* Existing Students Table */}
+                        <Table striped bordered hover responsive className="mb-4">
+                          <thead className="bg-light">
+                            <tr>
+                              <th>Name</th>
+                              <th>Email</th>
+                              <th>Status</th>
+                              <th>Assigned Assessor</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {filterAndSortUsers(users, 'student').map(user => (
+                              <tr key={user._id}>
+                                <td>{user.name}</td>
+                                <td>{user.email}</td>
+                                <td>
+                                  <Badge bg={user.isActive ? 'success' : 'warning'}>
+                                    {user.isActive ? 'Active' : 'Inactive'}
+                                  </Badge>
+                                </td>
+                                <td>
+                                  <div style={dropdownStyles.assignmentBox}>
+                                    {user.assignedAssessor ? (
+                                      <>
+                                        <div>
+                                          <small style={dropdownStyles.label}>Currently Assigned to:</small>
+                                          <div style={dropdownStyles.currentAssessor}>
+                                            {user.assignedAssessor.name}
+                                          </div>
+                                        </div>
+                                        <Form.Select
+                                          size="sm"
+                                          style={dropdownStyles.select}
+                                          className="border-primary mt-2"
+                                          value={user.assignedAssessor?._id || user.assignedAssessor || ''}
+                                          onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
+                                        >
+                                          <option value="">Select Assessor</option>
+                                          {assessors.map((assessor) => (
+                                            <option key={assessor._id} value={assessor._id}>
+                                              {assessor.name}
+                                            </option>
+                                          ))}
+                                        </Form.Select>
+                                      </>
+                                    ) : (
+                                      <Form.Select
+                                        size="sm"
+                                        value={user.assignedAssessor?._id || user.assignedAssessor || ''}
+                                        onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
+                                      >
+                                        <option value="">Select Assessor</option>
+                                        {assessors.map((assessor) => (
+                                          <option key={assessor._id} value={assessor._id}>
+                                            {assessor.name}
+                                          </option>
+                                        ))}
+                                      </Form.Select>
+                                    )}
+                                  </div>
+                                </td>
+                                <td>
+                                  <Button
+                                    variant={user.isActive ? 'danger' : 'success'}
+                                    size="sm"
+                                    onClick={() => toggleUserStatus(user._id, user.isActive)}
+                                  >
+                                    {user.isActive ? 'Deactivate' : 'Activate'}
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </Table>
+                      </div>
+                    );
+                  case 'assessors':
+                    return (
+                      <div key="assessors">
+                        <h5 className="mb-3 d-flex justify-content-between align-items-center">
+                          <span>Assessors</span>
+                        </h5>
+                        {/* Existing Assessors Table */}
+                        <Table striped bordered hover responsive className="mb-4">
+                          <thead className="bg-light">
+                            <tr>
+                              <th>Name</th>
+                              <th>Email</th>
+                              <th>Status</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {filterAndSortUsers(users, 'assessor').map(user => (
+                              <tr key={user._id}>
+                                <td>{user.name}</td>
+                                <td>{user.email}</td>
+                                <td>
+                                  <Badge bg={user.isActive ? 'success' : 'warning'}>
+                                    {user.isActive ? 'Active' : 'Inactive'}
+                                  </Badge>
+                                </td>
+                                <td>
+                                  <Button
+                                    variant={user.isActive ? 'danger' : 'success'}
+                                    size="sm"
+                                    onClick={() => toggleUserStatus(user._id, user.isActive)}
+                                  >
+                                    {user.isActive ? 'Deactivate' : 'Activate'}
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </Table>
+                      </div>
+                    );
+                  case 'admins':
+                    return (
+                      <div key="admins">
+                        <h5 className="mb-3 d-flex justify-content-between align-items-center">
+                          <span>Administrators</span>
+                        </h5>
+                        {/* Existing Admins Table */}
+                        <Table striped bordered hover responsive>
+                          <thead className="bg-light">
+                            <tr>
+                              <th>Name</th>
+                              <th>Email</th>
+                              <th>Status</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {filterAndSortUsers(users, 'admin').map(user => (
+                              <tr key={user._id}>
+                                <td>{user.name}</td>
+                                <td>{user.email}</td>
+                                <td>
+                                  <Badge bg={user.isActive ? 'success' : 'warning'}>
+                                    {user.isActive ? 'Active' : 'Inactive'}
+                                  </Badge>
+                                </td>
+                                <td>
+                                  <Button
+                                    variant={user.isActive ? 'danger' : 'success'}
+                                    size="sm"
+                                    onClick={() => toggleUserStatus(user._id, user.isActive)}
+                                  >
+                                    {user.isActive ? 'Deactivate' : 'Activate'}
+                                  </Button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </Table>
+                      </div>
+                    );
+                  default:
+                    return null;
+                }
+              })}
             </Card.Body>
           </Card>
         </Col>
