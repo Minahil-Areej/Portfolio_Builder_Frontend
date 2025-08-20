@@ -52,6 +52,15 @@ const AdminDashboard = () => {
   const [sortDirection, setSortDirection] = useState('asc');
   const [tableOrder, setTableOrder] = useState(['students', 'assessors', 'admins']);
 
+  // Add these new states after your existing state declarations
+  const [unitProgress, setUnitProgress] = useState({});
+  const [statusProgress, setStatusProgress] = useState({
+    'Draft': 0,
+    'To Be Reviewed': 0,
+    'Reviewed': 0,
+    'Done': 0
+  });
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -93,6 +102,33 @@ const AdminDashboard = () => {
           .flatMap(portfolio => portfolio.images)
           .slice(0, 10); // Show only the latest 5 images
         setRecentImages(images);
+
+        // Calculate status counts
+        const statusCounts = portfolioResponse.data.reduce((acc, portfolio) => {
+          acc[portfolio.status] = (acc[portfolio.status] || 0) + 1;
+          return acc;
+        }, {
+          'Draft': 0,
+          'To Be Reviewed': 0,
+          'Reviewed': 0,
+          'Done': 0
+        });
+        setStatusProgress(statusCounts);
+
+        // Calculate unit progress
+        const unitCounts = portfolioResponse.data.reduce((acc, portfolio) => {
+          const unit = portfolio.unit?.number;
+          if (unit) {
+            acc[unit] = acc[unit] || { total: 0, done: 0 };
+            acc[unit].total++;
+            if (portfolio.status === 'Done') {
+              acc[unit].done++;
+            }
+          }
+          return acc;
+        }, {});
+        setUnitProgress(unitCounts);
+
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
       }
@@ -163,6 +199,37 @@ const AdminDashboard = () => {
     });
   };
 
+  // Add this new chart rendering function
+  const renderProgressCharts = () => {
+    // Status Distribution Chart
+    const ctxStatus = document.getElementById('statusChart').getContext('2d');
+    new Chart(ctxStatus, {
+      type: 'doughnut',
+      data: {
+        labels: Object.keys(statusProgress),
+        datasets: [{
+          data: Object.values(statusProgress),
+          backgroundColor: [
+            'rgba(255, 206, 86, 0.6)', // Draft
+            'rgba(54, 162, 235, 0.6)', // To Be Reviewed
+            'rgba(75, 192, 192, 0.6)', // Reviewed
+            'rgba(75, 192, 75, 0.6)',  // Done
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' },
+          title: {
+            display: true,
+            text: 'Portfolio Status Distribution'
+          }
+        }
+      }
+    });
+  };
+
   // ✅ Using the Already Existing API
   const toggleUserStatus = async (userId, currentStatus) => {
     try {
@@ -204,13 +271,13 @@ const AdminDashboard = () => {
   const handleAssignAssessor = async (studentId, assessorId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`${API_URL}/api/users/assign-assessor/${studentId}`, 
+      await axios.put(`${API_URL}/api/users/assign-assessor/${studentId}`,
         { assessorId },
-        { 
-          headers: { 
+        {
+          headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
-          } 
+          }
         }
       );
 
@@ -233,7 +300,7 @@ const AdminDashboard = () => {
       const newOrder = [...current];
       const index = current.indexOf(tableId);
       const newIndex = direction === 'up' ? index - 1 : index + 1;
-      
+
       if (newIndex >= 0 && newIndex < current.length) {
         [newOrder[index], newOrder[newIndex]] = [newOrder[newIndex], newOrder[index]];
       }
@@ -245,14 +312,14 @@ const AdminDashboard = () => {
   const filterAndSortUsers = (users, role) => {
     return users
       .filter(user => user.role === role)
-      .filter(user => 
+      .filter(user =>
         user.name.toLowerCase().includes(userFilter.toLowerCase()) ||
         user.email.toLowerCase().includes(userFilter.toLowerCase())
       )
       .sort((a, b) => {
         const aValue = a[sortField];
         const bValue = b[sortField];
-        return sortDirection === 'asc' 
+        return sortDirection === 'asc'
           ? aValue > bValue ? 1 : -1
           : aValue < bValue ? 1 : -1;
       });
@@ -336,6 +403,125 @@ const AdminDashboard = () => {
             <Card.Body>
               <Card.Title>Portfolio Submission Chart</Card.Title>
               <canvas id="portfolioChart"></canvas>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      {/* Add after existing portfolio chart row */}
+      <Row className="mb-4">
+        <Col md={6}>
+          <Card className="shadow-sm">
+            <Card.Body>
+              <Card.Title>Progress Overview</Card.Title>
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Unit</th>
+                    <th>Total Submissions</th>
+                    <th>Completed</th>
+                    <th>Progress</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(unitProgress).map(([unit, data]) => (
+                    <tr key={unit}>
+                      <td>{unit}</td>
+                      <td>{data.total}</td>
+                      <td>{data.done}</td>
+                      <td>
+                        <div className="progress">
+                          <div
+                            className="progress-bar bg-success"
+                            role="progressbar"
+                            style={{ width: `${(data.done / data.total) * 100}%` }}
+                          >
+                            {Math.round((data.done / data.total) * 100)}%
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={6}>
+          <Card className="shadow-sm">
+            <Card.Body>
+              <Card.Title>Status Distribution</Card.Title>
+              <canvas id="statusChart"></canvas>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+// Add after the status distribution Row
+      <Row className="mb-4">
+        <Col>
+          <Card className="shadow-sm">
+            <Card.Body>
+              <Card.Title>Detailed Progress Tracking</Card.Title>
+              <Table striped bordered hover responsive>
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    {['311', '312', '313', '315', '316', '317', '318', '399'].map(unit => (
+                      <th key={unit}>Unit {unit}</th>
+                    ))}
+                    <th>Overall Progress</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.filter(user => user.role === 'student').map(student => {
+                    const studentPortfolios = portfolios.filter(p => p.userId === student._id);
+                    const unitProgress = {};
+
+                    // Calculate progress for each unit
+                    studentPortfolios.forEach(portfolio => {
+                      const unit = portfolio.unit?.number;
+                      if (unit) {
+                        unitProgress[unit] = unitProgress[unit] || 0;
+                        if (portfolio.status === 'Done') {
+                          unitProgress[unit]++;
+                        }
+                      }
+                    });
+
+                    const totalDone = Object.values(unitProgress).reduce((sum, count) => sum + count, 0);
+                    const overallProgress = Math.round((totalDone / 12) * 100); // Assuming 12 total required
+
+                    return (
+                      <tr key={student._id}>
+                        <td>{student.name}</td>
+                        {['311', '312', '313', '315', '316', '317', '318', '399'].map(unit => (
+                          <td key={unit}>
+                            <div className="progress" style={{ height: '20px' }}>
+                              <div
+                                className="progress-bar bg-success"
+                                role="progressbar"
+                                style={{ width: `${((unitProgress[unit] || 0) / 1) * 100}%` }}
+                              >
+                                {unitProgress[unit] || 0}/1
+                              </div>
+                            </div>
+                          </td>
+                        ))}
+                        <td>
+                          <div className="progress" style={{ height: '20px' }}>
+                            <div
+                              className="progress-bar bg-info"
+                              role="progressbar"
+                              style={{ width: `${overallProgress}%` }}
+                            >
+                              {overallProgress}%
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
             </Card.Body>
           </Card>
         </Col>
@@ -464,7 +650,7 @@ const AdminDashboard = () => {
               <div className="mb-3 p-2 bg-light rounded">
                 <small className="text-muted me-2">Reorder Tables:</small>
                 {tableOrder.map((table, index) => (
-                  <Button 
+                  <Button
                     key={table}
                     size="sm"
                     variant="outline-secondary"
@@ -480,7 +666,7 @@ const AdminDashboard = () => {
 
               {/* Render tables according to order */}
               {tableOrder.map(tableType => {
-                switch(tableType) {
+                switch (tableType) {
                   case 'students':
                     return (
                       <div key="students">
