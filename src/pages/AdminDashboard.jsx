@@ -103,9 +103,27 @@ const AdminDashboard = () => {
           .slice(0, 10); // Show only the latest 5 images
         setRecentImages(images);
 
+        // Calculate unit progress
+        const unitCounts = portfolioResponse.data.reduce((acc, portfolio) => {
+          const unitNumber = portfolio.unit?.number;
+          if (unitNumber) {
+            if (!acc[unitNumber]) {
+              acc[unitNumber] = { total: 0, done: 0 };
+            }
+            acc[unitNumber].total++;
+            if (portfolio.status === 'Done') {
+              acc[unitNumber].done++;
+            }
+          }
+          return acc;
+        }, {});
+        setUnitProgress(unitCounts);
+
         // Calculate status counts
         const statusCounts = portfolioResponse.data.reduce((acc, portfolio) => {
-          acc[portfolio.status] = (acc[portfolio.status] || 0) + 1;
+          if (portfolio.status) {
+            acc[portfolio.status] = (acc[portfolio.status] || 0) + 1;
+          }
           return acc;
         }, {
           'Draft': 0,
@@ -114,20 +132,6 @@ const AdminDashboard = () => {
           'Done': 0
         });
         setStatusProgress(statusCounts);
-
-        // Calculate unit progress
-        const unitCounts = portfolioResponse.data.reduce((acc, portfolio) => {
-          const unit = portfolio.unit?.number;
-          if (unit) {
-            acc[unit] = acc[unit] || { total: 0, done: 0 };
-            acc[unit].total++;
-            if (portfolio.status === 'Done') {
-              acc[unit].done++;
-            }
-          }
-          return acc;
-        }, {});
-        setUnitProgress(unitCounts);
 
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
@@ -324,7 +328,12 @@ const AdminDashboard = () => {
           : aValue < bValue ? 1 : -1;
       });
   };
-
+  // Add this useEffect to call renderProgressCharts
+  useEffect(() => {
+    if (Object.values(statusProgress).some(count => count > 0)) {
+      renderProgressCharts();
+    }
+  }, [statusProgress]);
   return (
     <Container className="mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -455,7 +464,7 @@ const AdminDashboard = () => {
           </Card>
         </Col>
       </Row>
-// Add after the status distribution Row
+
       <Row className="mb-4">
         <Col>
           <Card className="shadow-sm">
@@ -474,21 +483,15 @@ const AdminDashboard = () => {
                 <tbody>
                   {users.filter(user => user.role === 'student').map(student => {
                     const studentPortfolios = portfolios.filter(p => p.userId === student._id);
-                    const unitProgress = {};
-
-                    // Calculate progress for each unit
-                    studentPortfolios.forEach(portfolio => {
-                      const unit = portfolio.unit?.number;
-                      if (unit) {
-                        unitProgress[unit] = unitProgress[unit] || 0;
-                        if (portfolio.status === 'Done') {
-                          unitProgress[unit]++;
-                        }
-                      }
-                    });
+                    const unitProgress = ['311', '312', '313', '315', '316', '317', '318', '399'].reduce((acc, unit) => {
+                      acc[unit] = studentPortfolios.filter(p =>
+                        p.unit?.number === unit && p.status === 'Done'
+                      ).length;
+                      return acc;
+                    }, {});
 
                     const totalDone = Object.values(unitProgress).reduce((sum, count) => sum + count, 0);
-                    const overallProgress = Math.round((totalDone / 12) * 100); // Assuming 12 total required
+                    const overallProgress = Math.round((totalDone / 8) * 100); // 8 units total
 
                     return (
                       <tr key={student._id}>
@@ -499,7 +502,7 @@ const AdminDashboard = () => {
                               <div
                                 className="progress-bar bg-success"
                                 role="progressbar"
-                                style={{ width: `${((unitProgress[unit] || 0) / 1) * 100}%` }}
+                                style={{ width: `${(unitProgress[unit] || 0) * 100}%` }}
                               >
                                 {unitProgress[unit] || 0}/1
                               </div>
