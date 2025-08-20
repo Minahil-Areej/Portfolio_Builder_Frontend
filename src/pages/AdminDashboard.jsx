@@ -57,9 +57,12 @@ const AdminDashboard = () => {
   // Add these new states
   const [progressMetrics, setProgressMetrics] = useState({
     totalSubmissions: 0,
-    approvedSubmissions: 0,
-    rejectedSubmissions: 0,
-    pendingReview: 0,
+    statusCounts: {
+      'Draft': 0,
+      'To Be Reviewed': 0,
+      'Reviewed': 0,
+      'Done': 0
+    },
     studentsProgress: []
   });
 
@@ -742,9 +745,11 @@ const AdminDashboard = () => {
                   <tr>
                     <th>Student Name</th>
                     <th>Total Submissions</th>
-                    <th>Approved</th>
-                    <th>Pending</th>
-                    <th>Completion Rate</th>
+                    <th>Draft</th>
+                    <th>To Be Reviewed</th>
+                    <th>Reviewed</th>
+                    <th>Done</th>
+                    <th>Completion</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -752,10 +757,20 @@ const AdminDashboard = () => {
                     <tr key={student.studentId}>
                       <td>{student.name}</td>
                       <td>{student.totalSubmissions}</td>
-                      <td>{student.approved}</td>
-                      <td>{student.pending}</td>
+                      <td>{student.statusCounts['Draft']}</td>
+                      <td>{student.statusCounts['To Be Reviewed']}</td>
+                      <td>{student.statusCounts['Reviewed']}</td>
+                      <td>{student.statusCounts['Done']}</td>
                       <td>
-                        <ProgressBar now={student.completionRate} label={`${student.completionRate}%`} />
+                        <ProgressBar 
+                          now={student.completionRate} 
+                          label={`${student.completionRate}%`}
+                          variant={
+                            student.completionRate >= 75 ? 'success' :
+                            student.completionRate >= 50 ? 'info' :
+                            student.completionRate >= 25 ? 'warning' : 'danger'
+                          }
+                        />
                       </td>
                     </tr>
                   ))}
