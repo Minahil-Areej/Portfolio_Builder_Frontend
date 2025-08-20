@@ -3,6 +3,7 @@ import { Table, Button, Container, Card, Row, Col, Form, Badge } from 'react-boo
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
+import nvqData from '../../public/Nvq_2357_13.json';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -335,19 +336,18 @@ const AdminDashboard = () => {
     }
   }, [statusProgress]);
 
-  // Add this function to count criteria per unit
+  // Replace the existing getTotalCriteriaForUnit function
   const getTotalCriteriaForUnit = (unitNumber) => {
-    // Import the JSON data
-    const nvqData = require('../../public/Nvq_2357_13.json');
-    
     // Find the unit
     const unit = nvqData.performance_units.find(u => u.unit === unitNumber);
     if (!unit) return 0;
 
     // Count total criteria in all learning outcomes
-    return unit.learning_outcomes.reduce((total, lo) => {
-      return total + lo.assessment_criteria.length;
+    const totalCriteria = unit.learning_outcomes.reduce((total, lo) => {
+      return total + (lo.assessment_criteria?.length || 0);
     }, 0);
+
+    return totalCriteria;
   };
 
   return (
