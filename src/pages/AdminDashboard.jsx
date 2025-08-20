@@ -334,6 +334,22 @@ const AdminDashboard = () => {
       renderProgressCharts();
     }
   }, [statusProgress]);
+
+  // Add this function to count criteria per unit
+  const getTotalCriteriaForUnit = (unitNumber) => {
+    // Import the JSON data
+    const nvqData = require('../../public/Nvq_2357_13.json');
+    
+    // Find the unit
+    const unit = nvqData.performance_units.find(u => u.unit === unitNumber);
+    if (!unit) return 0;
+
+    // Count total criteria in all learning outcomes
+    return unit.learning_outcomes.reduce((total, lo) => {
+      return total + lo.assessment_criteria.length;
+    }, 0);
+  };
+
   return (
     <Container className="mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -483,21 +499,36 @@ const AdminDashboard = () => {
                 </thead>
                 <tbody>
                   {users.filter(user => user.role === 'student').map(student => {
-                    // Get all portfolios for this student
-                    const studentPortfolios = portfolios.filter(p => p.userId?._id === student._id || p.userId === student._id);
+                    const studentPortfolios = portfolios.filter(p => 
+                      p.userId?._id === student._id || p.userId === student._id
+                    );
 
-                    // Calculate progress for each unit
+                    // Calculate unique criteria covered per unit
                     const unitProgress = {};
                     ['311', '312', '313', '315', '316', '317', '318', '399'].forEach(unit => {
-                      const portfoliosForUnit = studentPortfolios.filter(p => p.unit?.number === unit);
+                      // Get portfolios for this unit
+                      const unitPortfolios = studentPortfolios.filter(p => p.unit?.number === unit);
+                      
+                      // Get unique criteria covered
+                      const uniqueCriteria = new Set(
+                        unitPortfolios.map(p => p.criteria?.number)
+                      );
+                      
+                      // Get total required criteria for this unit
+                      const totalRequired = getTotalCriteriaForUnit(unit);
+
                       unitProgress[unit] = {
-                        total: portfoliosForUnit.length,
-                        done: portfoliosForUnit.filter(p => p.status === 'Done').length
+                        completed: uniqueCriteria.size,
+                        total: totalRequired
                       };
                     });
 
-                    const totalDone = Object.values(unitProgress).reduce((sum, unit) => sum + unit.done, 0);
-                    const overallProgress = Math.round((totalDone / 8) * 100); // 8 units total
+                    // Calculate overall progress
+                    const totalCompleted = Object.values(unitProgress)
+                      .reduce((sum, unit) => sum + unit.completed, 0);
+                    const totalRequired = Object.values(unitProgress)
+                      .reduce((sum, unit) => sum + unit.total, 0);
+                    const overallProgress = Math.round((totalCompleted / totalRequired) * 100);
 
                     return (
                       <tr key={student._id}>
@@ -508,9 +539,9 @@ const AdminDashboard = () => {
                               <div
                                 className="progress-bar bg-success"
                                 role="progressbar"
-                                style={{ width: `${((unitProgress[unit]?.done || 0) / 1) * 100}%` }}
+                                style={{ width: `${(unitProgress[unit].completed / unitProgress[unit].total) * 100}%` }}
                               >
-                                {unitProgress[unit]?.done || 0}/1
+                                {unitProgress[unit].completed}/{unitProgress[unit].total}
                               </div>
                             </div>
                           </td>
