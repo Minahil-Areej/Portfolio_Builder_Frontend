@@ -407,6 +407,7 @@ const AdminDashboard = () => {
         </Col>
 
         {/* Chart for portfolio submission */}
+        
         <Col md={6}>
           <Card className="shadow-sm">
             <Card.Body>
@@ -482,15 +483,20 @@ const AdminDashboard = () => {
                 </thead>
                 <tbody>
                   {users.filter(user => user.role === 'student').map(student => {
-                    const studentPortfolios = portfolios.filter(p => p.userId === student._id);
-                    const unitProgress = ['311', '312', '313', '315', '316', '317', '318', '399'].reduce((acc, unit) => {
-                      acc[unit] = studentPortfolios.filter(p =>
-                        p.unit?.number === unit && p.status === 'Done'
-                      ).length;
-                      return acc;
-                    }, {});
+                    // Get all portfolios for this student
+                    const studentPortfolios = portfolios.filter(p => p.userId?._id === student._id || p.userId === student._id);
 
-                    const totalDone = Object.values(unitProgress).reduce((sum, count) => sum + count, 0);
+                    // Calculate progress for each unit
+                    const unitProgress = {};
+                    ['311', '312', '313', '315', '316', '317', '318', '399'].forEach(unit => {
+                      const portfoliosForUnit = studentPortfolios.filter(p => p.unit?.number === unit);
+                      unitProgress[unit] = {
+                        total: portfoliosForUnit.length,
+                        done: portfoliosForUnit.filter(p => p.status === 'Done').length
+                      };
+                    });
+
+                    const totalDone = Object.values(unitProgress).reduce((sum, unit) => sum + unit.done, 0);
                     const overallProgress = Math.round((totalDone / 8) * 100); // 8 units total
 
                     return (
@@ -502,9 +508,9 @@ const AdminDashboard = () => {
                               <div
                                 className="progress-bar bg-success"
                                 role="progressbar"
-                                style={{ width: `${(unitProgress[unit] || 0) * 100}%` }}
+                                style={{ width: `${((unitProgress[unit]?.done || 0) / 1) * 100}%` }}
                               >
-                                {unitProgress[unit] || 0}/1
+                                {unitProgress[unit]?.done || 0}/1
                               </div>
                             </div>
                           </td>
