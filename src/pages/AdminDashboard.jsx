@@ -535,16 +535,26 @@ const AdminDashboard = () => {
                         <td>{student.name}</td>
                         {['311', '312', '313', '315', '316', '317', '318', '399'].map(unit => (
                           <td key={unit}>
-                            <div className="progress" style={{ height: '24px' }}>  {/* Increased height */}
+                            <div className="progress" style={{ height: '24px', position: 'relative' }}>
                               <div
                                 className="progress-bar bg-success"
                                 role="progressbar"
                                 style={{ 
                                   width: `${(unitProgress[unit].completed / unitProgress[unit].total) * 100}%`,
-                                  fontSize: '0.9rem',        // Add font size
-                                  lineHeight: '24px',        // Match the height
-                                  fontWeight: '500',         // Make text slightly bold
-                                  color: '#000'              // Dark text color
+                                }}
+                              />
+                              <div 
+                                style={{
+                                  position: 'absolute',
+                                  width: '100%',
+                                  height: '100%',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  color: '#000',
+                                  fontSize: '0.9rem',
+                                  fontWeight: '500',
+                                  backgroundColor: 'transparent'
                                 }}
                               >
                                 {unitProgress[unit].completed}/{unitProgress[unit].total}
@@ -553,16 +563,26 @@ const AdminDashboard = () => {
                           </td>
                         ))}
                         <td>
-                          <div className="progress" style={{ height: '24px' }}>  {/* Increased height */}
+                          <div className="progress" style={{ height: '24px', position: 'relative' }}>
                             <div
                               className="progress-bar bg-info"
                               role="progressbar"
                               style={{ 
                                 width: `${overallProgress}%`,
-                                fontSize: '0.9rem',          // Add font size
-                                lineHeight: '24px',          // Match the height
-                                fontWeight: '500',           // Make text slightly bold
-                                color: '#000'                // Dark text color
+                              }}
+                            />
+                            <div 
+                              style={{
+                                position: 'absolute',
+                                width: '100%',
+                                height: '100%',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                color: '#000',
+                                fontSize: '0.9rem',
+                                fontWeight: '500',
+                                backgroundColor: 'transparent'
                               }}
                             >
                               {overallProgress}%
