@@ -535,11 +535,17 @@ const AdminDashboard = () => {
                         <td>{student.name}</td>
                         {['311', '312', '313', '315', '316', '317', '318', '399'].map(unit => (
                           <td key={unit}>
-                            <div className="progress" style={{ height: '20px' }}>
+                            <div className="progress" style={{ height: '24px' }}>  {/* Increased height */}
                               <div
                                 className="progress-bar bg-success"
                                 role="progressbar"
-                                style={{ width: `${(unitProgress[unit].completed / unitProgress[unit].total) * 100}%` }}
+                                style={{ 
+                                  width: `${(unitProgress[unit].completed / unitProgress[unit].total) * 100}%`,
+                                  fontSize: '0.9rem',        // Add font size
+                                  lineHeight: '24px',        // Match the height
+                                  fontWeight: '500',         // Make text slightly bold
+                                  color: '#000'              // Dark text color
+                                }}
                               >
                                 {unitProgress[unit].completed}/{unitProgress[unit].total}
                               </div>
@@ -547,11 +553,17 @@ const AdminDashboard = () => {
                           </td>
                         ))}
                         <td>
-                          <div className="progress" style={{ height: '20px' }}>
+                          <div className="progress" style={{ height: '24px' }}>  {/* Increased height */}
                             <div
                               className="progress-bar bg-info"
                               role="progressbar"
-                              style={{ width: `${overallProgress}%` }}
+                              style={{ 
+                                width: `${overallProgress}%`,
+                                fontSize: '0.9rem',          // Add font size
+                                lineHeight: '24px',          // Match the height
+                                fontWeight: '500',           // Make text slightly bold
+                                color: '#000'                // Dark text color
+                              }}
                             >
                               {overallProgress}%
                             </div>
