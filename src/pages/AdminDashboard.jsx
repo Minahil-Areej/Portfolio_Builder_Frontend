@@ -153,32 +153,41 @@ const AdminDashboard = () => {
     fetchAssessors(); // NEW CALL
   }, []);
 
+  // Update the calculateProgress useEffect
   useEffect(() => {
     const calculateProgress = () => {
       const metrics = {
         totalSubmissions: portfolios.length,
-        approvedSubmissions: portfolios.filter(p => p.status === 'Approved').length,
-        rejectedSubmissions: portfolios.filter(p => p.status === 'Rejected').length,
-        pendingReview: portfolios.filter(p => p.status === 'To Be Reviewed').length,
+        statusCounts: {
+          'Draft': portfolios.filter(p => p.status === 'Draft').length,
+          'To Be Reviewed': portfolios.filter(p => p.status === 'To Be Reviewed').length,
+          'Reviewed': portfolios.filter(p => p.status === 'Reviewed').length,
+          'Done': portfolios.filter(p => p.status === 'Done').length
+        },
         studentsProgress: users
           .filter(user => user.role === 'student')
           .map(student => {
             const studentPortfolios = portfolios.filter(p => p.userId === student._id);
-            const approvedPortfolios = studentPortfolios.filter(p => p.status === 'Approved');
             return {
               studentId: student._id,
               name: student.name,
               totalSubmissions: studentPortfolios.length,
-              approved: approvedPortfolios.length,
-              pending: studentPortfolios.filter(p => p.status === 'To Be Reviewed').length,
-              completionRate: Math.round((approvedPortfolios.length / TOTAL_REQUIRED_UNITS) * 100)
+              statusCounts: {
+                'Draft': studentPortfolios.filter(p => p.status === 'Draft').length,
+                'To Be Reviewed': studentPortfolios.filter(p => p.status === 'To Be Reviewed').length,
+                'Reviewed': studentPortfolios.filter(p => p.status === 'Reviewed').length,
+                'Done': studentPortfolios.filter(p => p.status === 'Done').length
+              },
+              completionRate: Math.round((studentPortfolios.filter(p => p.status === 'Done').length / TOTAL_REQUIRED_UNITS) * 100)
             };
           })
       };
       setProgressMetrics(metrics);
     };
 
-    calculateProgress();
+    if (portfolios.length > 0 && users.length > 0) {
+      calculateProgress();
+    }
   }, [portfolios, users]);
 
   const renderChart = () => {
