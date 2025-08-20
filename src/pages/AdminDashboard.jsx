@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Container, Card, Row, Col, Form, Badge, ProgressBar } from 'react-bootstrap';
+import { Table, Button, Container, Card, Row, Col, Form, Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
@@ -40,8 +40,6 @@ const dropdownStyles = {
   }
 };
 
-const TOTAL_REQUIRED_UNITS = 12; // Update this number based on your course requirements
-
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [portfolios, setPortfolios] = useState([]);
@@ -53,18 +51,6 @@ const AdminDashboard = () => {
   const [sortField, setSortField] = useState('name');
   const [sortDirection, setSortDirection] = useState('asc');
   const [tableOrder, setTableOrder] = useState(['students', 'assessors', 'admins']);
-
-  // Add these new states
-  const [progressMetrics, setProgressMetrics] = useState({
-    totalSubmissions: 0,
-    statusCounts: {
-      'Draft': 0,
-      'To Be Reviewed': 0,
-      'Reviewed': 0,
-      'Done': 0
-    },
-    studentsProgress: []
-  });
 
   const navigate = useNavigate();
 
@@ -152,43 +138,6 @@ const AdminDashboard = () => {
     fetchUsers();
     fetchAssessors(); // NEW CALL
   }, []);
-
-  // Update the calculateProgress useEffect
-  useEffect(() => {
-    const calculateProgress = () => {
-      const metrics = {
-        totalSubmissions: portfolios.length,
-        statusCounts: {
-          'Draft': portfolios.filter(p => p.status === 'Draft').length,
-          'To Be Reviewed': portfolios.filter(p => p.status === 'To Be Reviewed').length,
-          'Reviewed': portfolios.filter(p => p.status === 'Reviewed').length,
-          'Done': portfolios.filter(p => p.status === 'Done').length
-        },
-        studentsProgress: users
-          .filter(user => user.role === 'student')
-          .map(student => {
-            const studentPortfolios = portfolios.filter(p => p.userId === student._id);
-            return {
-              studentId: student._id,
-              name: student.name,
-              totalSubmissions: studentPortfolios.length,
-              statusCounts: {
-                'Draft': studentPortfolios.filter(p => p.status === 'Draft').length,
-                'To Be Reviewed': studentPortfolios.filter(p => p.status === 'To Be Reviewed').length,
-                'Reviewed': studentPortfolios.filter(p => p.status === 'Reviewed').length,
-                'Done': studentPortfolios.filter(p => p.status === 'Done').length
-              },
-              completionRate: Math.round((studentPortfolios.filter(p => p.status === 'Done').length / TOTAL_REQUIRED_UNITS) * 100)
-            };
-          })
-      };
-      setProgressMetrics(metrics);
-    };
-
-    if (portfolios.length > 0 && users.length > 0) {
-      calculateProgress();
-    }
-  }, [portfolios, users]);
 
   const renderChart = () => {
     const ctx = document.getElementById('portfolioChart').getContext('2d');
@@ -701,90 +650,6 @@ const AdminDashboard = () => {
                     return null;
                 }
               })}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* New Progress Overview Section */}
-      <Row className="mb-4">
-        <Col>
-          <Card>
-            <Card.Header>Progress Overview</Card.Header>
-            <Card.Body>
-              <Row>
-                <Col md={3}>
-                  <div className="text-center">
-                    <h4>{progressMetrics.totalSubmissions}</h4>
-                    <p>Total Submissions</p>
-                  </div>
-                </Col>
-                <Col md={3}>
-                  <div className="text-center">
-                    <h4>{progressMetrics.approvedSubmissions}</h4>
-                    <p>Approved</p>
-                  </div>
-                </Col>
-                <Col md={3}>
-                  <div className="text-center">
-                    <h4>{progressMetrics.pendingReview}</h4>
-                    <p>Pending Review</p>
-                  </div>
-                </Col>
-                <Col md={3}>
-                  <div className="text-center">
-                    <h4>{progressMetrics.rejectedSubmissions}</h4>
-                    <p>Rejected</p>
-                  </div>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* New Student Progress Table */}
-      <Row>
-        <Col>
-          <Card>
-            <Card.Header>Student Progress</Card.Header>
-            <Card.Body>
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>Student Name</th>
-                    <th>Total Submissions</th>
-                    <th>Draft</th>
-                    <th>To Be Reviewed</th>
-                    <th>Reviewed</th>
-                    <th>Done</th>
-                    <th>Completion</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {progressMetrics.studentsProgress.map(student => (
-                    <tr key={student.studentId}>
-                      <td>{student.name}</td>
-                      <td>{student.totalSubmissions}</td>
-                      <td>{student.statusCounts['Draft']}</td>
-                      <td>{student.statusCounts['To Be Reviewed']}</td>
-                      <td>{student.statusCounts['Reviewed']}</td>
-                      <td>{student.statusCounts['Done']}</td>
-                      <td>
-                        <ProgressBar 
-                          now={student.completionRate} 
-                          label={`${student.completionRate}%`}
-                          variant={
-                            student.completionRate >= 75 ? 'success' :
-                            student.completionRate >= 50 ? 'info' :
-                            student.completionRate >= 25 ? 'warning' : 'danger'
-                          }
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
             </Card.Body>
           </Card>
         </Col>
