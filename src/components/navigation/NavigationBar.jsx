@@ -4,7 +4,11 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const NavigationBar = () => {
   const navigate = useNavigate();
-  const userRole = localStorage.getItem('role');
+  const [userRole, setUserRole] = React.useState(localStorage.getItem('role'));
+  
+  React.useEffect(() => {
+    setUserRole(localStorage.getItem('role'));
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -20,13 +24,13 @@ const NavigationBar = () => {
         <Navbar.Collapse>
           <Nav className="me-auto">
             {userRole === 'admin' && (
-              <Nav.Link as={Link} to="/admin/dashboard">Dashboard</Nav.Link>
+              <Nav.Link as={Link} to="/admin/dashboard">Admin Dashboard</Nav.Link>
             )}
             {userRole === 'student' && (
-              <Nav.Link as={Link} to="/portfolios">My Portfolios</Nav.Link>
+              <Nav.Link as={Link} to="/dashboard">Student Dashboard</Nav.Link>
             )}
             {userRole === 'assessor' && (
-              <Nav.Link as={Link} to="/assessor/dashboard">Review Portfolios</Nav.Link>
+              <Nav.Link as={Link} to="/assessor">Assessor Dashboard</Nav.Link>
             )}
           </Nav>
           <Nav>

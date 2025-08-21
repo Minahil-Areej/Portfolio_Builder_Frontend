@@ -4,7 +4,11 @@ import { Link, useLocation } from 'react-router-dom';
 
 const Sidebar = () => {
   const location = useLocation();
-  const userRole = localStorage.getItem('role');
+  const [userRole, setUserRole] = React.useState(localStorage.getItem('role'));
+  
+  React.useEffect(() => {
+    setUserRole(localStorage.getItem('role'));
+  }, []);
 
   const sidebarStyle = {
     minWidth: '200px',
@@ -23,12 +27,13 @@ const Sidebar = () => {
       { path: '/admin/applications', label: 'Applications' }
     ],
     student: [
-      { path: '/portfolios', label: 'My Portfolios' },
-      { path: '/portfolio/create', label: 'Create Portfolio' }
+      { path: '/dashboard', label: 'Dashboard' },
+      { path: '/portfolio', label: 'My Portfolios' },
+      { path: '/portfolio/create', label: 'Create New Portfolio' }
     ],
     assessor: [
-      { path: '/assessor/dashboard', label: 'Dashboard' },
-      { path: '/assessor/reviews', label: 'Review Portfolios' }
+      { path: '/assessor', label: 'Dashboard' },
+      { path: '/assessor/portfolio', label: 'Review Portfolios' }
     ]
   };
 

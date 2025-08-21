@@ -351,13 +351,15 @@ const AdminDashboard = () => {
   };
 
   return (
-    <Container className="mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h1>Admin Dashboard</h1>
-        <Button variant="outline-danger" onClick={handleLogout}>
-          Logout
-        </Button>
-      </div>
+    <div className="d-flex">
+      <Sidebar />
+      <Container className="mt-4" style={{ flex: 1 }}>
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h1>Admin Dashboard</h1>
+          <Button variant="outline-danger" onClick={handleLogout}>
+            Logout
+          </Button>
+        </div>
 
       {/* Top Statistics */}
       <Row className="mb-4">
@@ -913,6 +915,7 @@ const AdminDashboard = () => {
         </Col>
       </Row>
     </Container>
+    </div>
   );
 };
 
