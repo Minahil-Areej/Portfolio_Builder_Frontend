@@ -10,9 +10,10 @@ const Sidebar = () => {
     minWidth: '200px',
     backgroundColor: '#f8f9fa',
     borderRight: '1px solid #dee2e6',
-    height: '100%',
-    
-    padding: '1rem'
+    height: '100vh',
+    padding: '1rem',
+    position: 'sticky',
+    top: 0
   };
 
   const menuItems = {
@@ -32,7 +33,6 @@ const Sidebar = () => {
   };
 
   const currentItems = menuItems[userRole] || [];
-
 
   return (
     <Nav className="flex-column" style={sidebarStyle}>
