@@ -26,7 +26,7 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
         <Route path="/forgot-password" element={<PublicLayout><ForgotPassword /></PublicLayout>} />
         <Route path="/reset-password" element={<PublicLayout><ResetPassword /></PublicLayout>} />
