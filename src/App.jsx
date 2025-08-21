@@ -3,6 +3,8 @@ import AdminLayout from './layouts/AdminLayout';
 import StudentLayout from './layouts/StudentLayout';
 import AssessorLayout from './layouts/AssessorLayout';
 import PublicLayout from './layouts/PublicLayout';
+import NavigationBar from './components/navigation/NavigationBar';
+import Sidebar from './components/navigation/Sidebar';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -60,11 +62,6 @@ function App() {
           />
         </Routes>
       </div>
-    </Router>
-
-        {/* Catch all route */}
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
     </Router>
   );
 }
