@@ -23,31 +23,44 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   return (
     <Router>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
-        <Route path="/forgot-password" element={<PublicLayout><ForgotPassword /></PublicLayout>} />
-        <Route path="/reset-password" element={<PublicLayout><ResetPassword /></PublicLayout>} />
-        <Route path="/application-form" element={<PublicLayout><ApplicationForm /></PublicLayout>} />
-        <Route path="/application-success" element={<PublicLayout><ApplicationSuccess /></PublicLayout>} />
-
-        {/* Student Routes */}
-        <Route path="/dashboard" element={<StudentLayout><Dashboard /></StudentLayout>} />
-        <Route path="/portfolio" element={<StudentLayout><Portfolio /></StudentLayout>} />
-        <Route path="/portfolio/edit/:id" element={<StudentLayout><EditPortfolio /></StudentLayout>} />
-        <Route path="/portfolio/view/:id" element={<StudentLayout><ViewPortfolio /></StudentLayout>} />
-
-        {/* Assessor Routes */}
-        <Route path="/assessor" element={<AssessorLayout><AssessorDashboard /></AssessorLayout>} />
-        <Route path="/assessor/portfolio/:id" element={<AssessorLayout><AssessorPortfolio /></AssessorLayout>} />
-        <Route path="/portfolio/assessor/:id" element={<AssessorLayout><AssessorPortfolio /></AssessorLayout>} />
-
-        {/* Admin Routes */}
-        <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
-        <Route path="/admin/applications" element={<AdminLayout><ViewApplication /></AdminLayout>} />
-        <Route path="/admin/application/:id" element={<AdminLayout><ViewApplication /></AdminLayout>} />
+      {/* Wrap everything in a main container */}
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        {/* Use Routes to conditionally render navigation */}
+        <Routes>
+          <Route
+            path="*"
+            element={
+              <>
+                <NavigationBar />
+                <div style={{ display: 'flex', flex: 1 }}>
+                  <Sidebar />
+                  <div className="main-content">
+                    <Routes>
+                      <Route path="/" element={<Navigate to="/login" />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/register" element={<Register />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/portfolio" element={<Portfolio />} />
+                      <Route path="/portfolio/edit/:id" element={<EditPortfolio />} />
+                      <Route path="/portfolio/view/:id" element={<ViewPortfolio />} />
+                      <Route path="/portfolio/assessor/:id" element={<AssessorPortfolio />} />
+                      <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                      <Route path="/assessor" element={<AssessorDashboard />} />
+                      <Route path="/application-form" element={<ApplicationForm />} />
+                      <Route path="/application-success" element={<ApplicationSuccess />} />
+                      <Route path="/admin/applications" element={<ViewApplication />} />
+                      <Route path="/forgot-password" element={<ForgotPassword />} />
+                      <Route path="/reset-password" element={<ResetPassword />} />
+                      <Route path="*" element={<Navigate to="/login" />} />
+                    </Routes>
+                  </div>
+                </div>
+              </>
+            }
+          />
+        </Routes>
+      </div>
+    </Router>
 
         {/* Catch all route */}
         <Route path="*" element={<Navigate to="/login" />} />
