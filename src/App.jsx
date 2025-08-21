@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import NavigationBar from './components/navigation/NavigationBar';
+import Sidebar from './components/navigation/Sidebar';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -17,28 +19,51 @@ import ResetPassword from './pages/ResetPassword';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
+  // Add this helper function inside App
+  const shouldShowNavigation = (pathname) => {
+    const publicPaths = ['/login', '/register', '/forgot-password', '/reset-password', '/application-form', '/application-success'];
+    return !publicPaths.includes(pathname);
+  };
+
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/portfolio" element={<Portfolio />} /> {/* Portfolio Creation route */}
-        <Route path="/portfolio/edit/:id" element={<EditPortfolio />} /> {/* Add edit route */}
-        <Route path="/portfolio/view/:id" element={<ViewPortfolio />} /> {/* Add ViewPortfolio route */}
-        <Route path="/assessor" element={<AssessorDashboard />} />  {/* Assessor Dashboard */}
-        <Route path="/portfolio/assessor/:id" element={<AssessorPortfolio />} />  {/* Assessor Portfolio Review */}
-        <Route path="/admin-dashboard" element={<AdminDashboard />} /> {/* No user role check here */}
-        <Route path="/application-form" element={<ApplicationForm />} />
-        <Route path="/application-success" element={<ApplicationSuccess />} />
-        <Route path="/admin/application/:id" element={<ViewApplication />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-
-        {/* Add a fallback for undefined routes */}
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
+      {/* Wrap everything in a main container */}
+      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        {/* Use Routes to conditionally render navigation */}
+        <Routes>
+          <Route
+            path="*"
+            element={
+              <>
+                {shouldShowNavigation(window.location.pathname) && <NavigationBar />}
+                <div style={{ display: 'flex', flex: 1 }}>
+                  {shouldShowNavigation(window.location.pathname) && <Sidebar />}
+                  <div className="main-content">
+                    <Routes>
+                      <Route path="/" element={<Navigate to="/login" />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/register" element={<Register />} />
+                      <Route path="/dashboard" element={<Dashboard />} />
+                      <Route path="/portfolio" element={<Portfolio />} />
+                      <Route path="/portfolio/edit/:id" element={<EditPortfolio />} />
+                      <Route path="/portfolio/view/:id" element={<ViewPortfolio />} />
+                      <Route path="/assessor" element={<AssessorDashboard />} />
+                      <Route path="/portfolio/assessor/:id" element={<AssessorPortfolio />} />
+                      <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                      <Route path="/application-form" element={<ApplicationForm />} />
+                      <Route path="/application-success" element={<ApplicationSuccess />} />
+                      <Route path="/admin/application/:id" element={<ViewApplication />} />
+                      <Route path="/forgot-password" element={<ForgotPassword />} />
+                      <Route path="/reset-password" element={<ResetPassword />} />
+                      <Route path="*" element={<Navigate to="/login" />} />
+                    </Routes>
+                  </div>
+                </div>
+              </>
+            }
+          />
+        </Routes>
+      </div>
     </Router>
   );
 }

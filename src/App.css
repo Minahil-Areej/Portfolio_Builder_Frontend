@@ -40,3 +40,36 @@
 .read-the-docs {
   color: #888;
 }
+
+/* ...existing code... */
+
+/* Navigation Layout */
+#root {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-content {
+  margin-left: 200px;
+  padding: 20px;
+  transition: margin-left 0.3s;
+}
+
+.sidebar-container {
+  position: fixed;
+  left: 0;
+  top: 56px;
+  bottom: 0;
+  width: 200px;
+  z-index: 1000;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 0;
+  }
+  .sidebar-container {
+    display: none;
+  }
+}
