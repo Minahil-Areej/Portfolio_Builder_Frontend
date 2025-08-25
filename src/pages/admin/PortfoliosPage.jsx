@@ -20,7 +20,8 @@ const PortfoliosPage = () => {
       try {
         const token = localStorage.getItem('token');
         const [portfoliosRes, usersRes] = await Promise.all([
-          axios.get(`${API_URL}/api/portfolio`, {  // Changed from portfolios/all to portfolio
+          // Changed to match AdminDashboard endpoint
+          axios.get(`${API_URL}/api/portfolios/admin/all`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
           axios.get(`${API_URL}/api/users`, {
@@ -145,7 +146,11 @@ const PortfoliosPage = () => {
                 <td>{portfolio.userId?.name}</td>
                 <td>{portfolio.unit?.number}</td>
                 <td>
-                  <Badge bg={getBadgeVariant(portfolio.status)}>
+                  <Badge bg={
+                    portfolio.status === 'To Be Reviewed' ? 'warning' :
+                    portfolio.status === 'In Review' ? 'info' :
+                    portfolio.status === 'Done' ? 'success' : 'secondary'
+                  }>
                     {portfolio.status}
                   </Badge>
                 </td>
