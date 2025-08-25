@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Chart from 'chart.js/auto';
 import nvqData from '../../public/Nvq_2357_13.json';
+import { CSVLink } from 'react-csv';
+import { FaFileDownload, FaChartLine } from 'react-icons/fa';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -61,6 +63,8 @@ const AdminDashboard = () => {
     'Reviewed': 0,
     'Done': 0
   });
+  const [showStats, setShowStats] = useState(false);
+  const [adminLogs, setAdminLogs] = useState([]);
 
   const navigate = useNavigate();
 
@@ -350,6 +354,34 @@ const AdminDashboard = () => {
     return totalCriteria;
   };
 
+  const prepareExportData = (type) => {
+    switch(type) {
+      case 'users':
+        return {
+          data: users.map(user => ({
+            Name: user.name,
+            Email: user.email,
+            Role: user.role,
+            Status: user.isActive ? 'Active' : 'Inactive',
+            'Assigned Assessor': user.assignedAssessor?.name || 'None'
+          })),
+          filename: 'users-export.csv'
+        };
+      case 'portfolios':
+        return {
+          data: portfolios.map(portfolio => ({
+            Unit: portfolio.unit?.number,
+            Status: portfolio.status,
+            Student: portfolio.userId?.name,
+            'Created Date': new Date(portfolio.createdAt).toLocaleDateString()
+          })),
+          filename: 'portfolios-export.csv'
+        };
+      default:
+        return { data: [], filename: 'export.csv' };
+    }
+  };
+
   return (
     <Container className="mt-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -358,6 +390,61 @@ const AdminDashboard = () => {
           Logout
         </Button>
       </div>
+
+      {/* Export Data Section */}
+      <div className="mb-4 bg-light p-3 rounded">
+        <h5 className="mb-3">Export Data</h5>
+        <div className="d-flex gap-2">
+          <CSVLink {...prepareExportData('users')} className="btn btn-primary btn-sm">
+            <FaFileDownload className="me-2" />
+            Export Users
+          </CSVLink>
+          <CSVLink {...prepareExportData('portfolios')} className="btn btn-success btn-sm">
+            <FaFileDownload className="me-2" />
+            Export Portfolios
+          </CSVLink>
+          <Button 
+            variant="info" 
+            size="sm" 
+            onClick={() => setShowStats(!showStats)}
+          >
+            <FaChartLine className="me-2" />
+            {showStats ? 'Hide' : 'Show'} Quick Stats
+          </Button>
+        </div>
+      </div>
+
+      {showStats && (
+        <Row className="mb-4">
+          <Col md={4}>
+            <Card className="text-center shadow-sm bg-info text-white">
+              <Card.Body>
+                <Card.Title>Active Users</Card.Title>
+                <h3>{users.filter(u => u.isActive).length}</h3>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={4}>
+            <Card className="text-center shadow-sm bg-warning text-dark">
+              <Card.Body>
+                <Card.Title>Pending Reviews</Card.Title>
+                <h3>{portfolios.filter(p => p.status === 'To Be Reviewed').length}</h3>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={4}>
+            <Card className="text-center shadow-sm bg-success text-white">
+              <Card.Body>
+                <Card.Title>Completion Rate</Card.Title>
+                <h3>
+                  {Math.round((portfolios.filter(p => p.status === 'Done').length / 
+                    (portfolios.length || 1)) * 100)}%
+                </h3>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      )}
 
       {/* Top Statistics */}
       <Row className="mb-4">
