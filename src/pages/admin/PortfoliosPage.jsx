@@ -19,8 +19,9 @@ const PortfoliosPage = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
+        // Updated endpoint to match your backend
         const [portfoliosRes, usersRes] = await Promise.all([
-          axios.get(`${API_URL}/api/portfolios`, {
+          axios.get(`${API_URL}/api/portfolios/all`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
           axios.get(`${API_URL}/api/users`, {
@@ -43,17 +44,37 @@ const PortfoliosPage = () => {
   const filterAndSortPortfolios = (portfolios) => {
     return portfolios
       .filter(portfolio => 
-        portfolio.userId?.name?.toLowerCase().includes(filter.toLowerCase()) ||
-        portfolio.unit?.number?.toLowerCase().includes(filter.toLowerCase()) ||
+        portfolio.studentName?.toLowerCase().includes(filter.toLowerCase()) ||
+        portfolio.unit?.toLowerCase().includes(filter.toLowerCase()) ||
         portfolio.status?.toLowerCase().includes(filter.toLowerCase())
       )
       .sort((a, b) => {
-        const aValue = a[sortField];
-        const bValue = b[sortField];
+        let aValue = a[sortField];
+        let bValue = b[sortField];
+        
+        // Handle nested properties
+        if (sortField === 'studentName') {
+          aValue = a.studentName || '';
+          bValue = b.studentName || '';
+        }
+        
         return sortDirection === 'asc'
           ? aValue > bValue ? 1 : -1
           : aValue < bValue ? 1 : -1;
       });
+  };
+
+  const getBadgeVariant = (status) => {
+    switch (status) {
+      case 'To Be Reviewed':
+        return 'warning';
+      case 'In review':
+        return 'info';
+      case 'Done':
+        return 'success';
+      default:
+        return 'secondary';
+    }
   };
 
   return (
@@ -86,7 +107,8 @@ const PortfoliosPage = () => {
                 >
                   <option value="createdAt">Date Created</option>
                   <option value="status">Status</option>
-                  <option value="unit.number">Unit Number</option>
+                  <option value="unit">Unit</option>
+                  <option value="studentName">Student Name</option>
                 </Form.Select>
               </Form.Group>
             </Col>
@@ -121,20 +143,16 @@ const PortfoliosPage = () => {
           <tbody>
             {filterAndSortPortfolios(portfolios).map(portfolio => (
               <tr key={portfolio._id}>
-                <td>{portfolio.userId?.name}</td>
-                <td>{portfolio.unit?.number}</td>
+                <td>{portfolio.studentName}</td>
+                <td>{portfolio.unit}</td>
                 <td>
-                  <Badge bg={
-                    portfolio.status === 'Submitted' ? 'warning' :
-                    portfolio.status === 'In Review' ? 'info' :
-                    portfolio.status === 'Done' ? 'success' : 'secondary'
-                  }>
+                  <Badge bg={getBadgeVariant(portfolio.status)}>
                     {portfolio.status}
                   </Badge>
                 </td>
                 <td>{new Date(portfolio.createdAt).toLocaleDateString()}</td>
                 <td>{new Date(portfolio.updatedAt).toLocaleDateString()}</td>
-                <td>{portfolio.userId?.assignedAssessor?.name || 'Not Assigned'}</td>
+                <td>{portfolio.assignedAssessor || 'Not Assigned'}</td>
               </tr>
             ))}
           </tbody>

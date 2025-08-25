@@ -287,6 +287,41 @@ const UsersPage = () => {
             ))}
           </tbody>
         </Table>
+
+        {/* Admins Table */}
+        <h5 className="mb-3">Administrators</h5>
+        <Table striped bordered hover responsive className="mb-4">
+          <thead className="bg-light">
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filterAndSortUsers(users, 'admin').map(user => (
+              <tr key={user._id}>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>
+                  <Badge bg={user.isActive ? 'success' : 'warning'}>
+                    {user.isActive ? 'Active' : 'Inactive'}
+                  </Badge>
+                </td>
+                <td>
+                  <Button
+                    variant={user.isActive ? 'danger' : 'success'}
+                    size="sm"
+                    onClick={() => toggleUserStatus(user._id, user.isActive)}
+                  >
+                    {user.isActive ? 'Deactivate' : 'Activate'}
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </Table>
       </Container>
     </Layout>
   );
