@@ -66,6 +66,7 @@ const AdminDashboard = () => {
   });
   const [showStats, setShowStats] = useState(false);
   const [adminLogs, setAdminLogs] = useState([]);
+  const [user, setUser] = useState(null);
 
   const navigate = useNavigate();
 
@@ -73,6 +74,23 @@ const AdminDashboard = () => {
     localStorage.removeItem('token');
     navigate('/login');
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${API_URL}/api/users/me`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        navigate('/login');
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -384,7 +402,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <Layout user={{ name: user?.name, role: 'admin' }}>
+    <Layout user={user}>
       <Container className="mt-4">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h1>Admin Dashboard</h1>
