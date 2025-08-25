@@ -19,9 +19,8 @@ const PortfoliosPage = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        // Updated endpoint to match your backend
         const [portfoliosRes, usersRes] = await Promise.all([
-          axios.get(`${API_URL}/api/portfolios/all`, {
+          axios.get(`${API_URL}/api/portfolio`, {  // Changed from portfolios/all to portfolio
             headers: { Authorization: `Bearer ${token}` },
           }),
           axios.get(`${API_URL}/api/users`, {
@@ -41,21 +40,21 @@ const PortfoliosPage = () => {
     fetchData();
   }, [navigate]);
 
+  // Update the filter function to match your data structure
   const filterAndSortPortfolios = (portfolios) => {
     return portfolios
       .filter(portfolio => 
-        portfolio.studentName?.toLowerCase().includes(filter.toLowerCase()) ||
-        portfolio.unit?.toLowerCase().includes(filter.toLowerCase()) ||
+        portfolio.userId?.name?.toLowerCase().includes(filter.toLowerCase()) ||
+        portfolio.unit?.number?.toLowerCase().includes(filter.toLowerCase()) ||
         portfolio.status?.toLowerCase().includes(filter.toLowerCase())
       )
       .sort((a, b) => {
         let aValue = a[sortField];
         let bValue = b[sortField];
         
-        // Handle nested properties
         if (sortField === 'studentName') {
-          aValue = a.studentName || '';
-          bValue = b.studentName || '';
+          aValue = a.userId?.name || '';
+          bValue = b.userId?.name || '';
         }
         
         return sortDirection === 'asc'
@@ -143,8 +142,8 @@ const PortfoliosPage = () => {
           <tbody>
             {filterAndSortPortfolios(portfolios).map(portfolio => (
               <tr key={portfolio._id}>
-                <td>{portfolio.studentName}</td>
-                <td>{portfolio.unit}</td>
+                <td>{portfolio.userId?.name}</td>
+                <td>{portfolio.unit?.number}</td>
                 <td>
                   <Badge bg={getBadgeVariant(portfolio.status)}>
                     {portfolio.status}
@@ -152,7 +151,7 @@ const PortfoliosPage = () => {
                 </td>
                 <td>{new Date(portfolio.createdAt).toLocaleDateString()}</td>
                 <td>{new Date(portfolio.updatedAt).toLocaleDateString()}</td>
-                <td>{portfolio.assignedAssessor || 'Not Assigned'}</td>
+                <td>{portfolio.userId?.assignedAssessor?.name || 'Not Assigned'}</td>
               </tr>
             ))}
           </tbody>
