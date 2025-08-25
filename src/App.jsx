@@ -14,6 +14,7 @@ import ViewApplication from './pages/ViewApplication';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import UsersPage from './pages/admin/UsersPage';
+import PortfoliosPage from './pages/admin/PortfoliosPage'; // Import the new PortfoliosPage
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -37,6 +38,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/admin/users" element={<UsersPage />} /> {/* Admin Users Management */}
+        <Route path="/admin/portfolios" element={<PortfoliosPage />} /> {/* Admin Portfolios Management */}
 
         {/* Add a fallback for undefined routes */}
         <Route path="*" element={<Navigate to="/login" />} />
