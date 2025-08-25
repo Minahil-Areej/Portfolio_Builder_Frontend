@@ -76,23 +76,6 @@ const AdminDashboard = () => {
   };
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${API_URL}/api/users/me`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setUser(response.data);
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        navigate('/login');
-      }
-    };
-
-    fetchUserData();
-  }, []);
-
-  useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -179,10 +162,16 @@ const AdminDashboard = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        //console.log('Fetched users:', response.data); // Log fetched users
-        setUsers(response.data); // Ensure we store the latest data, including `isActive`
+        setUsers(response.data);
+        
+        // Find and set the current admin user
+        const currentUser = response.data.find(u => u.role === 'admin');
+        if (currentUser) {
+          setUser(currentUser);
+        }
       } catch (error) {
         console.error('Error fetching users:', error);
+        navigate('/login');
       }
     };
 
