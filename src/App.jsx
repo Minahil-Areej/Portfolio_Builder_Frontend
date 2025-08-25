@@ -13,6 +13,7 @@ import ApplicationSuccess from './pages/ApplicationSuccess';
 import ViewApplication from './pages/ViewApplication';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import UsersPage from './pages/admin/UsersPage';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -35,6 +36,7 @@ function App() {
         <Route path="/admin/application/:id" element={<ViewApplication />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/admin/users" element={<UsersPage />} /> {/* Admin Users Management */}
 
         {/* Add a fallback for undefined routes */}
         <Route path="*" element={<Navigate to="/login" />} />
