@@ -6,6 +6,7 @@ import Chart from 'chart.js/auto';
 import nvqData from '../../public/Nvq_2357_13.json';
 import { CSVLink } from 'react-csv';
 import { FaFileDownload, FaChartLine } from 'react-icons/fa';
+import Layout from '../components/layout/Layout';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -355,7 +356,7 @@ const AdminDashboard = () => {
   };
 
   const prepareExportData = (type) => {
-    switch(type) {
+    switch (type) {
       case 'users':
         return {
           data: users.map(user => ({
@@ -383,254 +384,283 @@ const AdminDashboard = () => {
   };
 
   return (
-    <Container className="mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h1>Admin Dashboard</h1>
-        <Button variant="outline-danger" onClick={handleLogout}>
-          Logout
-        </Button>
-      </div>
-
-      {/* Export Data Section */}
-      <div className="mb-4 bg-light p-3 rounded">
-        <h5 className="mb-3">Export Data</h5>
-        <div className="d-flex gap-2">
-          <CSVLink {...prepareExportData('users')} className="btn btn-primary btn-sm">
-            <FaFileDownload className="me-2" />
-            Export Users
-          </CSVLink>
-          <CSVLink {...prepareExportData('portfolios')} className="btn btn-success btn-sm">
-            <FaFileDownload className="me-2" />
-            Export Portfolios
-          </CSVLink>
-          <Button 
-            variant="info" 
-            size="sm" 
-            onClick={() => setShowStats(!showStats)}
-          >
-            <FaChartLine className="me-2" />
-            {showStats ? 'Hide' : 'Show'} Quick Stats
+    <Layout user={{ name: user?.name, role: 'admin' }}>
+      <Container className="mt-4">
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <h1>Admin Dashboard</h1>
+          <Button variant="outline-danger" onClick={handleLogout}>
+            Logout
           </Button>
         </div>
-      </div>
 
-      {showStats && (
+        {/* Export Data Section */}
+        <div className="mb-4 bg-light p-3 rounded">
+          <h5 className="mb-3">Export Data</h5>
+          <div className="d-flex gap-2">
+            <CSVLink {...prepareExportData('users')} className="btn btn-primary btn-sm">
+              <FaFileDownload className="me-2" />
+              Export Users
+            </CSVLink>
+            <CSVLink {...prepareExportData('portfolios')} className="btn btn-success btn-sm">
+              <FaFileDownload className="me-2" />
+              Export Portfolios
+            </CSVLink>
+            <Button
+              variant="info"
+              size="sm"
+              onClick={() => setShowStats(!showStats)}
+            >
+              <FaChartLine className="me-2" />
+              {showStats ? 'Hide' : 'Show'} Quick Stats
+            </Button>
+          </div>
+        </div>
+
+        {showStats && (
+          <Row className="mb-4">
+            <Col md={4}>
+              <Card className="text-center shadow-sm bg-info text-white">
+                <Card.Body>
+                  <Card.Title>Active Users</Card.Title>
+                  <h3>{users.filter(u => u.isActive).length}</h3>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card className="text-center shadow-sm bg-warning text-dark">
+                <Card.Body>
+                  <Card.Title>Pending Reviews</Card.Title>
+                  <h3>{portfolios.filter(p => p.status === 'To Be Reviewed').length}</h3>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={4}>
+              <Card className="text-center shadow-sm bg-success text-white">
+                <Card.Body>
+                  <Card.Title>Completion Rate</Card.Title>
+                  <h3>
+                    {Math.round((portfolios.filter(p => p.status === 'Done').length /
+                      (portfolios.length || 1)) * 100)}%
+                  </h3>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        )}
+
+        {/* Top Statistics */}
         <Row className="mb-4">
-          <Col md={4}>
-            <Card className="text-center shadow-sm bg-info text-white">
+          <Col md={3}>
+            <Card className="text-center shadow-sm bg-primary text-white">
               <Card.Body>
-                <Card.Title>Active Users</Card.Title>
-                <h3>{users.filter(u => u.isActive).length}</h3>
+                <Card.Title>Total Users</Card.Title>
+                <h3>{users.length}</h3>
               </Card.Body>
             </Card>
           </Col>
-          <Col md={4}>
-            <Card className="text-center shadow-sm bg-warning text-dark">
-              <Card.Body>
-                <Card.Title>Pending Reviews</Card.Title>
-                <h3>{portfolios.filter(p => p.status === 'To Be Reviewed').length}</h3>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col md={4}>
+          <Col md={3}>
             <Card className="text-center shadow-sm bg-success text-white">
               <Card.Body>
-                <Card.Title>Completion Rate</Card.Title>
-                <h3>
-                  {Math.round((portfolios.filter(p => p.status === 'Done').length / 
-                    (portfolios.length || 1)) * 100)}%
-                </h3>
+                <Card.Title>Total Portfolios</Card.Title>
+                <h3>{portfolios.length}</h3>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={3}>
+            <Card className="text-center shadow-sm bg-warning text-dark">
+              <Card.Body>
+                <Card.Title>Assessors</Card.Title>
+                <h3>{users.filter(user => user.role === 'assessor').length}</h3>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={3}>
+            <Card className="text-center shadow-sm bg-danger text-white">
+              <Card.Body>
+                <Card.Title>Students</Card.Title>
+                <h3>{users.filter(user => user.role === 'student').length}</h3>
               </Card.Body>
             </Card>
           </Col>
         </Row>
-      )}
-
-      {/* Top Statistics */}
-      <Row className="mb-4">
-        <Col md={3}>
-          <Card className="text-center shadow-sm bg-primary text-white">
-            <Card.Body>
-              <Card.Title>Total Users</Card.Title>
-              <h3>{users.length}</h3>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={3}>
-          <Card className="text-center shadow-sm bg-success text-white">
-            <Card.Body>
-              <Card.Title>Total Portfolios</Card.Title>
-              <h3>{portfolios.length}</h3>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={3}>
-          <Card className="text-center shadow-sm bg-warning text-dark">
-            <Card.Body>
-              <Card.Title>Assessors</Card.Title>
-              <h3>{users.filter(user => user.role === 'assessor').length}</h3>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={3}>
-          <Card className="text-center shadow-sm bg-danger text-white">
-            <Card.Body>
-              <Card.Title>Students</Card.Title>
-              <h3>{users.filter(user => user.role === 'student').length}</h3>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
 
 
-      {/* Leaderboard */}
-      <Row className="mb-4">
-        <Col md={6}>
-          <Card className="shadow-sm">
-            <Card.Body>
-              <Card.Title>Portfolio Submissions by Users</Card.Title>
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>User ID</th>
-                    <th>Portfolios Submitted</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.entries(portfolioCounts).map(([userName, count]) => (
-                    <tr key={userName}>
-                      <td>{userName}</td>  {/* Display name instead of Object */}
-                      <td>{count}</td>
+        {/* Leaderboard */}
+        <Row className="mb-4">
+          <Col md={6}>
+            <Card className="shadow-sm">
+              <Card.Body>
+                <Card.Title>Portfolio Submissions by Users</Card.Title>
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>User ID</th>
+                      <th>Portfolios Submitted</th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Card.Body>
-          </Card>
-        </Col>
-
-        {/* Chart for portfolio submission */}
-        
-        <Col md={6}>
-          <Card className="shadow-sm">
-            <Card.Body>
-              <Card.Title>Portfolio Submission Chart</Card.Title>
-              <canvas id="portfolioChart"></canvas>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-      {/* Add after existing portfolio chart row */}
-      <Row className="mb-4">
-        <Col md={6}>
-          <Card className="shadow-sm">
-            <Card.Body>
-              <Card.Title>Progress Overview</Card.Title>
-              <Table striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>Unit</th>
-                    <th>Total Submissions</th>
-                    <th>Completed</th>
-                    <th>Progress</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Object.entries(unitProgress).map(([unit, data]) => (
-                    <tr key={unit}>
-                      <td>{unit}</td>
-                      <td>{data.total}</td>
-                      <td>{data.done}</td>
-                      <td>
-                        <div className="progress">
-                          <div
-                            className="progress-bar bg-success"
-                            role="progressbar"
-                            style={{ width: `${(data.done / data.total) * 100}%` }}
-                          >
-                            {Math.round((data.done / data.total) * 100)}%
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={6}>
-          <Card className="shadow-sm">
-            <Card.Body>
-              <Card.Title>Status Distribution</Card.Title>
-              <canvas id="statusChart"></canvas>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      <Row className="mb-4">
-        <Col>
-          <Card className="shadow-sm">
-            <Card.Body>
-              <Card.Title>Detailed Progress Tracking</Card.Title>
-              <Table striped bordered hover responsive>
-                <thead>
-                  <tr>
-                    <th>Student</th>
-                    {['311', '312', '313', '315', '316', '317', '318', '399'].map(unit => (
-                      <th key={unit}>Unit {unit}</th>
+                  </thead>
+                  <tbody>
+                    {Object.entries(portfolioCounts).map(([userName, count]) => (
+                      <tr key={userName}>
+                        <td>{userName}</td>  {/* Display name instead of Object */}
+                        <td>{count}</td>
+                      </tr>
                     ))}
-                    <th>Overall Progress</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.filter(user => user.role === 'student').map(student => {
-                    const studentPortfolios = portfolios.filter(p => 
-                      p.userId?._id === student._id || p.userId === student._id
-                    );
+                  </tbody>
+                </Table>
+              </Card.Body>
+            </Card>
+          </Col>
 
-                    // Calculate unique criteria covered per unit
-                    const unitProgress = {};
-                    ['311', '312', '313', '315', '316', '317', '318', '399'].forEach(unit => {
-                      // Get portfolios for this unit
-                      const unitPortfolios = studentPortfolios.filter(p => p.unit?.number === unit);
-                      
-                      // Get unique criteria covered
-                      const uniqueCriteria = new Set(
-                        unitPortfolios.map(p => p.criteria?.number)
+          {/* Chart for portfolio submission */}
+
+          <Col md={6}>
+            <Card className="shadow-sm">
+              <Card.Body>
+                <Card.Title>Portfolio Submission Chart</Card.Title>
+                <canvas id="portfolioChart"></canvas>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+        {/* Add after existing portfolio chart row */}
+        <Row className="mb-4">
+          <Col md={6}>
+            <Card className="shadow-sm">
+              <Card.Body>
+                <Card.Title>Progress Overview</Card.Title>
+                <Table striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>Unit</th>
+                      <th>Total Submissions</th>
+                      <th>Completed</th>
+                      <th>Progress</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(unitProgress).map(([unit, data]) => (
+                      <tr key={unit}>
+                        <td>{unit}</td>
+                        <td>{data.total}</td>
+                        <td>{data.done}</td>
+                        <td>
+                          <div className="progress">
+                            <div
+                              className="progress-bar bg-success"
+                              role="progressbar"
+                              style={{ width: `${(data.done / data.total) * 100}%` }}
+                            >
+                              {Math.round((data.done / data.total) * 100)}%
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={6}>
+            <Card className="shadow-sm">
+              <Card.Body>
+                <Card.Title>Status Distribution</Card.Title>
+                <canvas id="statusChart"></canvas>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
+        <Row className="mb-4">
+          <Col>
+            <Card className="shadow-sm">
+              <Card.Body>
+                <Card.Title>Detailed Progress Tracking</Card.Title>
+                <Table striped bordered hover responsive>
+                  <thead>
+                    <tr>
+                      <th>Student</th>
+                      {['311', '312', '313', '315', '316', '317', '318', '399'].map(unit => (
+                        <th key={unit}>Unit {unit}</th>
+                      ))}
+                      <th>Overall Progress</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.filter(user => user.role === 'student').map(student => {
+                      const studentPortfolios = portfolios.filter(p =>
+                        p.userId?._id === student._id || p.userId === student._id
                       );
-                      
-                      // Get total required criteria for this unit
-                      const totalRequired = getTotalCriteriaForUnit(unit);
 
-                      unitProgress[unit] = {
-                        completed: uniqueCriteria.size,
-                        total: totalRequired
-                      };
-                    });
+                      // Calculate unique criteria covered per unit
+                      const unitProgress = {};
+                      ['311', '312', '313', '315', '316', '317', '318', '399'].forEach(unit => {
+                        // Get portfolios for this unit
+                        const unitPortfolios = studentPortfolios.filter(p => p.unit?.number === unit);
 
-                    // Calculate overall progress
-                    const totalCompleted = Object.values(unitProgress)
-                      .reduce((sum, unit) => sum + unit.completed, 0);
-                    const totalRequired = Object.values(unitProgress)
-                      .reduce((sum, unit) => sum + unit.total, 0);
-                    const overallProgress = Math.round((totalCompleted / totalRequired) * 100);
+                        // Get unique criteria covered
+                        const uniqueCriteria = new Set(
+                          unitPortfolios.map(p => p.criteria?.number)
+                        );
 
-                    return (
-                      <tr key={student._id}>
-                        <td>{student.name}</td>
-                        {['311', '312', '313', '315', '316', '317', '318', '399'].map(unit => (
-                          <td key={unit}>
+                        // Get total required criteria for this unit
+                        const totalRequired = getTotalCriteriaForUnit(unit);
+
+                        unitProgress[unit] = {
+                          completed: uniqueCriteria.size,
+                          total: totalRequired
+                        };
+                      });
+
+                      // Calculate overall progress
+                      const totalCompleted = Object.values(unitProgress)
+                        .reduce((sum, unit) => sum + unit.completed, 0);
+                      const totalRequired = Object.values(unitProgress)
+                        .reduce((sum, unit) => sum + unit.total, 0);
+                      const overallProgress = Math.round((totalCompleted / totalRequired) * 100);
+
+                      return (
+                        <tr key={student._id}>
+                          <td>{student.name}</td>
+                          {['311', '312', '313', '315', '316', '317', '318', '399'].map(unit => (
+                            <td key={unit}>
+                              <div className="progress" style={{ height: '24px', position: 'relative' }}>
+                                <div
+                                  className="progress-bar bg-success"
+                                  role="progressbar"
+                                  style={{
+                                    width: `${(unitProgress[unit].completed / unitProgress[unit].total) * 100}%`,
+                                  }}
+                                />
+                                <div
+                                  style={{
+                                    position: 'absolute',
+                                    width: '100%',
+                                    height: '100%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    color: '#000',
+                                    fontSize: '0.9rem',
+                                    fontWeight: '500',
+                                    backgroundColor: 'transparent'
+                                  }}
+                                >
+                                  {unitProgress[unit].completed}/{unitProgress[unit].total}
+                                </div>
+                              </div>
+                            </td>
+                          ))}
+                          <td>
                             <div className="progress" style={{ height: '24px', position: 'relative' }}>
                               <div
-                                className="progress-bar bg-success"
+                                className="progress-bar bg-info"
                                 role="progressbar"
-                                style={{ 
-                                  width: `${(unitProgress[unit].completed / unitProgress[unit].total) * 100}%`,
+                                style={{
+                                  width: `${overallProgress}%`,
                                 }}
                               />
-                              <div 
+                              <div
                                 style={{
                                   position: 'absolute',
                                   width: '100%',
@@ -644,229 +674,215 @@ const AdminDashboard = () => {
                                   backgroundColor: 'transparent'
                                 }}
                               >
-                                {unitProgress[unit].completed}/{unitProgress[unit].total}
+                                {overallProgress}%
                               </div>
                             </div>
                           </td>
-                        ))}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* Recent Portfolio Images */}
+        <Row className="mb-4">
+          <Col>
+            <Card className="shadow-sm">
+              <Card.Body>
+                <Card.Title>Recent Portfolio Images</Card.Title>
+                <div className="d-flex flex-wrap">
+                  {recentImages.map((image, index) => (
+                    <img
+                      key={index}
+                      src={`${API_URL}/${image}`}
+                      alt="Portfolio"
+                      className="m-2"
+                      style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                    />
+                  ))}
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* Applications Section */}
+        <Row className="mb-4">
+          <Col>
+            <Card className="shadow-sm">
+              <Card.Body>
+                <Card.Title>Submitted Applications</Card.Title>
+                <Table striped bordered hover className="mt-4">
+                  <thead>
+                    <tr>
+                      <th>Family Name</th>
+                      <th>First Name</th>
+                      <th>Email</th>
+                      <th>Course</th>
+                      <th>Submitted</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {applications.map(app => (
+                      <tr key={app._id}>
+                        <td>{app.familyName}</td>
+                        <td>{app.firstName}</td>
+                        <td>{app.email}</td>
+                        <td>{app.courseToStudy}</td>
+                        <td>{new Date(app.createdAt).toLocaleDateString()}</td>
                         <td>
-                          <div className="progress" style={{ height: '24px', position: 'relative' }}>
-                            <div
-                              className="progress-bar bg-info"
-                              role="progressbar"
-                              style={{ 
-                                width: `${overallProgress}%`,
-                              }}
-                            />
-                            <div 
-                              style={{
-                                position: 'absolute',
-                                width: '100%',
-                                height: '100%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                color: '#000',
-                                fontSize: '0.9rem',
-                                fontWeight: '500',
-                                backgroundColor: 'transparent'
-                              }}
-                            >
-                              {overallProgress}%
-                            </div>
-                          </div>
+                          <Button variant="info" onClick={() => navigate(`/admin/application/${app._id}`)}>
+                            View
+                          </Button>
                         </td>
                       </tr>
-                    );
-                  })}
-                </tbody>
-              </Table>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+                    ))}
+                  </tbody>
+                </Table>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
 
-      {/* Recent Portfolio Images */}
-      <Row className="mb-4">
-        <Col>
-          <Card className="shadow-sm">
-            <Card.Body>
-              <Card.Title>Recent Portfolio Images</Card.Title>
-              <div className="d-flex flex-wrap">
-                {recentImages.map((image, index) => (
-                  <img
-                    key={index}
-                    src={`${API_URL}/${image}`}
-                    alt="Portfolio"
-                    className="m-2"
-                    style={{ width: '100px', height: '100px', objectFit: 'cover' }}
-                  />
-                ))}
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* Applications Section */}
-      <Row className="mb-4">
-        <Col>
-          <Card className="shadow-sm">
-            <Card.Body>
-              <Card.Title>Submitted Applications</Card.Title>
-              <Table striped bordered hover className="mt-4">
-                <thead>
-                  <tr>
-                    <th>Family Name</th>
-                    <th>First Name</th>
-                    <th>Email</th>
-                    <th>Course</th>
-                    <th>Submitted</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {applications.map(app => (
-                    <tr key={app._id}>
-                      <td>{app.familyName}</td>
-                      <td>{app.firstName}</td>
-                      <td>{app.email}</td>
-                      <td>{app.courseToStudy}</td>
-                      <td>{new Date(app.createdAt).toLocaleDateString()}</td>
-                      <td>
-                        <Button variant="info" onClick={() => navigate(`/admin/application/${app._id}`)}>
-                          View
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* UPDATED Users Table with Assessor Assignment */}
-      {/* Users Section */}
-      <Row>
-        <Col>
-          <Card className="shadow-sm">
-            <Card.Body>
-              <Card.Title className="d-flex justify-content-between align-items-center">
-                <span>User Management</span>
-                <Button variant="success" size="sm" onClick={() => navigate('/register')}>
-                  Register New User
-                </Button>
-              </Card.Title>
-
-              {/* Filters */}
-              <div className="mb-4 p-3 bg-light rounded">
-                <Row className="align-items-center">
-                  <Col md={4}>
-                    <Form.Group>
-                      <Form.Label><small>Search Users</small></Form.Label>
-                      <Form.Control
-                        type="text"
-                        size="sm"
-                        placeholder="Search by name or email..."
-                        value={userFilter}
-                        onChange={(e) => setUserFilter(e.target.value)}
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={4}>
-                    <Form.Group>
-                      <Form.Label><small>Sort By</small></Form.Label>
-                      <Form.Select
-                        size="sm"
-                        value={sortField}
-                        onChange={(e) => setSortField(e.target.value)}
-                      >
-                        <option value="name">Name</option>
-                        <option value="email">Email</option>
-                        <option value="isActive">Status</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                  <Col md={4}>
-                    <Form.Group>
-                      <Form.Label><small>Order</small></Form.Label>
-                      <Form.Select
-                        size="sm"
-                        value={sortDirection}
-                        onChange={(e) => setSortDirection(e.target.value)}
-                      >
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </div>
-
-              {/* Tables Ordering Controls */}
-              <div className="mb-3 p-2 bg-light rounded">
-                <small className="text-muted me-2">Reorder Tables:</small>
-                {tableOrder.map((table, index) => (
-                  <Button
-                    key={table}
-                    size="sm"
-                    variant="outline-secondary"
-                    className="me-2"
-                    onClick={() => index > 0 && moveTable(table, 'up')}
-                    disabled={index === 0}
-                    style={dropdownStyles.orderButton}
-                  >
-                    {table.charAt(0).toUpperCase() + table.slice(1)} {index > 0 ? '↑' : ''}
+        {/* UPDATED Users Table with Assessor Assignment */}
+        {/* Users Section */}
+        <Row>
+          <Col>
+            <Card className="shadow-sm">
+              <Card.Body>
+                <Card.Title className="d-flex justify-content-between align-items-center">
+                  <span>User Management</span>
+                  <Button variant="success" size="sm" onClick={() => navigate('/register')}>
+                    Register New User
                   </Button>
-                ))}
-              </div>
+                </Card.Title>
 
-              {/* Render tables according to order */}
-              {tableOrder.map(tableType => {
-                switch (tableType) {
-                  case 'students':
-                    return (
-                      <div key="students">
-                        <h5 className="mb-3 d-flex justify-content-between align-items-center">
-                          <span>Students</span>
-                        </h5>
-                        {/* Existing Students Table */}
-                        <Table striped bordered hover responsive className="mb-4">
-                          <thead className="bg-light">
-                            <tr>
-                              <th>Name</th>
-                              <th>Email</th>
-                              <th>Status</th>
-                              <th>Assigned Assessor</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {filterAndSortUsers(users, 'student').map(user => (
-                              <tr key={user._id}>
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
-                                <td>
-                                  <Badge bg={user.isActive ? 'success' : 'warning'}>
-                                    {user.isActive ? 'Active' : 'Inactive'}
-                                  </Badge>
-                                </td>
-                                <td>
-                                  <div style={dropdownStyles.assignmentBox}>
-                                    {user.assignedAssessor ? (
-                                      <>
-                                        <div>
-                                          <small style={dropdownStyles.label}>Currently Assigned to:</small>
-                                          <div style={dropdownStyles.currentAssessor}>
-                                            {user.assignedAssessor.name}
+                {/* Filters */}
+                <div className="mb-4 p-3 bg-light rounded">
+                  <Row className="align-items-center">
+                    <Col md={4}>
+                      <Form.Group>
+                        <Form.Label><small>Search Users</small></Form.Label>
+                        <Form.Control
+                          type="text"
+                          size="sm"
+                          placeholder="Search by name or email..."
+                          value={userFilter}
+                          onChange={(e) => setUserFilter(e.target.value)}
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                      <Form.Group>
+                        <Form.Label><small>Sort By</small></Form.Label>
+                        <Form.Select
+                          size="sm"
+                          value={sortField}
+                          onChange={(e) => setSortField(e.target.value)}
+                        >
+                          <option value="name">Name</option>
+                          <option value="email">Email</option>
+                          <option value="isActive">Status</option>
+                        </Form.Select>
+                      </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                      <Form.Group>
+                        <Form.Label><small>Order</small></Form.Label>
+                        <Form.Select
+                          size="sm"
+                          value={sortDirection}
+                          onChange={(e) => setSortDirection(e.target.value)}
+                        >
+                          <option value="asc">Ascending</option>
+                          <option value="desc">Descending</option>
+                        </Form.Select>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </div>
+
+                {/* Tables Ordering Controls */}
+                <div className="mb-3 p-2 bg-light rounded">
+                  <small className="text-muted me-2">Reorder Tables:</small>
+                  {tableOrder.map((table, index) => (
+                    <Button
+                      key={table}
+                      size="sm"
+                      variant="outline-secondary"
+                      className="me-2"
+                      onClick={() => index > 0 && moveTable(table, 'up')}
+                      disabled={index === 0}
+                      style={dropdownStyles.orderButton}
+                    >
+                      {table.charAt(0).toUpperCase() + table.slice(1)} {index > 0 ? '↑' : ''}
+                    </Button>
+                  ))}
+                </div>
+
+                {/* Render tables according to order */}
+                {tableOrder.map(tableType => {
+                  switch (tableType) {
+                    case 'students':
+                      return (
+                        <div key="students">
+                          <h5 className="mb-3 d-flex justify-content-between align-items-center">
+                            <span>Students</span>
+                          </h5>
+                          {/* Existing Students Table */}
+                          <Table striped bordered hover responsive className="mb-4">
+                            <thead className="bg-light">
+                              <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Assigned Assessor</th>
+                                <th>Action</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {filterAndSortUsers(users, 'student').map(user => (
+                                <tr key={user._id}>
+                                  <td>{user.name}</td>
+                                  <td>{user.email}</td>
+                                  <td>
+                                    <Badge bg={user.isActive ? 'success' : 'warning'}>
+                                      {user.isActive ? 'Active' : 'Inactive'}
+                                    </Badge>
+                                  </td>
+                                  <td>
+                                    <div style={dropdownStyles.assignmentBox}>
+                                      {user.assignedAssessor ? (
+                                        <>
+                                          <div>
+                                            <small style={dropdownStyles.label}>Currently Assigned to:</small>
+                                            <div style={dropdownStyles.currentAssessor}>
+                                              {user.assignedAssessor.name}
+                                            </div>
                                           </div>
-                                        </div>
+                                          <Form.Select
+                                            size="sm"
+                                            style={dropdownStyles.select}
+                                            className="border-primary mt-2"
+                                            value={user.assignedAssessor?._id || user.assignedAssessor || ''}
+                                            onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
+                                          >
+                                            <option value="">Select Assessor</option>
+                                            {assessors.map((assessor) => (
+                                              <option key={assessor._id} value={assessor._id}>
+                                                {assessor.name}
+                                              </option>
+                                            ))}
+                                          </Form.Select>
+                                        </>
+                                      ) : (
                                         <Form.Select
                                           size="sm"
-                                          style={dropdownStyles.select}
-                                          className="border-primary mt-2"
                                           value={user.assignedAssessor?._id || user.assignedAssessor || ''}
                                           onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
                                         >
@@ -877,129 +893,116 @@ const AdminDashboard = () => {
                                             </option>
                                           ))}
                                         </Form.Select>
-                                      </>
-                                    ) : (
-                                      <Form.Select
-                                        size="sm"
-                                        value={user.assignedAssessor?._id || user.assignedAssessor || ''}
-                                        onChange={(e) => handleAssignAssessor(user._id, e.target.value)}
-                                      >
-                                        <option value="">Select Assessor</option>
-                                        {assessors.map((assessor) => (
-                                          <option key={assessor._id} value={assessor._id}>
-                                            {assessor.name}
-                                          </option>
-                                        ))}
-                                      </Form.Select>
-                                    )}
-                                  </div>
-                                </td>
-                                <td>
-                                  <Button
-                                    variant={user.isActive ? 'danger' : 'success'}
-                                    size="sm"
-                                    onClick={() => toggleUserStatus(user._id, user.isActive)}
-                                  >
-                                    {user.isActive ? 'Deactivate' : 'Activate'}
-                                  </Button>
-                                </td>
+                                      )}
+                                    </div>
+                                  </td>
+                                  <td>
+                                    <Button
+                                      variant={user.isActive ? 'danger' : 'success'}
+                                      size="sm"
+                                      onClick={() => toggleUserStatus(user._id, user.isActive)}
+                                    >
+                                      {user.isActive ? 'Deactivate' : 'Activate'}
+                                    </Button>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </Table>
+                        </div>
+                      );
+                    case 'assessors':
+                      return (
+                        <div key="assessors">
+                          <h5 className="mb-3 d-flex justify-content-between align-items-center">
+                            <span>Assessors</span>
+                          </h5>
+                          {/* Existing Assessors Table */}
+                          <Table striped bordered hover responsive className="mb-4">
+                            <thead className="bg-light">
+                              <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Action</th>
                               </tr>
-                            ))}
-                          </tbody>
-                        </Table>
-                      </div>
-                    );
-                  case 'assessors':
-                    return (
-                      <div key="assessors">
-                        <h5 className="mb-3 d-flex justify-content-between align-items-center">
-                          <span>Assessors</span>
-                        </h5>
-                        {/* Existing Assessors Table */}
-                        <Table striped bordered hover responsive className="mb-4">
-                          <thead className="bg-light">
-                            <tr>
-                              <th>Name</th>
-                              <th>Email</th>
-                              <th>Status</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {filterAndSortUsers(users, 'assessor').map(user => (
-                              <tr key={user._id}>
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
-                                <td>
-                                  <Badge bg={user.isActive ? 'success' : 'warning'}>
-                                    {user.isActive ? 'Active' : 'Inactive'}
-                                  </Badge>
-                                </td>
-                                <td>
-                                  <Button
-                                    variant={user.isActive ? 'danger' : 'success'}
-                                    size="sm"
-                                    onClick={() => toggleUserStatus(user._id, user.isActive)}
-                                  >
-                                    {user.isActive ? 'Deactivate' : 'Activate'}
-                                  </Button>
-                                </td>
+                            </thead>
+                            <tbody>
+                              {filterAndSortUsers(users, 'assessor').map(user => (
+                                <tr key={user._id}>
+                                  <td>{user.name}</td>
+                                  <td>{user.email}</td>
+                                  <td>
+                                    <Badge bg={user.isActive ? 'success' : 'warning'}>
+                                      {user.isActive ? 'Active' : 'Inactive'}
+                                    </Badge>
+                                  </td>
+                                  <td>
+                                    <Button
+                                      variant={user.isActive ? 'danger' : 'success'}
+                                      size="sm"
+                                      onClick={() => toggleUserStatus(user._id, user.isActive)}
+                                    >
+                                      {user.isActive ? 'Deactivate' : 'Activate'}
+                                    </Button>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </Table>
+                        </div>
+                      );
+                    case 'admins':
+                      return (
+                        <div key="admins">
+                          <h5 className="mb-3 d-flex justify-content-between align-items-center">
+                            <span>Administrators</span>
+                          </h5>
+                          {/* Existing Admins Table */}
+                          <Table striped bordered hover responsive>
+                            <thead className="bg-light">
+                              <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Action</th>
                               </tr>
-                            ))}
-                          </tbody>
-                        </Table>
-                      </div>
-                    );
-                  case 'admins':
-                    return (
-                      <div key="admins">
-                        <h5 className="mb-3 d-flex justify-content-between align-items-center">
-                          <span>Administrators</span>
-                        </h5>
-                        {/* Existing Admins Table */}
-                        <Table striped bordered hover responsive>
-                          <thead className="bg-light">
-                            <tr>
-                              <th>Name</th>
-                              <th>Email</th>
-                              <th>Status</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {filterAndSortUsers(users, 'admin').map(user => (
-                              <tr key={user._id}>
-                                <td>{user.name}</td>
-                                <td>{user.email}</td>
-                                <td>
-                                  <Badge bg={user.isActive ? 'success' : 'warning'}>
-                                    {user.isActive ? 'Active' : 'Inactive'}
-                                  </Badge>
-                                </td>
-                                <td>
-                                  <Button
-                                    variant={user.isActive ? 'danger' : 'success'}
-                                    size="sm"
-                                    onClick={() => toggleUserStatus(user._id, user.isActive)}
-                                  >
-                                    {user.isActive ? 'Deactivate' : 'Activate'}
-                                  </Button>
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </Table>
-                      </div>
-                    );
-                  default:
-                    return null;
-                }
-              })}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+                            </thead>
+                            <tbody>
+                              {filterAndSortUsers(users, 'admin').map(user => (
+                                <tr key={user._id}>
+                                  <td>{user.name}</td>
+                                  <td>{user.email}</td>
+                                  <td>
+                                    <Badge bg={user.isActive ? 'success' : 'warning'}>
+                                      {user.isActive ? 'Active' : 'Inactive'}
+                                    </Badge>
+                                  </td>
+                                  <td>
+                                    <Button
+                                      variant={user.isActive ? 'danger' : 'success'}
+                                      size="sm"
+                                      onClick={() => toggleUserStatus(user._id, user.isActive)}
+                                    >
+                                      {user.isActive ? 'Deactivate' : 'Activate'}
+                                    </Button>
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </Table>
+                        </div>
+                      );
+                    default:
+                      return null;
+                  }
+                })}
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </Layout>
   );
 };
 
