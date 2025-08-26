@@ -59,23 +59,17 @@ const Dashboard = () => {
     fetchPortfolios();
   }, []);
 
-  // Add this useEffect after your existing imports and before your existing useEffect
+  // Update the user fetch useEffect
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`${API_URL}/api/users/me`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
+        const response = await axios.get(`${API_URL}/api/users`, {
+          headers: { Authorization: `Bearer ${token}` },
         });
-
-        if (response.ok) {
-          const userData = await response.json();
-          setUser({
-            ...userData,
-            name: userData.name || 'Student'  // Ensure name is set
-          });
+        const currentUser = response.data.find(u => u.role === 'student');
+        if (currentUser) {
+          setUser(currentUser);
         }
       } catch (err) {
         console.error('Error fetching user data:', err);
