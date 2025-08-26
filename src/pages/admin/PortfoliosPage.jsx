@@ -67,36 +67,79 @@ const PortfoliosPage = () => {
         fetchData();
     }, [navigate]);
 
-    // Update the filterAndSortPortfolios function
-    const filterAndSortPortfolios = (portfolios) => {
-        const filteredPortfolios = portfolios.filter(portfolio =>
-            portfolio.userId?.name?.toLowerCase().includes(filter.toLowerCase()) ||
-            portfolio.unit?.number?.toLowerCase().includes(filter.toLowerCase()) ||
-            portfolio.status?.toLowerCase().includes(filter.toLowerCase())
+    // First, create a function to group portfolios
+    const groupPortfolios = (portfolios) => {
+        return Object.entries(
+            portfolios.reduce((groups, portfolio) => {
+                const studentId = portfolio.userId?._id;
+                const studentName = portfolio.userId?.name;
+                
+                if (!groups[studentId]) {
+                    groups[studentId] = {
+                        student: {
+                            name: studentName,
+                            assignedAssessor: portfolio.userId?.assignedAssessor?.name || 'Not Assigned'
+                        },
+                        portfolios: []
+                    };
+                }
+                groups[studentId].portfolios.push(portfolio);
+                return groups;
+            }, {})
         );
+    };
 
-        // Sort the portfolios first
-        const sortedPortfolios = [...filteredPortfolios].sort((a, b) => {
-            let aValue = a[sortField];
-            let bValue = b[sortField];
+    // Then update the filterAndSortPortfolios function
+    const filterAndSortPortfolios = (portfolios) => {
+        // First group the portfolios
+        const groupedPortfolios = groupPortfolios(portfolios);
 
-            if (sortField === 'studentName') {
-                aValue = a.userId?.name || '';
-                bValue = b.userId?.name || '';
-            } else if (sortField === 'unit') {
-                aValue = a.unit?.number || '';
-                bValue = b.unit?.number || '';
-            } else if (sortField === 'createdAt' || sortField === 'updatedAt') {
-                aValue = new Date(a[sortField]);
-                bValue = new Date(b[sortField]);
-            }
-
-            return sortDirection === 'asc'
-                ? aValue > bValue ? 1 : -1
-                : aValue < bValue ? 1 : -1;
+        // Then filter the groups
+        const filteredGroups = groupedPortfolios.filter(([_, group]) => {
+            const searchTerm = filter.toLowerCase();
+            return (
+                group.student.name.toLowerCase().includes(searchTerm) ||
+                group.portfolios.some(p => 
+                    p.unit?.number?.toLowerCase().includes(searchTerm) ||
+                    p.status?.toLowerCase().includes(searchTerm)
+                )
+            );
         });
 
-        return sortedPortfolios;
+        // Finally sort the groups
+        return filteredGroups.sort(([_, a], [__, b]) => {
+            let aValue, bValue;
+
+            switch(sortField) {
+                case 'studentName':
+                    aValue = a.student.name;
+                    bValue = b.student.name;
+                    break;
+                case 'createdAt':
+                    // Sort by most recent portfolio
+                    aValue = Math.max(...a.portfolios.map(p => new Date(p.createdAt)));
+                    bValue = Math.max(...b.portfolios.map(p => new Date(p.createdAt)));
+                    break;
+                case 'status':
+                    // Sort by most recent portfolio status
+                    aValue = a.portfolios[0]?.status;
+                    bValue = b.portfolios[0]?.status;
+                    break;
+                case 'unit':
+                    // Sort by first unit number
+                    aValue = a.portfolios[0]?.unit?.number;
+                    bValue = b.portfolios[0]?.unit?.number;
+                    break;
+                default:
+                    aValue = a.student.name;
+                    bValue = b.student.name;
+            }
+
+            if (sortDirection === 'asc') {
+                return String(aValue).localeCompare(String(bValue));
+            }
+            return String(bValue).localeCompare(String(aValue));
+        });
     };
 
     // Update getBadgeVariant function
@@ -198,24 +241,7 @@ const PortfoliosPage = () => {
 
                 {/* Grouped Portfolios Table */}
                 <Accordion activeKey={activeKeys} onSelect={(keys) => setActiveKeys(keys || [])}>
-                    {Object.entries(
-                        filterAndSortPortfolios(portfolios).reduce((groups, portfolio) => {
-                            const studentId = portfolio.userId?._id;
-                            const studentName = portfolio.userId?.name;
-                            
-                            if (!groups[studentId]) {
-                                groups[studentId] = {
-                                    student: {
-                                        name: studentName,
-                                        assignedAssessor: portfolio.userId?.assignedAssessor?.name || 'Not Assigned'  // Now this will work
-                                    },
-                                    portfolios: []
-                                };
-                            }
-                            groups[studentId].portfolios.push(portfolio);
-                            return groups;
-                        }, {})
-                    ).map(([studentId, group], index) => (
+                    {filterAndSortPortfolios(portfolios).map(([studentId, group], index) => (
                         <Accordion.Item key={studentId} eventKey={index.toString()}>
                             <Accordion.Header>
                                 <div className="d-flex justify-content-between align-items-center w-100">
