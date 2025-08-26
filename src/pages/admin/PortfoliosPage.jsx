@@ -198,14 +198,13 @@ const PortfoliosPage = () => {
             filterAndSortPortfolios(portfolios).reduce((groups, portfolio) => {
               const studentId = portfolio.userId?._id;
               const studentName = portfolio.userId?.name;
-              const assignedAssessorId = portfolio.userId?.assignedAssessor;
-              const assignedAssessor = assessors.find(a => a._id === assignedAssessorId);
               
               if (!groups[studentId]) {
                 groups[studentId] = {
                   student: {
                     name: studentName,
-                    assignedAssessor: assignedAssessor?.name  // Get name from assessors array
+                    // Access assignedAssessor.name the same way as in UsersPage
+                    assignedAssessor: portfolio.userId?.assignedAssessor.name || 'Not Assigned'
                   },
                   portfolios: []
                 };
@@ -223,9 +222,8 @@ const PortfoliosPage = () => {
                       ({group.portfolios.length} portfolios)
                     </span>
                   </div>
-                  <div className="text-muted">
-                    {/* Display assigned assessor name */}
-                    <strong>Assessor:</strong> {group.student.assignedAssessor || 'Not Assigned'}
+                  <div>
+                    <strong>Assessor:</strong> {group.student.assignedAssessor}
                   </div>
                 </div>
               </Accordion.Header>
