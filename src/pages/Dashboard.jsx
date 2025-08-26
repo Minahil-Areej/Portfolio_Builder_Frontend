@@ -64,12 +64,21 @@ const Dashboard = () => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`${API_URL}/api/users`, {
-          headers: { Authorization: `Bearer ${token}` },
+        const response = await fetch(`${API_URL}/api/users`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
         });
-        const currentUser = response.data.find(u => u.role === 'student');
-        if (currentUser) {
-          setUser(currentUser);
+
+        if (response.ok) {
+          const users = await response.json();
+          // Get email from token or localStorage
+          const userEmail = localStorage.getItem('userEmail');
+          // Find user by matching email
+          const currentUser = users.find(u => u.email === userEmail);
+          if (currentUser) {
+            setUser(currentUser);
+          }
         }
       } catch (err) {
         console.error('Error fetching user data:', err);
