@@ -1,10 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Table, Badge, Form, Row, Col } from 'react-bootstrap';
+import { Container, Table, Badge, Form, Row, Col, Accordion, Button } from 'react-bootstrap';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import Layout from '../../components/layout/Layout';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+const styles = {
+  groupHeader: {
+    backgroundColor: '#f8f9fa',
+    cursor: 'pointer'
+  },
+  portfolioCount: {
+    fontSize: '0.9rem',
+    color: '#6c757d',
+    marginLeft: '8px'
+  },
+  nestedTable: {
+    marginBottom: 0
+  }
+};
 
 const PortfoliosPage = () => {
   const [portfolios, setPortfolios] = useState([]);
@@ -64,11 +80,12 @@ const PortfoliosPage = () => {
       });
   };
 
+  // Update getBadgeVariant function
   const getBadgeVariant = (status) => {
     switch (status) {
       case 'To Be Reviewed':
         return 'warning';
-      case 'In review':
+      case 'In Review':  // Changed from 'In review' to 'In Review'
         return 'info';
       case 'Done':
         return 'success';
@@ -128,39 +145,87 @@ const PortfoliosPage = () => {
           </Row>
         </div>
 
-        {/* Portfolios Table */}
-        <Table striped bordered hover responsive>
-          <thead className="bg-light">
-            <tr>
-              <th>Student Name</th>
-              <th>Unit</th>
-              <th>Status</th>
-              <th>Created Date</th>
-              <th>Last Updated</th>
-              <th>Assigned Assessor</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filterAndSortPortfolios(portfolios).map(portfolio => (
-              <tr key={portfolio._id}>
-                <td>{portfolio.userId?.name}</td>
-                <td>{portfolio.unit?.number}</td>
-                <td>
-                  <Badge bg={
-                    portfolio.status === 'To Be Reviewed' ? 'warning' :
-                    portfolio.status === 'In Review' ? 'info' :
-                    portfolio.status === 'Done' ? 'success' : 'secondary'
-                  }>
-                    {portfolio.status}
-                  </Badge>
-                </td>
-                <td>{new Date(portfolio.createdAt).toLocaleDateString()}</td>
-                <td>{new Date(portfolio.updatedAt).toLocaleDateString()}</td>
-                <td>{portfolio.userId?.assignedAssessor?.name || 'Not Assigned'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        {/* Grouped Portfolios Table */}
+        <Accordion>
+          {Object.entries(
+            portfolios.reduce((groups, portfolio) => {
+              const studentId = portfolio.userId?._id;
+              const studentName = portfolio.userId?.name;
+              if (!groups[studentId]) {
+                groups[studentId] = {
+                  student: {
+                    name: studentName,
+                    assignedAssessor: portfolio.userId?.assignedAssessor?.name
+                  },
+                  portfolios: []
+                };
+              }
+              groups[studentId].portfolios.push(portfolio);
+              return groups;
+            }, {})
+          ).map(([studentId, group], index) => (
+            <Accordion.Item key={studentId} eventKey={index.toString()}>
+              <Accordion.Header>
+                <div className="d-flex justify-content-between align-items-center w-100">
+                  <div>
+                    <strong>{group.student.name}</strong>
+                    <span style={styles.portfolioCount}>
+                      ({group.portfolios.length} portfolios)
+                    </span>
+                  </div>
+                  <div className="text-muted">
+                    Assessor: {group.student.assignedAssessor || 'Not Assigned'}
+                  </div>
+                </div>
+              </Accordion.Header>
+              <Accordion.Body>
+                <Table striped bordered hover responsive style={styles.nestedTable}>
+                  <thead className="bg-light">
+                    <tr>
+                      <th>Unit</th>
+                      <th>Status</th>
+                      <th>Created Date</th>
+                      <th>Last Updated</th>
+                      <th>Actions</th>  {/* Add this column */}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {group.portfolios
+                      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                      .map(portfolio => (
+                        <tr key={portfolio._id}>
+                          <td>{portfolio.unit?.number}</td>
+                          <td>
+                            <Badge bg={getBadgeVariant(portfolio.status)}>
+                              {portfolio.status}
+                            </Badge>
+                          </td>
+                          <td>{new Date(portfolio.createdAt).toLocaleDateString()}</td>
+                          <td>{new Date(portfolio.updatedAt).toLocaleDateString()}</td>
+                          <td>
+                            <Button 
+                              size="sm" 
+                              variant="outline-primary"
+                              onClick={() => navigate(`/portfolio/view/${portfolio._id}`)}
+                            >
+                              View
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </Table>
+              </Accordion.Body>
+            </Accordion.Item>
+          ))}
+        </Accordion>
+
+        {/* Show message if no portfolios */}
+        {portfolios.length === 0 && (
+          <div className="text-center p-4 bg-light rounded">
+            <p className="mb-0">No portfolios found</p>
+          </div>
+        )}
       </Container>
     </Layout>
   );
