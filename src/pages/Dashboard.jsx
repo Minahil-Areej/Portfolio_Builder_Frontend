@@ -4,6 +4,7 @@ import { Card, Button, Form, Container, Row, Col, Badge } from 'react-bootstrap'
 import { AiOutlineEye, AiOutlineEdit, AiOutlineDelete, AiOutlineSend } from 'react-icons/ai'; // Import icons
 import './Dashboard.css';
 import Layout from '../components/layout/Layout';
+import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -63,7 +64,7 @@ const Dashboard = () => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/api/users/me`, {
+        const response = await axios.get(`${API_URL}/api/users/me`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -71,7 +72,10 @@ const Dashboard = () => {
 
         if (response.ok) {
           const userData = await response.json();
-          setUser(userData);
+          setUser({
+            ...userData,
+            name: userData.name || 'Student'  // Ensure name is set
+          });
         }
       } catch (err) {
         console.error('Error fetching user data:', err);
