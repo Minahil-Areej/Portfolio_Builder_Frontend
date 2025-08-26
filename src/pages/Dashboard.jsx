@@ -1,9 +1,10 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Button, Form, Container, Row, Col, Badge } from 'react-bootstrap';
 import { AiOutlineEye, AiOutlineEdit, AiOutlineDelete, AiOutlineSend } from 'react-icons/ai'; // Import icons
 import './Dashboard.css';
+import Layout from '../components/layout/Layout';
+
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const Dashboard = () => {
@@ -16,6 +17,7 @@ const Dashboard = () => {
   const [error, setError] = useState('');
   const [selectedUnit, setSelectedUnit] = useState(''); // For unit filter
   const [selectedDate, setSelectedDate] = useState(''); // For date filter
+  const [user, setUser] = useState(null);
 
   const navigate = useNavigate();
 
@@ -54,6 +56,29 @@ const Dashboard = () => {
     };
 
     fetchPortfolios();
+  }, []);
+
+  // Add this useEffect after your existing imports and before your existing useEffect
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/api/users/me`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData);
+        }
+      } catch (err) {
+        console.error('Error fetching user data:', err);
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   // Filtering logic
@@ -261,7 +286,9 @@ const Dashboard = () => {
     navigate('/portfolio');
   };
 
+  // Update the return statement to wrap Container with Layout
   return (
+    <Layout user={user}>
     <Container className="mt-5 dashboard-container">
       <Row>
       <Col className="text-end">
@@ -504,6 +531,7 @@ const Dashboard = () => {
 
       </Row>
     </Container>
+    </Layout>
   );
 };
 
