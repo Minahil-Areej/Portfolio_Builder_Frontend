@@ -28,6 +28,8 @@ const PortfoliosPage = () => {
   const [filter, setFilter] = useState('');
   const [sortField, setSortField] = useState('createdAt');
   const [sortDirection, setSortDirection] = useState('desc');
+  const [activeKeys, setActiveKeys] = useState([]);
+  const [assessors, setAssessors] = useState([]); // Add assessors to state
   
   const navigate = useNavigate();
 
@@ -35,17 +37,21 @@ const PortfoliosPage = () => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const [portfoliosRes, usersRes] = await Promise.all([
+        const [portfoliosRes, usersRes, assessorsRes] = await Promise.all([
           // Changed to match AdminDashboard endpoint
           axios.get(`${API_URL}/api/portfolios/admin/all`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
           axios.get(`${API_URL}/api/users`, {
             headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get(`${API_URL}/api/users/assessors`, {  // Add assessors endpoint
+            headers: { Authorization: `Bearer ${token}` },
           })
         ]);
         
         setPortfolios(portfoliosRes.data);
+        setAssessors(assessorsRes.data);  // Set assessors data
         const currentUser = usersRes.data.find(u => u.role === 'admin');
         if (currentUser) setUser(currentUser);
       } catch (error) {
@@ -57,27 +63,36 @@ const PortfoliosPage = () => {
     fetchData();
   }, [navigate]);
 
-  // Update the filter function to match your data structure
+  // Update the filterAndSortPortfolios function
   const filterAndSortPortfolios = (portfolios) => {
-    return portfolios
-      .filter(portfolio => 
-        portfolio.userId?.name?.toLowerCase().includes(filter.toLowerCase()) ||
-        portfolio.unit?.number?.toLowerCase().includes(filter.toLowerCase()) ||
-        portfolio.status?.toLowerCase().includes(filter.toLowerCase())
-      )
-      .sort((a, b) => {
-        let aValue = a[sortField];
-        let bValue = b[sortField];
-        
-        if (sortField === 'studentName') {
-          aValue = a.userId?.name || '';
-          bValue = b.userId?.name || '';
-        }
-        
-        return sortDirection === 'asc'
-          ? aValue > bValue ? 1 : -1
-          : aValue < bValue ? 1 : -1;
-      });
+    const filteredPortfolios = portfolios.filter(portfolio => 
+      portfolio.userId?.name?.toLowerCase().includes(filter.toLowerCase()) ||
+      portfolio.unit?.number?.toLowerCase().includes(filter.toLowerCase()) ||
+      portfolio.status?.toLowerCase().includes(filter.toLowerCase())
+    );
+
+    // Sort the portfolios first
+    const sortedPortfolios = [...filteredPortfolios].sort((a, b) => {
+      let aValue = a[sortField];
+      let bValue = b[sortField];
+      
+      if (sortField === 'studentName') {
+        aValue = a.userId?.name || '';
+        bValue = b.userId?.name || '';
+      } else if (sortField === 'unit') {
+        aValue = a.unit?.number || '';
+        bValue = b.unit?.number || '';
+      } else if (sortField === 'createdAt' || sortField === 'updatedAt') {
+        aValue = new Date(a[sortField]);
+        bValue = new Date(b[sortField]);
+      }
+      
+      return sortDirection === 'asc'
+        ? aValue > bValue ? 1 : -1
+        : aValue < bValue ? 1 : -1;
+    });
+
+    return sortedPortfolios;
   };
 
   // Update getBadgeVariant function
@@ -91,6 +106,19 @@ const PortfoliosPage = () => {
         return 'success';
       default:
         return 'secondary';
+    }
+  };
+
+  const handleExpandCollapseAll = (expand) => {
+    if (expand) {
+      const allKeys = Object.keys(portfolios.reduce((groups, portfolio) => {
+        const studentId = portfolio.userId?._id;
+        if (!groups[studentId]) groups[studentId] = true;
+        return groups;
+      }, {}));
+      setActiveKeys(allKeys.map((_, index) => index.toString()));
+    } else {
+      setActiveKeys([]);
     }
   };
 
@@ -145,17 +173,39 @@ const PortfoliosPage = () => {
           </Row>
         </div>
 
+        {/* Expand/Collapse All buttons */}
+        <div className="mb-3">
+          <Button 
+            variant="outline-secondary" 
+            size="sm" 
+            className="me-2"
+            onClick={() => handleExpandCollapseAll(true)}
+          >
+            Expand All
+          </Button>
+          <Button 
+            variant="outline-secondary" 
+            size="sm"
+            onClick={() => handleExpandCollapseAll(false)}
+          >
+            Collapse All
+          </Button>
+        </div>
+
         {/* Grouped Portfolios Table */}
-        <Accordion>
+        <Accordion activeKey={activeKeys} onSelect={(keys) => setActiveKeys(keys || [])}>
           {Object.entries(
-            portfolios.reduce((groups, portfolio) => {
+            filterAndSortPortfolios(portfolios).reduce((groups, portfolio) => {
               const studentId = portfolio.userId?._id;
               const studentName = portfolio.userId?.name;
+              const assignedAssessorId = portfolio.userId?.assignedAssessor;
+              const assignedAssessor = assessors.find(a => a._id === assignedAssessorId);
+              
               if (!groups[studentId]) {
                 groups[studentId] = {
                   student: {
                     name: studentName,
-                    assignedAssessor: portfolio.userId?.assignedAssessor?.name
+                    assignedAssessor: assignedAssessor?.name  // Get name from assessors array
                   },
                   portfolios: []
                 };
@@ -174,7 +224,8 @@ const PortfoliosPage = () => {
                     </span>
                   </div>
                   <div className="text-muted">
-                    Assessor: {group.student.assignedAssessor || 'Not Assigned'}
+                    {/* Display assigned assessor name */}
+                    <strong>Assessor:</strong> {group.student.assignedAssessor || 'Not Assigned'}
                   </div>
                 </div>
               </Accordion.Header>
