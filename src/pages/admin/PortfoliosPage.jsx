@@ -204,7 +204,7 @@ const PortfoliosPage = () => {
                   student: {
                     name: studentName,
                     // Access assignedAssessor.name the same way as in UsersPage
-                    assignedAssessor: portfolio.userId?.assignedAssessor.name || 'Not Assigned'
+                    assignedAssessor: portfolio.userId?.assignedAssessor?.name || 'Not Assigned'
                   },
                   portfolios: []
                 };
