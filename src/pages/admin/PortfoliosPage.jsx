@@ -203,11 +203,11 @@ const PortfoliosPage = () => {
                                 // Add console.log to check the user data
                                 console.log('Student Data:', portfolio.userId);
                                 console.log('Assessor Data:', portfolio.userId?.assignedAssessor);
+                                
                                 groups[studentId] = {
                                     student: {
                                         name: studentName,
-                                        // Access assignedAssessor.name the same way as in UsersPage
-                                        assignedAssessor: studentId.assignedAssessor.name || 'Not Assigned'
+                                        assignedAssessor: portfolio.userId?.assignedAssessor?.name || 'Not Assigned'
                                     },
                                     portfolios: []
                                 };
