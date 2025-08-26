@@ -37,21 +37,25 @@ const PortfoliosPage = () => {
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const [portfoliosRes, usersRes, assessorsRes] = await Promise.all([
-                    // Changed to match AdminDashboard endpoint
+                const [portfoliosRes, usersRes] = await Promise.all([
                     axios.get(`${API_URL}/api/portfolios/admin/all`, {
                         headers: { Authorization: `Bearer ${token}` },
                     }),
-                    axios.get(`${API_URL}/api/users`, {
-                        headers: { Authorization: `Bearer ${token}` },
-                    }),
-                    axios.get(`${API_URL}/api/users/assessors`, {  // Add assessors endpoint
+                    axios.get(`${API_URL}/api/users`, {  // Add this to get full user data
                         headers: { Authorization: `Bearer ${token}` },
                     })
                 ]);
+                
+                // Map portfolios with full user data
+                const portfoliosWithUserData = portfoliosRes.data.map(portfolio => {
+                    const fullUserData = usersRes.data.find(u => u._id === portfolio.userId._id);
+                    return {
+                        ...portfolio,
+                        userId: fullUserData // Replace limited user data with full user data
+                    };
+                });
 
-                setPortfolios(portfoliosRes.data);
-                setAssessors(assessorsRes.data);  // Set assessors data
+                setPortfolios(portfoliosWithUserData);
                 const currentUser = usersRes.data.find(u => u.role === 'admin');
                 if (currentUser) setUser(currentUser);
             } catch (error) {
@@ -198,16 +202,12 @@ const PortfoliosPage = () => {
                         filterAndSortPortfolios(portfolios).reduce((groups, portfolio) => {
                             const studentId = portfolio.userId?._id;
                             const studentName = portfolio.userId?.name;
-
+                            
                             if (!groups[studentId]) {
-                                // Add console.log to check the user data
-                                console.log('Student Data:', portfolio.userId);
-                                console.log('Assessor Data:', portfolio.userId?.assignedAssessor);
-                                
                                 groups[studentId] = {
                                     student: {
                                         name: studentName,
-                                        assignedAssessor: portfolio.userId?.assignedAssessor?.name || 'Not Assigned'
+                                        assignedAssessor: portfolio.userId?.assignedAssessor?.name || 'Not Assigned'  // Now this will work
                                     },
                                     portfolios: []
                                 };
