@@ -64,9 +64,9 @@ const Dashboard = () => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token');
-        // First decode the token to get email
+        // Get userId from token
         const tokenData = JSON.parse(atob(token.split('.')[1]));
-        const userEmail = tokenData.email;
+        const userId = tokenData.userId; // Use userId from token
 
         const response = await fetch(`${API_URL}/api/users`, {
           headers: {
@@ -76,8 +76,8 @@ const Dashboard = () => {
 
         if (response.ok) {
           const users = await response.json();
-          // Find user by matching email from token
-          const currentUser = users.find(u => u.email === userEmail);
+          // Find user by userId instead of email
+          const currentUser = users.find(u => u._id === userId);
           if (currentUser) {
             setUser(currentUser);
           }
