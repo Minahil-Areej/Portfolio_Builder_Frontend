@@ -64,6 +64,10 @@ const Dashboard = () => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token');
+        // First decode the token to get email
+        const tokenData = JSON.parse(atob(token.split('.')[1]));
+        const userEmail = tokenData.email;
+
         const response = await fetch(`${API_URL}/api/users`, {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -72,9 +76,7 @@ const Dashboard = () => {
 
         if (response.ok) {
           const users = await response.json();
-          // Get email from token or localStorage
-          const userEmail = localStorage.getItem('userEmail');
-          // Find user by matching email
+          // Find user by matching email from token
           const currentUser = users.find(u => u.email === userEmail);
           if (currentUser) {
             setUser(currentUser);
