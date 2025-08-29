@@ -8,29 +8,6 @@ import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-// ---- add above `const Dashboard = () => {` ----
-const userFromToken = () => {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) return null;
-
-    // base64url -> base64, then decode
-    const base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
-    const payload = JSON.parse(atob(base64));
-    const u = payload.user || payload; // some backends nest user
-
-    return {
-      _id: u._id || u.id || u.userId,
-      name: u.name || u.fullName || null,
-      email: u.email || null,
-      role: u.role || null,
-    };
-  } catch (e) {
-    console.error("JWT decode failed:", e);
-    return null;
-  }
-};
-
 const Dashboard = () => {
   const [portfolios, setPortfolios] = useState({
     toBeReviewed: [],
@@ -83,9 +60,16 @@ const Dashboard = () => {
   }, []);
 
   // Update the user fetch useEffect
-  useEffect(() => {
-  const u = userFromToken();
-  if (u) setUser(u);
+ useEffect(() => {
+  const token = localStorage.getItem('token');
+  if (!token) return;
+
+  fetch(`${API_URL}/api/users/me`, {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then(r => r.ok ? r.json() : Promise.reject(r))
+    .then(u => setUser(u))  // { name, email, role }
+    .catch(err => console.error('Failed to fetch user:', err));
 }, []);
 
   // Filtering logic
