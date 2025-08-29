@@ -14,21 +14,16 @@ const userFromToken = () => {
     const token = localStorage.getItem("token");
     if (!token) return null;
 
-    // base64url → base64
-    const payload = token.split(".")[1]
-      .replace(/-/g, "+")
-      .replace(/_/g, "/");
-
-    const decoded = JSON.parse(atob(payload));
-
-    // some backends embed user inside { user: {...} }
-    const u = decoded.user || decoded;
+    // base64url -> base64, then decode
+    const base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    const payload = JSON.parse(atob(base64));
+    const u = payload.user || payload; // some backends nest user
 
     return {
       _id: u._id || u.id || u.userId,
-      name: u.name || u.fullName || (u.email ? u.email.split("@")[0] : undefined),
-      email: u.email,
-      role: u.role,
+      name: u.name || u.fullName || null,
+      email: u.email || null,
+      role: u.role || null,
     };
   } catch (e) {
     console.error("JWT decode failed:", e);
