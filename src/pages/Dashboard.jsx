@@ -8,6 +8,34 @@ import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
+// ---- add above `const Dashboard = () => {` ----
+const userFromToken = () => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+
+    // base64url → base64
+    const payload = token.split(".")[1]
+      .replace(/-/g, "+")
+      .replace(/_/g, "/");
+
+    const decoded = JSON.parse(atob(payload));
+
+    // some backends embed user inside { user: {...} }
+    const u = decoded.user || decoded;
+
+    return {
+      _id: u._id || u.id || u.userId,
+      name: u.name || u.fullName || (u.email ? u.email.split("@")[0] : undefined),
+      email: u.email,
+      role: u.role,
+    };
+  } catch (e) {
+    console.error("JWT decode failed:", e);
+    return null;
+  }
+};
+
 const Dashboard = () => {
   const [portfolios, setPortfolios] = useState({
     toBeReviewed: [],
@@ -61,34 +89,9 @@ const Dashboard = () => {
 
   // Update the user fetch useEffect
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const tokenPayload = token.split('.')[1];
-        const decoded = JSON.parse(atob(tokenPayload));
-        const userId = decoded._id; // Change from decoded.id to decoded._id
-
-        const response = await fetch(`${API_URL}/api/users`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-
-        if (response.ok) {
-          const users = await response.json();
-          // Find user by matching _id with userId from token
-          const currentUser = users.find(u => u._id === userId);
-          if (currentUser) {
-            setUser(currentUser);
-          }
-        }
-      } catch (err) {
-        console.error('Error fetching user data:', err);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+  const u = userFromToken();
+  if (u) setUser(u);
+}, []);
 
   // Filtering logic
   const filterPortfolios = (portfoliosList) => {
