@@ -120,7 +120,7 @@ const StudentPortfoliosPage = () => {
     <Container className="mt-5 dashboard-container">
       <Row className="align-items-center mb-3">
         <Col>
-          <h2>Assessor Dashboard</h2>
+          <h2>Student Portfolios</h2>
         </Col>
         <Col className="text-end">
           <Button variant="outline-danger" onClick={handleLogout}>
