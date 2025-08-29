@@ -15,6 +15,8 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import UsersPage from './pages/admin/UsersPage';
 import PortfoliosPage from './pages/admin/PortfoliosPage'; // Import the new PortfoliosPage
+import StudentPortfoliosPage from './pages/assessor/StudentPortfoliosPage';
+import ReviewsPage from './pages/assessor/ReviewsPage';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -39,6 +41,8 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/admin/users" element={<UsersPage />} /> {/* Admin Users Management */}
         <Route path="/admin/portfolios" element={<PortfoliosPage />} /> {/* Admin Portfolios Management */}
+        <Route path="/portfolio/assessor" element={<StudentPortfoliosPage />} />
+        <Route path="/assessor/reviews" element={<ReviewsPage />} />
 
         {/* Add a fallback for undefined routes */}
         <Route path="*" element={<Navigate to="/login" />} />
