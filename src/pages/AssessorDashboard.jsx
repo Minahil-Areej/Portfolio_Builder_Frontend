@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Container, Card, Col, Row, Form, Button, Badge } from 'react-bootstrap';
 import { AiOutlineEye, AiOutlineCheck, AiOutlineDelete, AiOutlineSend } from 'react-icons/ai'; // Import icons
 import { Link, useNavigate } from 'react-router-dom';
+import Layout from '../components/layout/Layout';
+
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const AssessorDashboard = () => {
@@ -14,6 +16,7 @@ const AssessorDashboard = () => {
   const [selectedStudent, setSelectedStudent] = useState(''); // For student filter
   const [selectedUnit, setSelectedUnit] = useState(''); // For unit filter
   const [studentOptions, setStudentOptions] = useState([]); // For dropdown options
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   // Add logout handler
@@ -55,7 +58,26 @@ const AssessorDashboard = () => {
       }
     };
 
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/api/users/me`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const userData = await response.json();
+          setUser(userData);
+        }
+      } catch (err) {
+        console.error('Error fetching user data:', err);
+      }
+    };
+
     fetchPortfolios();
+    fetchUserData();
   }, []);
 
   const filterPortfolios = (portfoliosList) => {
@@ -94,6 +116,7 @@ const AssessorDashboard = () => {
   };
 
   return (
+    <Layout user={user}>
     <Container className="mt-5 dashboard-container">
       <Row className="align-items-center mb-3">
         <Col>
@@ -272,6 +295,7 @@ const AssessorDashboard = () => {
 
       </Row>
     </Container>
+    </Layout>
   );
 };
 
