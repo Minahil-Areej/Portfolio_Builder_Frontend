@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Container, Card, Col, Row, Form, Button, Badge } from 'react-bootstrap';
 import { AiOutlineEye, AiOutlineCheck, AiOutlineDelete, AiOutlineSend } from 'react-icons/ai'; // Import icons
 import { Link, useNavigate } from 'react-router-dom';
-import Layout from '../components/layout/Layout';
+import Layout from '../../components/layout/Layout';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
