@@ -308,9 +308,7 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Card, Col, Row, Form, Button, Badge } from 'react-bootstrap';
-import { AiOutlineEye, AiOutlineCheck } from 'react-icons/ai';
-import { Link, useNavigate } from 'react-router-dom';
+import { Container, Card, Col, Row, Spinner } from 'react-bootstrap';
 import Layout from '../components/layout/Layout';
 import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Pie, Bar } from 'react-chartjs-2';
@@ -321,109 +319,53 @@ ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, Title, Tool
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const AssessorDashboard = () => {
-  // Keep existing states
   const [portfolios, setPortfolios] = useState({
     toBeReviewed: [],
     reviewed: [],
     done: []
   });
-  const [selectedStudent, setSelectedStudent] = useState('');
-  const [selectedUnit, setSelectedUnit] = useState('');
-  const [studentOptions, setStudentOptions] = useState([]);
   const [user, setUser] = useState(null);
-  
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Add logout handler
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    navigate('/login');
-  };
-
-  // Add these useEffect hooks back
   useEffect(() => {
-    const fetchPortfolios = async () => {
+    const fetchData = async () => {
       try {
+        setIsLoading(true);
         const token = localStorage.getItem('token');
-        const assessorId = JSON.parse(atob(token.split('.')[1])).id;
-
-        const response = await axios.get(`${API_URL}/api/portfolios/assessor-portfolios/${assessorId}`, {
-          headers: { Authorization: `Bearer ${token}` },
+        
+        // Fetch user data first
+        const userResponse = await fetch(`${API_URL}/api/users/me`, {
+          headers: { 'Authorization': `Bearer ${token}` }
         });
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          setUser(userData);
+        }
 
-        const data = response.data;
-        const categorizedPortfolios = {
+        // Then fetch portfolio stats
+        const assessorId = JSON.parse(atob(token.split('.')[1])).id;
+        const portfoliosResponse = await axios.get(
+          `${API_URL}/api/portfolios/assessor-portfolios/${assessorId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        const data = portfoliosResponse.data;
+        setPortfolios({
           toBeReviewed: data.filter(p => p.status === 'To Be Reviewed'),
           reviewed: data.filter(p => p.status === 'Reviewed'),
           done: data.filter(p => p.status === 'Done')
-        };
-
-        const uniqueStudents = Array.from(new Set(data.map(p => p.userId?.name)));
-        setStudentOptions(uniqueStudents);
-        setPortfolios(categorizedPortfolios);
-      } catch (error) {
-        console.error('Error fetching portfolios', error);
-      }
-    };
-
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`${API_URL}/api/users/me`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
         });
-
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        }
-      } catch (err) {
-        console.error('Error fetching user data:', err);
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
-    fetchPortfolios();
-    fetchUserData();
+    fetchData();
   }, []);
 
-  const filterPortfolios = (portfoliosList) => {
-    return portfoliosList.filter((portfolio) => {
-      const matchesStudent = selectedStudent === '' || portfolio.userId?.name === selectedStudent;
-      const matchesUnit = selectedUnit === '' || portfolio.unit?.number === selectedUnit;
-      return matchesStudent && matchesUnit;
-    });
-  };
-
-  const filteredToBeReviewed = filterPortfolios(portfolios.toBeReviewed);
-  const filteredReviewed = filterPortfolios(portfolios.reviewed);
-  const filteredDone = filterPortfolios(portfolios.done);
-
-  const markAsDone = async (id) => {
-    try {
-      await axios.post(
-        `${API_URL}/api/portfolios/${id}/feedback`,
-        { status: 'Done' },
-        {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          },
-        }
-      );
-      alert('Portfolio marked as done');
-      setPortfolios((prev) => {
-        const updated = { ...prev };
-        updated.reviewed = updated.reviewed.filter((p) => p._id !== id);
-        updated.done.push({ ...prev.reviewed.find((p) => p._id === id), status: 'Done' });
-        return updated;
-      });
-    } catch (error) {
-      console.error('Error marking portfolio as done', error);
-    }
-  };
-
-  // Add chart data
+  // Chart data configurations
   const statusChartData = {
     labels: ['To Be Reviewed', 'In Review', 'Done'],
     datasets: [{
@@ -457,11 +399,23 @@ const AssessorDashboard = () => {
     }]
   };
 
-  // Update your return statement
+  if (isLoading) {
+    return (
+      <Layout user={null}>
+        <Container className="mt-4 text-center">
+          <Spinner animation="border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </Container>
+      </Layout>
+    );
+  }
+
   return (
     <Layout user={user}>
       <Container className="mt-4">
-        {/* Add Summary Cards at the top */}
+        {/* Summary Cards */}
+        <h2 className="mb-4">Assessment Overview</h2>
         <Row className="mb-4">
           <Col md={3}>
             <Card className="text-center">
@@ -497,7 +451,7 @@ const AssessorDashboard = () => {
           </Col>
         </Row>
 
-        {/* Add Charts */}
+        {/* Charts */}
         <Row className="mb-4">
           <Col md={6}>
             <Card>
@@ -527,137 +481,6 @@ const AssessorDashboard = () => {
               </Card.Body>
             </Card>
           </Col>
-        </Row>
-
-        {/* Keep your existing content below */}
-        <Row className="justify-content-center">
-
-          <Col md={4}>
-            <h2>To Be Reviewed</h2>
-            {filteredToBeReviewed.length > 0 ? filteredToBeReviewed.map(portfolio => (
-              <Card key={portfolio._id} style={{ margin: '10px' }}>
-                <Card.Header className="text-center">
-                  <h5>{portfolio.title}</h5>
-                  <h5> {portfolio.submissionCount > 0 && (
-                    <Badge bg="danger" text="light" className="ms-2">
-                      Assessed: {portfolio.submissionCount}
-                    </Badge>
-                  )}</h5>
-                </Card.Header>
-                <Card.Body>
-                  {/* <Card.Title>
-                    {portfolio.title}
-                    {portfolio.submissionCount > 0 && (
-                      <Badge bg="danger" text="light" className="ms-2">
-                        Assessed: {portfolio.submissionCount}
-                      </Badge>
-                    )}
-                  </Card.Title>                 */}
-                  <Card.Text><strong>Unit:</strong> {portfolio.unit?.number} - {portfolio.unit?.title}</Card.Text>
-                  <Card.Text><strong>Learning Outcome:</strong> {portfolio.learningOutcome?.number} - {portfolio.learningOutcome?.description}</Card.Text>
-                  <Card.Text><strong>Criteria:</strong> {portfolio.criteria?.number} - {portfolio.criteria?.description}</Card.Text>
-                  <Card.Text><strong>Student:</strong> {portfolio.userId?.name}</Card.Text> {/* Display student name */}
-                </Card.Body>
-                <Card.Footer className="d-flex flex-column align-items-center">
-                  {/* Change button label based on feedback presence */}
-                  <Link to={`/portfolio/assessor/${portfolio._id}`}>
-                    <Button variant={portfolio.assessorComments ? 'info' : 'primary'}>
-                      {portfolio.assessorComments ? 'View Saved Feedback' : 'Review Portfolio'}
-                    </Button>
-                  </Link>
-                </Card.Footer>
-
-              </Card>
-            )) : <p>No portfolios to review.</p>}
-          </Col>
-
-          <Col md={4}>
-            <h2>Reviewed</h2>
-            {filteredReviewed.length > 0 ? filteredReviewed.map(portfolio => (
-              <Card key={portfolio._id} style={{ margin: '10px' }}>
-                <Card.Header className="text-center">
-                  <h5>{portfolio.title}</h5>
-                  <h5> <Badge bg="danger" text="light" className="ms-2">
-                    Assessed: {portfolio.submissionCount + 1}
-                  </Badge></h5>
-                </Card.Header>
-                <Card.Body>
-                  {/* <Card.Title>
-                    {portfolio.title}
-                    <Badge bg="danger" text="light" className="ms-2">
-                      Assessed: {portfolio.submissionCount + 1}
-                    </Badge>
-
-                  </Card.Title> */}
-                  <Card.Text><strong>Unit:</strong> {portfolio.unit?.number} - {portfolio.unit?.title}</Card.Text>
-                  <Card.Text><strong>Learning Outcome:</strong> {portfolio.learningOutcome?.number} - {portfolio.learningOutcome?.description}</Card.Text>
-                  <Card.Text><strong>Criteria:</strong> {portfolio.criteria?.number} - {portfolio.criteria?.description}</Card.Text>
-                  <Card.Text><strong>Student:</strong> {portfolio.userId?.name}</Card.Text> {/* Display student name */}
-
-                  {/* <Link to={`/portfolio/assessor/${portfolio._id}`}>
-                    <Button variant="secondary">View/Edit Feedback</Button>
-                    <Button
-                      variant="success"
-                      style={{ marginLeft: '10px' }}
-                      onClick={() => markAsDone(portfolio._id)}
-                    >
-                      Mark as Done
-                    </Button>
-                  </Link> */}
-                </Card.Body>
-                <Card.Footer className="d-flex justify-content-between align-items-center">
-                  <Link to={`/portfolio/assessor/${portfolio._id}`}>
-                    <AiOutlineEye
-                      className="icon-view"
-                      style={{ color: '#007bff', cursor: 'pointer' }} // Blue for "View"
-                      title="View Feedback"
-                    />
-                  </Link>
-                  <AiOutlineCheck
-                    className="icon-done"
-                    style={{ color: '#28a745', cursor: 'pointer', fontSize: '1.5em' }} // Green for "Mark as Done"
-                    title="Mark as Done"
-                    onClick={() => markAsDone(portfolio._id)} />
-                </Card.Footer>
-              </Card>
-            )) : <p>No reviewed portfolios.</p>}
-
-          </Col>
-
-          <Col md={4}>
-            <h2>Done</h2>
-            {filteredDone.length > 0 ? filteredDone.map(portfolio => (
-              <Card key={portfolio._id} style={{ margin: '10px' }}>
-                <Card.Header className="text-center">
-                  <h5>{portfolio.title}</h5>
-                </Card.Header>
-                <Card.Body>
-                  {/* <Card.Title>{portfolio.title}</Card.Title> */}
-                  <Card.Text><strong>Unit:</strong> {portfolio.unit?.number} - {portfolio.unit?.title}</Card.Text>
-                  <Card.Text><strong>Learning Outcome:</strong> {portfolio.learningOutcome?.number} - {portfolio.learningOutcome?.description}</Card.Text>
-                  <Card.Text><strong>Criteria:</strong> {portfolio.criteria?.number} - {portfolio.criteria?.description}</Card.Text>
-                  <Card.Text><strong>Student:</strong> {portfolio.userId?.name}</Card.Text> {/* Display student name */}
-
-                  {/* <Link to={`/portfolio/assessor/${portfolio._id}`}>
-                    <Button variant="success">View Portfolio</Button>
-                  </Link> */}
-                </Card.Body>
-                <Card.Footer className="d-flex flex-column align-items-center">
-                  <Link to={`/portfolio/assessor/${portfolio._id}`}>
-                    <AiOutlineEye
-                      className="icon-view"
-                      style={{ color: '#007bff', cursor: 'pointer' }} // Blue for "View"
-                      title="View Portfolio"
-                    />
-                  </Link>
-
-                </Card.Footer>
-              </Card>
-            )) : <p>No completed portfolios.</p>}
-          </Col>
-
-
-
         </Row>
       </Container>
     </Layout>
