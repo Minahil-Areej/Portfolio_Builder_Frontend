@@ -300,84 +300,88 @@
 // };
 
 // export default AssessorDashboard;
+
+
+
+
+
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Container, Card, Col, Row } from 'react-bootstrap';
+import { Container, Card, Col, Row, Form, Button, Badge } from 'react-bootstrap';
+import { AiOutlineEye, AiOutlineCheck } from 'react-icons/ai';
+import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Pie, Bar } from 'react-chartjs-2';
 
-// Register ChartJS components
+// Register ChartJS
 ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 const AssessorDashboard = () => {
-  const [user, setUser] = useState(null);
-  const [stats, setStats] = useState({
-    totalPortfolios: 0,
-    toBeReviewed: 0,
-    inReview: 0,
-    completed: 0,
-    portfoliosByUnit: {},
-    recentActivity: [],
-    reviewTimeByUnit: {},
-    weeklyProgress: {}
+  // Keep existing states
+  const [portfolios, setPortfolios] = useState({
+    toBeReviewed: [],
+    reviewed: [],
+    done: []
   });
+  const [selectedStudent, setSelectedStudent] = useState('');
+  const [selectedUnit, setSelectedUnit] = useState('');
+  const [studentOptions, setStudentOptions] = useState([]);
+  const [user, setUser] = useState(null);
+  
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const [userData, portfoliosData] = await Promise.all([
-          fetch(`${API_URL}/api/users/me`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-          }).then(r => r.json()),
-          axios.get(`${API_URL}/api/portfolios/assessor-stats`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-          }).then(r => r.data)
-        ]);
+  // Keep your existing useEffect and functions
+  // ... (keep all your existing code)
 
-        setUser(userData);
-        setStats(portfoliosData);
-      } catch (err) {
-        console.error('Error fetching dashboard data:', err);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // Chart Data
+  // Add chart data
   const statusChartData = {
-    labels: ['To Be Reviewed', 'In Review', 'Completed'],
+    labels: ['To Be Reviewed', 'In Review', 'Done'],
     datasets: [{
-      data: [stats.toBeReviewed, stats.inReview, stats.completed],
+      data: [
+        portfolios.toBeReviewed.length,
+        portfolios.reviewed.length,
+        portfolios.done.length
+      ],
       backgroundColor: ['#ffc107', '#17a2b8', '#28a745']
     }]
   };
 
+  const getPortfoliosByUnit = () => {
+    const allPortfolios = [...portfolios.toBeReviewed, ...portfolios.reviewed, ...portfolios.done];
+    const unitCounts = {};
+    allPortfolios.forEach(portfolio => {
+      const unit = portfolio.unit?.number;
+      if (unit) {
+        unitCounts[unit] = (unitCounts[unit] || 0) + 1;
+      }
+    });
+    return unitCounts;
+  };
+
   const unitChartData = {
-    labels: Object.keys(stats.portfoliosByUnit),
+    labels: Object.keys(getPortfoliosByUnit()),
     datasets: [{
       label: 'Portfolios by Unit',
-      data: Object.values(stats.portfoliosByUnit),
+      data: Object.values(getPortfoliosByUnit()),
       backgroundColor: '#007bff'
     }]
   };
 
+  // Update your return statement
   return (
     <Layout user={user}>
       <Container className="mt-4">
-        <h2 className="mb-4">Assessment Dashboard</h2>
-
-        {/* Summary Cards */}
+        {/* Add Summary Cards at the top */}
         <Row className="mb-4">
           <Col md={3}>
             <Card className="text-center">
               <Card.Body>
                 <Card.Title>Total Portfolios</Card.Title>
-                <h2>{stats.totalPortfolios}</h2>
+                <h2>{portfolios.toBeReviewed.length + portfolios.reviewed.length + portfolios.done.length}</h2>
               </Card.Body>
             </Card>
           </Col>
@@ -385,7 +389,7 @@ const AssessorDashboard = () => {
             <Card className="text-center bg-warning text-white">
               <Card.Body>
                 <Card.Title>To Be Reviewed</Card.Title>
-                <h2>{stats.toBeReviewed}</h2>
+                <h2>{portfolios.toBeReviewed.length}</h2>
               </Card.Body>
             </Card>
           </Col>
@@ -393,21 +397,21 @@ const AssessorDashboard = () => {
             <Card className="text-center bg-info text-white">
               <Card.Body>
                 <Card.Title>In Review</Card.Title>
-                <h2>{stats.inReview}</h2>
+                <h2>{portfolios.reviewed.length}</h2>
               </Card.Body>
             </Card>
           </Col>
           <Col md={3}>
             <Card className="text-center bg-success text-white">
               <Card.Body>
-                <Card.Title>Completed</Card.Title>
-                <h2>{stats.completed}</h2>
+                <Card.Title>Done</Card.Title>
+                <h2>{portfolios.done.length}</h2>
               </Card.Body>
             </Card>
           </Col>
         </Row>
 
-        {/* Charts Row */}
+        {/* Add Charts */}
         <Row className="mb-4">
           <Col md={6}>
             <Card>
@@ -439,28 +443,8 @@ const AssessorDashboard = () => {
           </Col>
         </Row>
 
-        {/* Recent Activity */}
-        <Row>
-          <Col md={12}>
-            <Card>
-              <Card.Body>
-                <Card.Title>Recent Activity</Card.Title>
-                <div className="activity-timeline">
-                  {stats.recentActivity.map((activity, index) => (
-                    <div key={index} className="activity-item d-flex align-items-start mb-3">
-                      <div className="activity-content">
-                        <h6 className="mb-1">{activity.action}</h6>
-                        <small className="text-muted">
-                          {new Date(activity.date).toLocaleDateString()} - {activity.portfolio}
-                        </small>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
+        {/* Keep your existing content below */}
+        {/* ...rest of your existing JSX... */}
       </Container>
     </Layout>
   );
