@@ -17,6 +17,7 @@ import UsersPage from './pages/admin/UsersPage';
 import PortfoliosPage from './pages/admin/PortfoliosPage'; // Import the new PortfoliosPage
 import StudentPortfoliosPage from './pages/assessor/StudentPortfoliosPage';
 import ReviewsPage from './pages/assessor/ReviewsPage';
+import MyPortfoliosPage from './pages/student/MyPortfoliosPage';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -43,6 +44,7 @@ function App() {
         <Route path="/admin/portfolios" element={<PortfoliosPage />} /> {/* Admin Portfolios Management */}
         <Route path="/portfolio/assessor" element={<StudentPortfoliosPage />} />
         <Route path="/assessor/reviews" element={<ReviewsPage />} />
+        <Route path="/my-portfolios" element={<MyPortfoliosPage />} />
 
         {/* Add a fallback for undefined routes */}
         <Route path="*" element={<Navigate to="/login" />} />
