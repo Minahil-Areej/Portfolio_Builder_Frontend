@@ -290,7 +290,7 @@ const MyPortfoliosPage = () => {
     </Row>
       <Row className="justify-content-between align-items-center mb-3">
         <Col md="auto">
-          <h2>Portfolio</h2>
+          <h2>My Portfolios</h2>
         </Col>
 
         <Col md="auto">
