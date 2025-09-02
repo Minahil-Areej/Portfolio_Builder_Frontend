@@ -248,7 +248,7 @@ const EditPortfolio = () => {
 <Form.Group className="mb-3" controlId="formMethod">
   <Form.Label>Method</Form.Label>
   <Form.Select
-    name="Method"
+    name="method"
     value={portfolioData.method}
     onChange={handleChange}
   >
