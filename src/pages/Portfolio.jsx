@@ -29,7 +29,7 @@ const Portfolio = () => {
   const [selectedAddress, setSelectedAddress] = useState('');
   const [showAddresses, setShowAddresses] = useState(false);
   const [isLoadingAddresses, setIsLoadingAddresses] = useState(false); // Add new state
-  const [method, setMethod] = useState(''); // Add method state
+  const [method, setMethod] = useState(''); // State for Method
   const navigate = useNavigate();
 
   // Fetch the JSON data from the public folder
@@ -192,6 +192,8 @@ const Portfolio = () => {
       if (response.ok) {
         alert(`Portfo lio ${isSubmitForReview ? 'submitted for review' : 'saved as draft'} successfully!`);
         navigate('/dashboard');
+        console.log(result); // Debug response
+
       } else {
         alert('Error creating portfolio: ' + result.message);
       }
@@ -368,7 +370,7 @@ const Portfolio = () => {
             <Form.Label>Method</Form.Label>
             <Form.Select
               value={method}
-              onChange={(e) => setMethod(e.target.value)}
+              onChange={(e) => setMethod(e.target.value)} // Update state on change
               required
             >
               <option value="">Select Method</option>
