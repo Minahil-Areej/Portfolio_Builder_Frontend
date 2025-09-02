@@ -19,7 +19,7 @@ const EditPortfolio = () => {
     jobType: '',         // New field
     reasonForTask: '',   // New field
     objectiveOfJob: '',  // New field
-    Method: '', // Add Method field to the state
+    method: '', // Add Method field to the state
   });
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [qualificationUnitsData, setQualificationUnitsData] = useState([]);
@@ -89,7 +89,7 @@ const EditPortfolio = () => {
     formData.append('jobType', portfolioData.jobType);                 // Added to submission
     formData.append('reasonForTask', portfolioData.reasonForTask);     // Added to submission
     formData.append('objectiveOfJob', portfolioData.objectiveOfJob);   // Added to submission
-    formData.append('Method', portfolioData.Method);                   // Added to submission
+    formData.append('method', portfolioData.method);                   // Added to submission
 
     // Pass existing images as a stringified array
     formData.append('existingImages', JSON.stringify(portfolioData.images));
@@ -249,7 +249,7 @@ const EditPortfolio = () => {
   <Form.Label>Method</Form.Label>
   <Form.Select
     name="Method"
-    value={portfolioData.Method}
+    value={portfolioData.method}
     onChange={handleChange}
   >
     <option value="">Select Method</option>
