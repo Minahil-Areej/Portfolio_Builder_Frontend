@@ -19,6 +19,7 @@ const EditPortfolio = () => {
     jobType: '',         // New field
     reasonForTask: '',   // New field
     objectiveOfJob: '',  // New field
+    Method: '', // Add Method field to the state
   });
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [qualificationUnitsData, setQualificationUnitsData] = useState([]);
@@ -88,6 +89,7 @@ const EditPortfolio = () => {
     formData.append('jobType', portfolioData.jobType);                 // Added to submission
     formData.append('reasonForTask', portfolioData.reasonForTask);     // Added to submission
     formData.append('objectiveOfJob', portfolioData.objectiveOfJob);   // Added to submission
+    formData.append('Method', portfolioData.Method);                   // Added to submission
 
     // Pass existing images as a stringified array
     formData.append('existingImages', JSON.stringify(portfolioData.images));
@@ -243,7 +245,23 @@ const EditPortfolio = () => {
             onChange={handleChange}
           />
         </Form.Group> */}
-
+<Form.Group className="mb-3" controlId="formMethod">
+  <Form.Label>Method</Form.Label>
+  <Form.Select
+    name="Method"
+    value={portfolioData.Method}
+    onChange={handleChange}
+  >
+    <option value="">Select Method</option>
+    <option value="Professional discussion">Professional discussion</option>
+    <option value="Witness testimony">Witness testimony</option>
+    <option value="Written questions">Written questions</option>
+    <option value="Work Product">Work Product</option>
+    <option value="Direct observation">Direct observation</option>
+    <option value="Oral questions">Oral questions</option>
+    <option value="APL / RPL">APL / RPL</option>
+  </Form.Select>
+</Form.Group>
         <Row>
           <Col>
             <Form.Group className="mb-3" controlId="formTaskDescription">
