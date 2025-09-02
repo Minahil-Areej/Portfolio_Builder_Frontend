@@ -29,6 +29,7 @@ const Portfolio = () => {
   const [selectedAddress, setSelectedAddress] = useState('');
   const [showAddresses, setShowAddresses] = useState(false);
   const [isLoadingAddresses, setIsLoadingAddresses] = useState(false); // Add new state
+  const [method, setMethod] = useState(''); // Add method state
   const navigate = useNavigate();
 
   // Fetch the JSON data from the public folder
@@ -171,6 +172,7 @@ const Portfolio = () => {
     formData.append('jobType', jobType);
     formData.append('reasonForTask', reasonForTask);
     formData.append('objectiveOfJob', objectiveOfJob);
+    formData.append('method', method); // Add method to form data
     images.forEach((image) => {
       formData.append('images', image);
     });
@@ -362,6 +364,23 @@ const Portfolio = () => {
               </Form.Group>
             </Col>
           </Row>
+          <Form.Group className="mb-3">
+            <Form.Label>Method</Form.Label>
+            <Form.Select
+              value={method}
+              onChange={(e) => setMethod(e.target.value)}
+              required
+            >
+              <option value="">Select Method</option>
+              <option value="Professional discussion">Professional discussion</option>
+              <option value="Witness testimony">Witness testimony</option>
+              <option value="Written questions">Written questions</option>
+              <option value="Work Product">Work Product</option>
+              <option value="Direct observation">Direct observation</option>
+              <option value="Oral questions">Oral questions</option>
+              <option value="APL / RPL">APL / RPL</option>
+            </Form.Select>
+          </Form.Group>
           <Form.Group>
             <Form.Label>Task Description</Form.Label>
             <Form.Control

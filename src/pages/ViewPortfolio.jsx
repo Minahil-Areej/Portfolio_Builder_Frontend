@@ -105,6 +105,9 @@ const ViewPortfolio = () => {
                                 <strong>Criteria:</strong> {portfolio.criteria?.number} - {portfolio.criteria?.description}
                             </Card.Text>
                             <Card.Text className="portfolio-text">
+                                <strong>Method:</strong> {portfolio.method || 'N/A'}
+                            </Card.Text>
+                            <Card.Text className="portfolio-text">
                                 <strong>Location:</strong> {portfolio.postcode}
                             </Card.Text>
                             <Card.Text className="portfolio-text">
