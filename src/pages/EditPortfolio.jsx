@@ -598,26 +598,31 @@ const EditPortfolio = () => {
             <Form.Group className="mb-3" controlId="formCriteria">
               <Form.Label>Select Criteria</Form.Label>
               <Form.Select
-                name="criteria.number"
-                value={portfolioData.criteria.number}
+                name="criteria"
+                value={portfolioData.criteria?.AC_number || ""}
                 onChange={(e) => {
                   const selectedCriteria = getCriteria(
                     portfolioData.unit.number,
                     portfolioData.learningOutcome.number
-                  ).find((c) => c.AC_number === parseFloat(e.target.value));
+                  ).find((c) => c.AC_number.toString() === e.target.value);
+
                   setPortfolioData({
                     ...portfolioData,
-                    criteria: { number: selectedCriteria.AC_number, description: selectedCriteria.description },
+                    criteria: selectedCriteria || { AC_number: "", description: "" },
                   });
                 }}
               >
                 <option value="">Select Criteria</option>
-                {getCriteria(portfolioData.unit.number, portfolioData.learningOutcome.number).map((criteria) => (
+                {getCriteria(
+                  portfolioData.unit.number,
+                  portfolioData.learningOutcome.number
+                ).map((criteria) => (
                   <option key={criteria.AC_number} value={criteria.AC_number}>
-                    {`AC ${criteria.AC_number}: ${criteria.description}`}
+                    {criteria.AC_number} - {criteria.description}
                   </option>
                 ))}
               </Form.Select>
+
             </Form.Group>
           </Col>
         </Row>
@@ -632,23 +637,23 @@ const EditPortfolio = () => {
             onChange={handleChange}
           />
         </Form.Group> */}
-<Form.Group className="mb-3" controlId="formMethod">
-  <Form.Label>Method</Form.Label>
-  <Form.Select
-    name="method"
-    value={portfolioData.method}
-    onChange={handleChange}
-  >
-    <option value="">Select Method</option>
-    <option value="Professional discussion">Professional discussion</option>
-    <option value="Witness testimony">Witness testimony</option>
-    <option value="Written questions">Written questions</option>
-    <option value="Work Product">Work Product</option>
-    <option value="Direct observation">Direct observation</option>
-    <option value="Oral questions">Oral questions</option>
-    <option value="APL / RPL">APL / RPL</option>
-  </Form.Select>
-</Form.Group>
+        <Form.Group className="mb-3" controlId="formMethod">
+          <Form.Label>Method</Form.Label>
+          <Form.Select
+            name="method"
+            value={portfolioData.method}
+            onChange={handleChange}
+          >
+            <option value="">Select Method</option>
+            <option value="Professional discussion">Professional discussion</option>
+            <option value="Witness testimony">Witness testimony</option>
+            <option value="Written questions">Written questions</option>
+            <option value="Work Product">Work Product</option>
+            <option value="Direct observation">Direct observation</option>
+            <option value="Oral questions">Oral questions</option>
+            <option value="APL / RPL">APL / RPL</option>
+          </Form.Select>
+        </Form.Group>
         <Row>
           <Col>
             <Form.Group className="mb-3" controlId="formTaskDescription">
@@ -702,7 +707,7 @@ const EditPortfolio = () => {
             </Form.Group>
           </Col>
         </Row>
-        
+
         <Form.Group className="mb-3" controlId="formComments">
           <Form.Label>Comments</Form.Label>
           <Form.Control
