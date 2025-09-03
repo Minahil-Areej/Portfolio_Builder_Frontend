@@ -26,18 +26,44 @@ const EditPortfolio = () => {
 
   useEffect(() => {
     // Fetch portfolio data
-    const fetchPortfolio = async () => {
-      try {
-        const { data } = await axios.get(`${API_URL}/api/portfolios/${id}`, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        });
-        setPortfolioData(data);
-      } catch (err) {
-        console.error('Error fetching portfolio', err);
-      }
-    };
+    // const fetchPortfolio = async () => {
+    //   try {
+    //     const { data } = await axios.get(`${API_URL}/api/portfolios/${id}`, {
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem('token')}`,
+    //       },
+    //     });
+    //     setPortfolioData(data);
+    //   } catch (err) {
+    //     console.error('Error fetching portfolio', err);
+    //   }
+    // };
+// Fetch portfolio data
+const fetchPortfolio = async () => {
+  try {
+    const { data } = await axios.get(`${API_URL}/api/portfolios/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    // 🔧 Normalize unit, LO, criteria to ensure they are always objects
+    setPortfolioData({
+      ...data,
+      unit: typeof data.unit === 'string'
+        ? JSON.parse(data.unit)
+        : (data.unit || { number: '', title: '' }),
+      learningOutcome: typeof data.learningOutcome === 'string'
+        ? JSON.parse(data.learningOutcome)
+        : (data.learningOutcome || { number: '', description: '' }),
+      criteria: typeof data.criteria === 'string'
+        ? JSON.parse(data.criteria)
+        : (data.criteria || { number: '', description: '' }),
+    });
+  } catch (err) {
+    console.error('Error fetching portfolio', err);
+  }
+};
 
     // Fetch qualification units data
     const fetchQualificationUnits = async () => {
