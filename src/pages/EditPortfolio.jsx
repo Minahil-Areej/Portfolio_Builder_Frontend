@@ -595,7 +595,7 @@ const EditPortfolio = () => {
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group className="mb-3" controlId="formCriteria">
+            {/* <Form.Group className="mb-3" controlId="formCriteria">
               <Form.Label>Select Criteria</Form.Label>
               <Form.Select
                 name="criteria"
@@ -623,7 +623,50 @@ const EditPortfolio = () => {
                 ))}
               </Form.Select>
 
-            </Form.Group>
+            </Form.Group> */}
+            <Form.Group className="mb-3" controlId="formCriteria">
+  <Form.Label>Assessment Criteria</Form.Label>
+  <Form.Select
+    name="criteria"
+    value={portfolioData.criteria?.number || ""}
+    onChange={(e) => {
+      const selectedCriteria = getCriteria(
+        portfolioData.unit.number,
+        portfolioData.learningOutcome.number
+      ).find(
+        (c) =>
+          (c.number?.toString?.() || c.AC_number?.toString?.()) ===
+          e.target.value
+      );
+
+      setPortfolioData({
+        ...portfolioData,
+        criteria: selectedCriteria
+          ? {
+              number: selectedCriteria.number || selectedCriteria.AC_number,
+              description: selectedCriteria.description,
+            }
+          : { number: "", description: "" },
+      });
+    }}
+  >
+    <option value="">Select Criteria</option>
+    {getCriteria(
+      portfolioData.unit.number,
+      portfolioData.learningOutcome.number
+    ).map((criteria, idx) => (
+      <option
+        key={idx}
+        value={criteria.number || criteria.AC_number}
+      >
+        {(criteria.number || criteria.AC_number) +
+          " - " +
+          criteria.description}
+      </option>
+    ))}
+  </Form.Select>
+</Form.Group>
+
           </Col>
         </Row>
 
