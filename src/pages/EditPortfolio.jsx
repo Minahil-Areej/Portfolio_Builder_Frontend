@@ -38,32 +38,32 @@ const EditPortfolio = () => {
     //     console.error('Error fetching portfolio', err);
     //   }
     // };
-// Fetch portfolio data
-const fetchPortfolio = async () => {
-  try {
-    const { data } = await axios.get(`${API_URL}/api/portfolios/${id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
+    // Fetch portfolio data
+    const fetchPortfolio = async () => {
+      try {
+        const { data } = await axios.get(`${API_URL}/api/portfolios/${id}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        });
 
-    // 🔧 Normalize unit, LO, criteria to ensure they are always objects
-    setPortfolioData({
-      ...data,
-      unit: typeof data.unit === 'string'
-        ? JSON.parse(data.unit)
-        : (data.unit || { number: '', title: '' }),
-      learningOutcome: typeof data.learningOutcome === 'string'
-        ? JSON.parse(data.learningOutcome)
-        : (data.learningOutcome || { number: '', description: '' }),
-      criteria: typeof data.criteria === 'string'
-        ? JSON.parse(data.criteria)
-        : (data.criteria || { number: '', description: '' }),
-    });
-  } catch (err) {
-    console.error('Error fetching portfolio', err);
-  }
-};
+        // 🔧 Normalize unit, LO, criteria to ensure they are always objects
+        setPortfolioData({
+          ...data,
+          unit: typeof data.unit === 'string'
+            ? JSON.parse(data.unit)
+            : (data.unit || { number: '', title: '' }),
+          learningOutcome: typeof data.learningOutcome === 'string'
+            ? JSON.parse(data.learningOutcome)
+            : (data.learningOutcome || { number: '', description: '' }),
+          criteria: typeof data.criteria === 'string'
+            ? JSON.parse(data.criteria)
+            : (data.criteria || { number: '', description: '' }),
+        });
+      } catch (err) {
+        console.error('Error fetching portfolio', err);
+      }
+    };
 
     // Fetch qualification units data
     const fetchQualificationUnits = async () => {
@@ -211,52 +211,53 @@ const fetchPortfolio = async () => {
             <Form.Group className="mb-3" controlId="formLearningOutcome">
               <Form.Label>Select Learning Outcome</Form.Label>
               <Form.Select
-                name="learningOutcome.number"
-                value={portfolioData.learningOutcome.number}
+                name="learningOutcome"
+                value={portfolioData.learningOutcome?.LO_number || ''}
                 onChange={(e) => {
-                  const selectedLO = getLearningOutcomes(portfolioData.unit.number).find(
-                    (lo) => lo.LO_number === parseInt(e.target.value)
+                  const selectedLO = portfolioData.unit.learning_outcomes.find(
+                    (lo) => lo.LO_number === Number(e.target.value)
                   );
                   setPortfolioData({
                     ...portfolioData,
-                    learningOutcome: { number: selectedLO.LO_number, description: selectedLO.description },
-                    criteria: { number: '', description: '' }, // Reset Criteria
+                    learningOutcome: selectedLO,
+                    criteria: { AC_number: '', description: '' }, // reset criteria
                   });
                 }}
               >
-                <option value="">Select a Learning Outcome</option>
-                {getLearningOutcomes(portfolioData.unit.number).map((lo) => (
-                  <option key={lo.LO_number} value={lo.LO_number}>
-                    {`LO ${lo.LO_number}: ${lo.description}`}
+                <option value="">Select Learning Outcome</option>
+                {portfolioData.unit?.learning_outcomes?.map((lo, idx) => (
+                  <option key={idx} value={lo.LO_number}>
+                    {lo.LO_number} - {lo.description}
                   </option>
                 ))}
               </Form.Select>
+
             </Form.Group>
           </Col>
           <Col>
             <Form.Group className="mb-3" controlId="formCriteria">
               <Form.Label>Select Criteria</Form.Label>
               <Form.Select
-                name="criteria.number"
-                value={portfolioData.criteria.number}
+                name="criteria"
+                value={portfolioData.criteria?.AC_number || ''}
                 onChange={(e) => {
-                  const selectedCriteria = getCriteria(
-                    portfolioData.unit.number,
-                    portfolioData.learningOutcome.number
-                  ).find((c) => c.AC_number === parseFloat(e.target.value));
+                  const selectedAC = portfolioData.learningOutcome?.assessment_criteria?.find(
+                    (ac) => ac.AC_number === e.target.value
+                  );
                   setPortfolioData({
                     ...portfolioData,
-                    criteria: { number: selectedCriteria.AC_number, description: selectedCriteria.description },
+                    criteria: selectedAC || { AC_number: '', description: '' },
                   });
                 }}
               >
                 <option value="">Select Criteria</option>
-                {getCriteria(portfolioData.unit.number, portfolioData.learningOutcome.number).map((criteria) => (
-                  <option key={criteria.AC_number} value={criteria.AC_number}>
-                    {`AC ${criteria.AC_number}: ${criteria.description}`}
+                {portfolioData.learningOutcome?.assessment_criteria?.map((ac, idx) => (
+                  <option key={idx} value={ac.AC_number}>
+                    {ac.AC_number} - {ac.description}
                   </option>
                 ))}
               </Form.Select>
+
             </Form.Group>
           </Col>
         </Row>
@@ -271,23 +272,23 @@ const fetchPortfolio = async () => {
             onChange={handleChange}
           />
         </Form.Group> */}
-<Form.Group className="mb-3" controlId="formMethod">
-  <Form.Label>Method</Form.Label>
-  <Form.Select
-    name="method"
-    value={portfolioData.method}
-    onChange={handleChange}
-  >
-    <option value="">Select Method</option>
-    <option value="Professional discussion">Professional discussion</option>
-    <option value="Witness testimony">Witness testimony</option>
-    <option value="Written questions">Written questions</option>
-    <option value="Work Product">Work Product</option>
-    <option value="Direct observation">Direct observation</option>
-    <option value="Oral questions">Oral questions</option>
-    <option value="APL / RPL">APL / RPL</option>
-  </Form.Select>
-</Form.Group>
+        <Form.Group className="mb-3" controlId="formMethod">
+          <Form.Label>Method</Form.Label>
+          <Form.Select
+            name="method"
+            value={portfolioData.method}
+            onChange={handleChange}
+          >
+            <option value="">Select Method</option>
+            <option value="Professional discussion">Professional discussion</option>
+            <option value="Witness testimony">Witness testimony</option>
+            <option value="Written questions">Written questions</option>
+            <option value="Work Product">Work Product</option>
+            <option value="Direct observation">Direct observation</option>
+            <option value="Oral questions">Oral questions</option>
+            <option value="APL / RPL">APL / RPL</option>
+          </Form.Select>
+        </Form.Group>
         <Row>
           <Col>
             <Form.Group className="mb-3" controlId="formTaskDescription">
@@ -341,7 +342,7 @@ const fetchPortfolio = async () => {
             </Form.Group>
           </Col>
         </Row>
-        
+
         <Form.Group className="mb-3" controlId="formComments">
           <Form.Label>Comments</Form.Label>
           <Form.Control
