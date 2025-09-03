@@ -599,7 +599,7 @@ const EditPortfolio = () => {
               <Form.Label>Select Criteria</Form.Label>
               <Form.Select
                 name="criteria"
-                value={portfolioData.criteria?.AC_number || ""}
+                value={portfolioData.criteria.number || ""}
                 onChange={(e) => {
                   const selectedCriteria = getCriteria(
                     portfolioData.unit.number,
