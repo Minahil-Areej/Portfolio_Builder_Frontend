@@ -9,10 +9,10 @@ const LogbookView = () => {
     fetch("/Nvq_2357_13.json")
       .then((res) => res.json())
       .then((data) => {
-        if (data && Array.isArray(data.units)) {
-          setLogbookData(data.units); // ✅ always set the array
+        if (data && Array.isArray(data.performance_units)) {
+          setLogbookData(data.performance_units); // ✅ correct key
         } else {
-          setLogbookData([]); // fallback
+          setLogbookData([]);
         }
       })
       .catch((err) => console.error("Failed to load logbook JSON", err));
@@ -29,7 +29,7 @@ const LogbookView = () => {
               Unit {unit.unit}: {unit.title}
             </h2>
 
-            {unit.learningOutcomes.map((lo) => (
+            {unit.learning_outcomes.map((lo) => (
               <div key={lo.LO_number} className="lo-block">
                 <h3>
                   Learning Outcome {lo.LO_number}: {lo.description}
@@ -46,14 +46,12 @@ const LogbookView = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {lo.criteria.map((criteria, idx) => (
+                    {lo.assessment_criteria.map((criteria, idx) => (
                       <tr key={idx}>
                         {/* 6 empty Evidence slots */}
                         <td className="evidence-slots">
                           {[...Array(6)].map((_, i) => (
-                            <div key={i} className="evidence-slot">
-                              {/* Later: portfolio link goes here */}
-                            </div>
+                            <div key={i} className="evidence-slot"></div>
                           ))}
                         </td>
                         <td></td>
