@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../Layout';
+import Layout from "../../components/layout/Layout";
 import NvqData from '../../Nvq_2357_13.json';
 
 const LogbookView = () => {
