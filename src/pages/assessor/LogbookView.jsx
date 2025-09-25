@@ -1,76 +1,63 @@
-import React, { useEffect, useState } from 'react';
-import Layout from "../../components/layout/Layout";
-import NvqData from '../../Nvq_2357_13.json';
+import { useEffect, useState } from "react";
+import Layout from "../../components/layout/Layout"; // ✅ adjust path if needed
+//import "./LogbookView.css"; // optional for styling
 
 const LogbookView = () => {
-  const [portfolios, setPortfolios] = useState([]);
+  const [logbookData, setLogbookData] = useState([]);
 
   useEffect(() => {
-    const fetchPortfolios = async () => {
-      try {
-        const res = await fetch('/api/portfolios/user-portfolios', {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        });
-        const data = await res.json();
-        setPortfolios(data);
-      } catch (err) {
-        console.error('Error fetching portfolios:', err);
-      }
-    };
-    fetchPortfolios();
+    fetch("/Nvq_2357_13.json")
+      .then((res) => res.json())
+      .then((data) => setLogbookData(data))
+      .catch((err) => console.error("Failed to load logbook JSON", err));
   }, []);
 
-  // render up to 6 evidence slots
-  const renderEvidenceCells = (acNumber) => {
-    const matches = portfolios.filter((p) => p.criteria?.number === acNumber);
-    const cells = Array(6).fill('—');
-    matches.forEach((p, i) => {
-      if (i < 6) {
-        cells[i] = (
-          <a href={`/portfolio/view/${p._id}`} target="_blank" rel="noreferrer">
-            {p.title || `Portfolio ${p._id}`}
-          </a>
-        );
-      }
-    });
-    return cells.map((c, i) => <td key={i}>{c}</td>);
-  };
-
   return (
-    <Layout user={{ role: 'assessor' }}>
-      <div className="container">
-        {NvqData.performance_units.map((unit) => (
-          <div key={unit.unit} className="mb-5">
-            <h3 className="mb-3">
-              Unit {unit.unit} – {unit.title}
-            </h3>
+    <Layout>
+      <div className="logbook-container">
+        <h1>NVQ Logbook</h1>
 
-            {unit.learning_outcomes.map((lo) => (
-              <div key={lo.LO_number} className="mb-4">
-                <h5>Outcome {lo.LO_number}: {lo.description}</h5>
-                <table className="table table-bordered table-striped">
+        {logbookData.map((unit) => (
+          <div key={unit.unitNumber} className="unit-block">
+            <h2>
+              Unit {unit.unitNumber}: {unit.unitTitle}
+            </h2>
+
+            {unit.learningOutcomes.map((lo) => (
+              <div key={lo.number} className="lo-block">
+                <h3>
+                  Learning Outcome {lo.number}: {lo.description}
+                </h3>
+
+                <table className="logbook-table">
                   <thead>
                     <tr>
-                      <th>Assessment Criteria</th>
-                      <th colSpan="6">Evidence</th>
+                      <th>Evidence</th>
+                      <th>Summary</th>
                       <th>Method</th>
+                      <th>Assessment Criteria</th>
+                      <th>Range Statement</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {lo.assessment_criteria.map((ac) => {
-                      const methods = portfolios
-                        .filter((p) => p.criteria?.number === ac.AC_number)
-                        .map((p) => p.method)
-                        .filter(Boolean);
-
-                      return (
-                        <tr key={ac.AC_number}>
-                          <td>{ac.AC_number} – {ac.description}</td>
-                          {renderEvidenceCells(ac.AC_number)}
-                          <td>{methods.join(', ') || '—'}</td>
-                        </tr>
-                      );
-                    })}
+                    {lo.criteria.map((criteria, idx) => (
+                      <tr key={idx}>
+                        {/* 6 empty Evidence slots */}
+                        <td className="evidence-slots">
+                          {[...Array(6)].map((_, i) => (
+                            <div key={i} className="evidence-slot">
+                              {/* Later: portfolio link goes here */}
+                            </div>
+                          ))}
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                          {criteria.AC_number}: {criteria.description}
+                        </td>
+                        <td>*</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
