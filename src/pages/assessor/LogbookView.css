@@ -1,0 +1,37 @@
+.logbook-container {
+  padding: 20px;
+}
+
+.unit-block {
+  margin-bottom: 40px;
+}
+
+.logbook-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.logbook-table th,
+.logbook-table td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  vertical-align: top;
+}
+
+.logbook-table th {
+  background-color: #f5f5f5;
+  text-align: left;
+}
+
+.evidence-slots {
+  display: flex;
+  gap: 4px;
+}
+
+.evidence-slot {
+  width: 20px;
+  height: 20px;
+  border: 1px dashed #aaa;
+  background: #fafafa;
+}
