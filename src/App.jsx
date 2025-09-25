@@ -19,6 +19,8 @@ import StudentPortfoliosPage from './pages/assessor/StudentPortfoliosPage';
 import ReviewsPage from './pages/assessor/ReviewsPage';
 import MyPortfoliosPage from './pages/student/MyPortfoliosPage';
 import LogbookView from './pages/assessor/LogbookView';
+import StudentLogbook from "./pages/student/StudentLogbook";
+
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -47,6 +49,7 @@ function App() {
         <Route path="/assessor/reviews" element={<ReviewsPage />} />
         <Route path="/my-portfolios" element={<MyPortfoliosPage />} />
         <Route path="/assessor/logbook" element={<LogbookView />} />
+        <Route path="/student/logbook" element={<StudentLogbook />} />
 
         {/* Add a fallback for undefined routes */}
         <Route path="*" element={<Navigate to="/login" />} />

@@ -26,7 +26,8 @@ const menuConfig = {
   student: [
     { path: '/dashboard', icon: <FaHome />, label: 'Dashboard' },
     { path: '/my-portfolios', icon: <FaFolderOpen />, label: 'My Portfolios' },
-    { path: '/application-form', icon: <FaClipboardList />, label: 'Application' }
+    { path: '/application-form', icon: <FaClipboardList />, label: 'Application' },
+    { path: '/student/logbook', icon: <FaClipboardList />, label: 'Logbook' }, // NEW
   ]
 };
 
