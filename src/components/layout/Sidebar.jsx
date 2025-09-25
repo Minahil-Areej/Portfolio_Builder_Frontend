@@ -20,7 +20,8 @@ const menuConfig = {
   assessor: [
     { path: '/assessor', icon: <FaHome />, label: 'Dashboard' },
     { path: '/portfolio/assessor', icon: <FaUserGraduate />, label: 'Student Portfolios' },
-    { path: '/assessor/reviews', icon: <FaEdit />, label: 'Reviews' }
+    { path: '/assessor/reviews', icon: <FaEdit />, label: 'Reviews' },
+    { path: '/assessor/logbook', icon: <FaClipboardList />, label: 'Logbook' } // NEW
   ],
   student: [
     { path: '/dashboard', icon: <FaHome />, label: 'Dashboard' },
