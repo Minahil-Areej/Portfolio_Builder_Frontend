@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Layout from "../../components/layout/Layout"; // ✅ adjust path if needed
-//import "./LogbookView.css"; // optional for styling
+// import "./LogbookView.css"; // optional for styling
 
 const LogbookView = () => {
   const [logbookData, setLogbookData] = useState([]);
@@ -8,7 +8,13 @@ const LogbookView = () => {
   useEffect(() => {
     fetch("/Nvq_2357_13.json")
       .then((res) => res.json())
-      .then((data) => setLogbookData(data))
+      .then((data) => {
+        if (data && Array.isArray(data.units)) {
+          setLogbookData(data.units); // ✅ always set the array
+        } else {
+          setLogbookData([]); // fallback
+        }
+      })
       .catch((err) => console.error("Failed to load logbook JSON", err));
   }, []);
 
@@ -18,15 +24,15 @@ const LogbookView = () => {
         <h1>NVQ Logbook</h1>
 
         {logbookData.map((unit) => (
-          <div key={unit.unitNumber} className="unit-block">
+          <div key={unit.unit} className="unit-block">
             <h2>
-              Unit {unit.unitNumber}: {unit.unitTitle}
+              Unit {unit.unit}: {unit.title}
             </h2>
 
             {unit.learningOutcomes.map((lo) => (
-              <div key={lo.number} className="lo-block">
+              <div key={lo.LO_number} className="lo-block">
                 <h3>
-                  Learning Outcome {lo.number}: {lo.description}
+                  Learning Outcome {lo.LO_number}: {lo.description}
                 </h3>
 
                 <table className="logbook-table">
