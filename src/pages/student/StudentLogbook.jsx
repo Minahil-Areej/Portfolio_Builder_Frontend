@@ -117,6 +117,9 @@
 // export default StudentLogbook;
 
 
+// 
+
+
 import { useEffect, useState } from "react";
 import Layout from "../../components/layout/Layout";
 import "../assessor/LogbookView.css"; // reuse same styles
@@ -161,9 +164,9 @@ const StudentLogbook = () => {
   const getEvidenceForCriteria = (unit, lo, acNumber) => {
     return portfolios.filter(
       (p) =>
-        p.unit?.number === unit.unit &&
-        p.learningOutcome?.number === lo.LO_number &&
-        p.criteria?.number === acNumber
+        String(p.unit?.number) === String(unit.unit) &&
+        String(p.learningOutcome?.number) === String(lo.LO_number) &&
+        String(p.criteria?.number) === String(acNumber)
     );
   };
 
@@ -196,7 +199,7 @@ const StudentLogbook = () => {
                   </thead>
                   <tbody>
                     {lo.assessment_criteria.map((criteria, idx) => {
-                      const evidence = getEvidenceForCriteria(
+                      const evidenceList = getEvidenceForCriteria(
                         unit,
                         lo,
                         criteria.AC_number
@@ -204,23 +207,32 @@ const StudentLogbook = () => {
                       return (
                         <tr key={idx}>
                           <td className="evidence-slots">
-                            {evidence.length > 0 ? (
-                              evidence.map((p) => (
-                                <a
-                                  key={p._id}
-                                  href={`/portfolio/${p._id}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  {p.title}
-                                </a>
+                            {evidenceList.length > 0 ? (
+                              evidenceList.map((p) => (
+                                <div key={p._id}>
+                                  <a
+                                    href={`/portfolio/${p._id}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    {p.title}
+                                  </a>
+                                </div>
                               ))
                             ) : (
                               <span>No evidence yet</span>
                             )}
                           </td>
-                          <td>{evidence[0]?.statement || ""}</td>
-                          <td>{evidence[0]?.method || ""}</td>
+                          <td>
+                            {evidenceList.length > 0
+                              ? evidenceList.map((p) => p.statement).join(", ")
+                              : ""}
+                          </td>
+                          <td>
+                            {evidenceList.length > 0
+                              ? evidenceList.map((p) => p.method).join(", ")
+                              : ""}
+                          </td>
                           <td>
                             {criteria.AC_number}: {criteria.description}
                           </td>
