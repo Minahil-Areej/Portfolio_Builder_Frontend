@@ -304,13 +304,14 @@ const StudentLogbook = () => {
 
   // ✅ Helper: match AC with student portfolios
   const getEvidenceForCriteria = (unit, lo, acNumber) => {
-    return portfolios.filter(
-      (p) =>
-        p.unit?.number === unit.unit &&
-        p.learningOutcome?.number === lo.LO_number &&
-        p.criteria?.number === acNumber
-    );
-  };
+  return portfolios.filter(
+    (p) =>
+      String(p.unit?.number) === String(unit.unit) &&
+      String(p.learningOutcome?.number) === String(lo.LO_number) &&
+      String(p.criteria?.number) === String(acNumber)
+  );
+};
+
 
   return (
     <Layout>
