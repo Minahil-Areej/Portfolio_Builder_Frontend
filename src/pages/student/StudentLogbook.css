@@ -1,0 +1,103 @@
+.logbook-container {
+  padding: 20px;
+  background-color: #f8f9fa; /* light background */
+}
+
+.logbook-container h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.unit-block {
+  margin-bottom: 15px;
+}
+
+.accordion-button {
+  background: #0d6efd !important; /* Bootstrap primary blue */
+  color: #fff !important;
+  font-weight: 500;
+}
+
+.accordion-button:not(.collapsed) {
+  background: #0b5ed7 !important;
+  box-shadow: none;
+}
+
+.accordion-body {
+  background: #fff;
+  border-radius: 6px;
+  padding: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.lo-block h5 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #0d6efd;
+}
+
+/* Table styling */
+.logbook-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+
+.logbook-table th {
+  background-color: #e9ecef;
+  font-weight: 600;
+  padding: 10px;
+  text-align: left;
+}
+
+.logbook-table td {
+  background: #fff;
+  padding: 10px;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.logbook-table tr:hover td {
+  background-color: #f6f9ff;
+}
+
+/* Evidence link buttons */
+button.btn-link {
+  padding: 0;
+  color: #0d6efd;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+button.btn-link:hover {
+  color: #084298;
+  text-decoration: none;
+}
+
+/* No evidence */
+.logbook-table em {
+  color: #888;
+  font-style: italic;
+}
+
+/* Filters */
+.filters select {
+  max-width: 250px;
+  font-size: 0.9rem;
+}
+
+/* Modal gallery */
+.image-gallery img {
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  transition: transform 0.2s ease;
+}
+
+.image-gallery img:hover {
+  transform: scale(1.05);
+  border-color: #0d6efd;
+}
