@@ -1,37 +1,84 @@
 .logbook-container {
   padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.logbook-container h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1a237e; /* navy-like */
 }
 
 .unit-block {
-  margin-bottom: 40px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.unit-block h2 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: #1565c0;
+}
+
+.lo-block {
+  margin-top: 15px;
+}
+
+.lo-block h3 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 8px;
 }
 
 .logbook-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 30px;
-}
-
-.logbook-table th,
-.logbook-table td {
-  border: 1px solid #ccc;
-  padding: 8px 12px;
-  vertical-align: top;
+  margin-top: 10px;
+  font-size: 0.9rem;
 }
 
 .logbook-table th {
-  background-color: #f5f5f5;
+  background: #f5f5f5;
+  color: #333;
+  font-weight: 600;
   text-align: left;
+  padding: 8px;
+  border-bottom: 2px solid #ddd;
 }
 
-.evidence-slots {
-  display: flex;
-  gap: 4px;
+.logbook-table td {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
 }
 
-.evidence-slot {
-  width: 20px;
-  height: 20px;
-  border: 1px dashed #aaa;
-  background: #fafafa;
+.logbook-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.evidence-slots a {
+  display: inline-block;
+  background: #1565c0;
+  color: #fff;
+  padding: 5px 10px;
+  margin: 2px 0;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.evidence-slots a:hover {
+  background: #0d47a1;
+}
+
+.evidence-slots span {
+  color: #888;
+  font-style: italic;
 }
