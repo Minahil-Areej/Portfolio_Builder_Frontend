@@ -368,6 +368,24 @@ const LogbookView = () => {
                                         <Card.Body>
                                             <div className="d-flex justify-content-between align-items-center">
                                                 <div>
+                                                    <p className="text-muted small mb-1">Pending Reviews</p>
+                                                    <h2 className="mb-0 fw-bold">
+                                                        {portfolios.filter(p => p.status === 'To Be Reviewed').length}
+                                                    </h2>
+                                                </div>
+                                                <div className="rounded p-3" style={{ backgroundColor: 'rgba(255, 193, 7, 0.1)' }}>
+                                                    <BsClock size={28} className="text-warning" />
+                                                </div>
+                                            </div>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+
+                                <Col md={4} className="mb-3">
+                                    <Card className="shadow-sm h-100">
+                                        <Card.Body>
+                                            <div className="d-flex justify-content-between align-items-center">
+                                                <div>
                                                     <p className="text-muted small mb-1">Overall Progress</p>
                                                     <h2 className="mb-0 fw-bold">
                                                         {logbookData.length > 0 ? Math.round(
@@ -378,8 +396,8 @@ const LogbookView = () => {
                                                         ) : 0}%
                                                     </h2>
                                                 </div>
-                                                <div className="rounded p-3" style={{ backgroundColor: 'rgba(255, 193, 7, 0.1)' }}>
-                                                    <BsClock size={28} className="text-warning" />
+                                                <div className="rounded p-3" style={{ backgroundColor: 'rgba(13, 110, 253, 0.1)' }}>
+                                                    <BsFileText size={28} className="text-primary" />
                                                 </div>
                                             </div>
                                         </Card.Body>
