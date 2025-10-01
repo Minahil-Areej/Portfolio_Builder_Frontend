@@ -82,13 +82,13 @@
 //claude try -1 
 import { useEffect, useState } from "react";
 import Layout from "../../components/layout/Layout";
-import { 
-    Container, Row, Col, Card, Badge, Button, 
-    Form, ProgressBar, Spinner, InputGroup 
+import {
+    Container, Row, Col, Card, Badge, Button,
+    Form, ProgressBar, Spinner, InputGroup
 } from "react-bootstrap";
-import { 
-    BsSearch, BsBook, BsCheckCircle, BsClock, 
-    BsFileText, BsBoxArrowUpRight, BsChevronDown, BsChevronUp, BsPerson 
+import {
+    BsSearch, BsBook, BsCheckCircle, BsClock,
+    BsFileText, BsBoxArrowUpRight, BsChevronDown, BsChevronUp, BsPerson
 } from "react-icons/bs";
 
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
@@ -156,9 +156,9 @@ const LogbookView = () => {
                         new Set(
                             portfoliosData
                                 .filter(p => p.userId?.name)
-                                .map(p => JSON.stringify({ 
-                                    id: p.userId._id, 
-                                    name: p.userId.name 
+                                .map(p => JSON.stringify({
+                                    id: p.userId._id,
+                                    name: p.userId.name
                                 }))
                         )
                     ).map(s => JSON.parse(s));
@@ -206,7 +206,7 @@ const LogbookView = () => {
             (sum, lo) => sum + lo.assessment_criteria.length, 0
         );
         const completedCriteria = unit.learning_outcomes.reduce((sum, lo) => {
-            return sum + lo.assessment_criteria.filter(ac => 
+            return sum + lo.assessment_criteria.filter(ac =>
                 getEvidenceForCriteria(unit, lo, ac.AC_number).length > 0
             ).length;
         }, 0);
@@ -215,7 +215,7 @@ const LogbookView = () => {
 
     const getOutcomeProgress = (unit, lo) => {
         const total = lo.assessment_criteria.length;
-        const completed = lo.assessment_criteria.filter(ac => 
+        const completed = lo.assessment_criteria.filter(ac =>
             getEvidenceForCriteria(unit, lo, ac.AC_number).length > 0
         ).length;
         return { total, completed };
@@ -238,14 +238,14 @@ const LogbookView = () => {
 
     const filteredData = logbookData.filter(unit => {
         const matchesSearch = unit.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            unit.unit.toString().includes(searchTerm);
-        
+            unit.unit.toString().includes(searchTerm);
+
         if (filterStatus === "all") return matchesSearch;
-        
+
         const progress = getUnitProgress(unit);
         if (filterStatus === "completed") return matchesSearch && progress.completed === progress.total;
         if (filterStatus === "incomplete") return matchesSearch && progress.completed < progress.total;
-        
+
         return matchesSearch;
     });
 
@@ -279,19 +279,32 @@ const LogbookView = () => {
 
                 <Container className="py-4">
                     {/* Student Selection */}
-                    <Card className="shadow-sm mb-4">
-                        <Card.Body>
-                            <Row>
+                    {/* Student Selection - Beautiful Version */}
+                    <Card className="shadow-sm mb-4" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' }}>
+                        <Card.Body className="p-4">
+                            <Row className="align-items-center">
                                 <Col md={6}>
                                     <Form.Group>
-                                        <Form.Label className="fw-semibold d-flex align-items-center" style={{ gap: '0.5rem' }}>
-                                            <BsPerson size={20} />
+                                        <Form.Label className="text-white fw-semibold mb-3 d-flex align-items-center" style={{ gap: '0.5rem', fontSize: '1.1rem' }}>
+                                            <div className="rounded-circle bg-white d-flex align-items-center justify-content-center" style={{ width: '32px', height: '32px' }}>
+                                                <BsPerson size={20} className="text-primary" />
+                                            </div>
                                             Select Student
                                         </Form.Label>
                                         <Form.Select
                                             value={selectedStudent}
                                             onChange={(e) => setSelectedStudent(e.target.value)}
-                                            size="lg"
+                                            className="form-select-lg shadow-sm"
+                                            style={{
+                                                borderRadius: '12px',
+                                                border: '2px solid rgba(255,255,255,0.3)',
+                                                padding: '12px 16px',
+                                                fontSize: '1rem',
+                                                fontWeight: '500',
+                                                backgroundColor: 'white',
+                                                cursor: 'pointer',
+                                                transition: 'all 0.3s ease'
+                                            }}
                                         >
                                             <option value="">Choose a student...</option>
                                             {students.map((student) => (
@@ -302,6 +315,22 @@ const LogbookView = () => {
                                         </Form.Select>
                                     </Form.Group>
                                 </Col>
+
+                                {selectedStudent && selectedStudentData && (
+                                    <Col md={6}>
+                                        <div className="text-white">
+                                            <div className="d-flex align-items-center mb-2" style={{ gap: '0.75rem' }}>
+                                                <div className="rounded-circle bg-white d-flex align-items-center justify-content-center" style={{ width: '48px', height: '48px' }}>
+                                                    <BsPerson size={28} className="text-primary" />
+                                                </div>
+                                                <div>
+                                                    <p className="mb-0 small opacity-75">Currently Viewing</p>
+                                                    <h4 className="mb-0 fw-bold">{selectedStudentData.name}</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                )}
                             </Row>
                         </Card.Body>
                     </Card>
@@ -349,7 +378,7 @@ const LogbookView = () => {
                                         </Card.Body>
                                     </Card>
                                 </Col>
-                                
+
                                 <Col md={4} className="mb-3">
                                     <Card className="shadow-sm h-100">
                                         <Card.Body>
@@ -393,7 +422,7 @@ const LogbookView = () => {
                                         </Col>
                                         <Col md={4}>
                                             <div className="d-flex" style={{ gap: '0.5rem' }}>
-                                                <Button 
+                                                <Button
                                                     variant={filterStatus === "all" ? "primary" : "outline-secondary"}
                                                     onClick={() => setFilterStatus("all")}
                                                     style={{ flex: 1 }}
@@ -401,7 +430,7 @@ const LogbookView = () => {
                                                 >
                                                     All
                                                 </Button>
-                                                <Button 
+                                                <Button
                                                     variant={filterStatus === "completed" ? "success" : "outline-secondary"}
                                                     onClick={() => setFilterStatus("completed")}
                                                     style={{ flex: 1 }}
@@ -409,7 +438,7 @@ const LogbookView = () => {
                                                 >
                                                     Complete
                                                 </Button>
-                                                <Button 
+                                                <Button
                                                     variant={filterStatus === "incomplete" ? "warning" : "outline-secondary"}
                                                     onClick={() => setFilterStatus("incomplete")}
                                                     style={{ flex: 1 }}
@@ -428,11 +457,11 @@ const LogbookView = () => {
                                 const progress = getUnitProgress(unit);
                                 const isExpanded = expandedUnits[unit.unit];
                                 const progressPercent = progress.total > 0 ? (progress.completed / progress.total) * 100 : 0;
-                                
+
                                 return (
                                     <Card key={unit.unit} className="shadow-sm mb-4">
                                         <Card.Body>
-                                            <div 
+                                            <div
                                                 onClick={() => toggleUnit(unit.unit)}
                                                 style={{ cursor: 'pointer' }}
                                             >
@@ -450,7 +479,7 @@ const LogbookView = () => {
                                                             )}
                                                         </div>
                                                         <h4 className="fw-bold mb-3">{unit.title}</h4>
-                                                        
+
                                                         <div className="mb-2">
                                                             <div className="d-flex justify-content-between small text-muted mb-1">
                                                                 <span>Progress</span>
@@ -458,17 +487,17 @@ const LogbookView = () => {
                                                                     {progress.completed} / {progress.total} criteria
                                                                 </span>
                                                             </div>
-                                                            <ProgressBar 
-                                                                now={progressPercent} 
+                                                            <ProgressBar
+                                                                now={progressPercent}
                                                                 variant="primary"
                                                                 style={{ height: '8px' }}
                                                             />
                                                         </div>
                                                     </div>
-                                                    
-                                                    <Button 
-                                                        variant="light" 
-                                                        size="sm" 
+
+                                                    <Button
+                                                        variant="light"
+                                                        size="sm"
                                                         className="ms-3"
                                                         onClick={(e) => {
                                                             e.stopPropagation();
@@ -486,21 +515,21 @@ const LogbookView = () => {
                                                         const outcomeKey = `${unit.unit}-${lo.LO_number}`;
                                                         const isOutcomeExpanded = expandedOutcomes[outcomeKey];
                                                         const outcomeProgress = getOutcomeProgress(unit, lo);
-                                                        const outcomePercent = outcomeProgress.total > 0 
-                                                            ? (outcomeProgress.completed / outcomeProgress.total) * 100 
+                                                        const outcomePercent = outcomeProgress.total > 0
+                                                            ? (outcomeProgress.completed / outcomeProgress.total) * 100
                                                             : 0;
 
                                                         return (
-                                                            <Card 
-                                                                key={lo.LO_number} 
+                                                            <Card
+                                                                key={lo.LO_number}
                                                                 className="mb-3"
-                                                                style={{ 
+                                                                style={{
                                                                     backgroundColor: '#f0f7ff',
                                                                     borderLeft: '4px solid #0d6efd'
                                                                 }}
                                                             >
                                                                 <Card.Body>
-                                                                    <div 
+                                                                    <div
                                                                         onClick={() => toggleOutcome(unit.unit, lo.LO_number)}
                                                                         style={{ cursor: 'pointer' }}
                                                                     >
@@ -520,7 +549,7 @@ const LogbookView = () => {
                                                                                 <h5 className="fw-semibold mb-2" style={{ color: '#0d6efd' }}>
                                                                                     {lo.description}
                                                                                 </h5>
-                                                                                
+
                                                                                 <div className="mb-0">
                                                                                     <div className="d-flex justify-content-between small text-muted mb-1">
                                                                                         <span>Progress</span>
@@ -528,16 +557,16 @@ const LogbookView = () => {
                                                                                             {outcomeProgress.completed} / {outcomeProgress.total} criteria
                                                                                         </span>
                                                                                     </div>
-                                                                                    <ProgressBar 
-                                                                                        now={outcomePercent} 
+                                                                                    <ProgressBar
+                                                                                        now={outcomePercent}
                                                                                         variant="info"
                                                                                         style={{ height: '6px' }}
                                                                                     />
                                                                                 </div>
                                                                             </div>
-                                                                            
-                                                                            <Button 
-                                                                                variant="light" 
+
+                                                                            <Button
+                                                                                variant="light"
                                                                                 size="sm"
                                                                                 className="ms-2"
                                                                                 onClick={(e) => {
@@ -555,9 +584,9 @@ const LogbookView = () => {
                                                                             {lo.assessment_criteria.map((criteria) => {
                                                                                 const evidenceList = getEvidenceForCriteria(unit, lo, criteria.AC_number);
                                                                                 const hasEvidence = evidenceList.length > 0;
-                                                                                
+
                                                                                 return (
-                                                                                    <Card 
+                                                                                    <Card
                                                                                         key={criteria.AC_number}
                                                                                         className="mb-3"
                                                                                         style={{
@@ -568,10 +597,10 @@ const LogbookView = () => {
                                                                                     >
                                                                                         <Card.Body>
                                                                                             <div className="d-flex" style={{ gap: '1rem' }}>
-                                                                                                <div 
+                                                                                                <div
                                                                                                     className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                                                                                                    style={{ 
-                                                                                                        width: '24px', 
+                                                                                                    style={{
+                                                                                                        width: '24px',
                                                                                                         height: '24px',
                                                                                                         backgroundColor: hasEvidence ? '#198754' : '#6c757d'
                                                                                                     }}
@@ -580,17 +609,17 @@ const LogbookView = () => {
                                                                                                         <BsCheckCircle size={16} style={{ color: 'white' }} />
                                                                                                     )}
                                                                                                 </div>
-                                                                                                
+
                                                                                                 <div style={{ flex: 1 }}>
                                                                                                     <p className="fw-semibold small mb-2">
                                                                                                         AC {criteria.AC_number}: {criteria.description}
                                                                                                     </p>
-                                                                                                    
+
                                                                                                     {hasEvidence ? (
                                                                                                         <div className="d-flex flex-column" style={{ gap: '1rem' }}>
                                                                                                             {evidenceList.map((p) => (
                                                                                                                 <div key={p._id} className="border rounded p-3" style={{ backgroundColor: 'white' }}>
-                                                                                                                    <a 
+                                                                                                                    <a
                                                                                                                         href={`/portfolio/assessor/${p._id}`}
                                                                                                                         target="_blank"
                                                                                                                         rel="noopener noreferrer"
@@ -601,14 +630,14 @@ const LogbookView = () => {
                                                                                                                         {p.title || `Portfolio ${p.criteria?.number}`}
                                                                                                                         <BsBoxArrowUpRight size={12} />
                                                                                                                     </a>
-                                                                                                                    
+
                                                                                                                     {p.method && (
                                                                                                                         <div className="mb-2">
                                                                                                                             <span className="fw-semibold text-muted small">Method: </span>
                                                                                                                             <Badge bg="info" className="ms-1">{p.method}</Badge>
                                                                                                                         </div>
                                                                                                                     )}
-                                                                                                                    
+
                                                                                                                     {p.taskDescription && (
                                                                                                                         <p className="small text-muted mb-0">
                                                                                                                             <span className="fw-semibold">Summary: </span>
@@ -618,11 +647,11 @@ const LogbookView = () => {
 
                                                                                                                     {p.status && (
                                                                                                                         <div className="mt-2">
-                                                                                                                            <Badge 
+                                                                                                                            <Badge
                                                                                                                                 bg={
-                                                                                                                                    p.status === 'Done' ? 'success' : 
-                                                                                                                                    p.status === 'Reviewed' ? 'info' : 
-                                                                                                                                    'warning'
+                                                                                                                                    p.status === 'Done' ? 'success' :
+                                                                                                                                        p.status === 'Reviewed' ? 'info' :
+                                                                                                                                            'warning'
                                                                                                                                 }
                                                                                                                             >
                                                                                                                                 {p.status}
