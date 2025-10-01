@@ -267,123 +267,124 @@ import "../assessor/LogbookView.css"; // reuse same styles
 const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const StudentLogbook = () => {
-  const [logbookData, setLogbookData] = useState([]);
-  const [portfolios, setPortfolios] = useState([]);
+    const [logbookData, setLogbookData] = useState([]);
+    const [portfolios, setPortfolios] = useState([]);
 
-  // ✅ Fetch NVQ logbook JSON
-  useEffect(() => {
-    fetch("/Nvq_2357_13.json")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data && Array.isArray(data.performance_units)) {
-          setLogbookData(data.performance_units);
-        } else {
-          setLogbookData([]);
-        }
-      })
-      .catch((err) => console.error("Failed to load logbook JSON", err));
-  }, []);
+    // ✅ Fetch NVQ logbook JSON
+    useEffect(() => {
+        fetch("/Nvq_2357_13.json")
+            .then((res) => res.json())
+            .then((data) => {
+                if (data && Array.isArray(data.performance_units)) {
+                    setLogbookData(data.performance_units);
+                } else {
+                    setLogbookData([]);
+                }
+            })
+            .catch((err) => console.error("Failed to load logbook JSON", err));
+    }, []);
 
-  // ✅ Fetch logged-in student portfolios
-  useEffect(() => {
-    fetch(`${API_URL}/api/portfolios/user-portfolios`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`, // send JWT
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setPortfolios(data);
-        } else {
-          setPortfolios([]);
-        }
-      })
-      .catch((err) => console.error("Failed to load student portfolios", err));
-  }, []);
+    // ✅ Fetch logged-in student portfolios
+    useEffect(() => {
+        fetch(`${API_URL}/api/portfolios/user-portfolios`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`, // send JWT
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if (Array.isArray(data)) {
+                    setPortfolios(data);
+                } else {
+                    setPortfolios([]);
+                }
+            })
+            .catch((err) => console.error("Failed to load student portfolios", err));
+    }, []);
 
-  // ✅ Helper: match AC with student portfolios
-  const getEvidenceForCriteria = (unit, lo, acNumber) => {
-  return portfolios.filter(
-    (p) =>
-      String(p.unit?.number) === String(unit.unit) &&
-      String(p.learningOutcome?.number) === String(lo.LO_number) &&
-      String(p.criteria?.number) === String(acNumber)
-  );
-};
+    // ✅ Helper: match AC with student portfolios
+    const getEvidenceForCriteria = (unit, lo, acNumber) => {
+        return portfolios.filter(
+            (p) =>
+                String(p.unit?.number) === String(unit.unit) &&
+                String(p.learningOutcome?.number) === String(lo.LO_number) &&
+                String(p.criteria?.number) === String(acNumber)
+        );
+    };
 
 
-  return (
-    <Layout>
-      <div className="logbook-container">
-        <h1>My NVQ Logbook</h1>
+    return (
+        <Layout>
+            <div className="logbook-container">
+                <h1>My NVQ Logbook</h1>
 
-        {logbookData.map((unit) => (
-          <div key={unit.unit} className="unit-block">
-            <h2>
-              Unit {unit.unit}: {unit.title}
-            </h2>
+                {logbookData.map((unit) => (
+                    <div key={unit.unit} className="unit-block">
+                        <h2>
+                            Unit {unit.unit}: {unit.title}
+                        </h2>
 
-            {unit.learning_outcomes.map((lo) => (
-              <div key={lo.LO_number} className="lo-block">
-                <h3>
-                  Learning Outcome {lo.LO_number}: {lo.description}
-                </h3>
+                        {unit.learning_outcomes.map((lo) => (
+                            <div key={lo.LO_number} className="lo-block">
+                                <h3>
+                                    Learning Outcome {lo.LO_number}: {lo.description}
+                                </h3>
 
-                <table className="logbook-table">
-                  <thead>
-                    <tr>
-                      <th>Evidence</th>
-                      <th>Summary</th>
-                      <th>Method</th>
-                      <th>Assessment Criteria</th>
-                      <th>Range Statement</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {lo.assessment_criteria.map((criteria, idx) => {
-                      const evidenceList = getEvidenceForCriteria(
-                        unit,
-                        lo,
-                        criteria.AC_number
-                      );
+                                <table className="logbook-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Evidence</th>
+                                            <th>Summary</th>
+                                            <th>Method</th>
+                                            <th>Assessment Criteria</th>
+                                            <th>Range Statement</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {lo.assessment_criteria.map((criteria, idx) => {
+                                            const evidenceList = getEvidenceForCriteria(
+                                                unit,
+                                                lo,
+                                                criteria.AC_number
+                                            );
 
-                      return (
-                        <tr key={idx}>
-                          <td className="evidence-slots">
-                            {evidenceList.length > 0 ? (
-                              evidenceList.map((p) => (
-                                <a
-                                  key={p._id}
-                                  href={`/portfolio/${p._id}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  {p.title || `Portfolio ${p.criteria?.number}`}
-                                </a>
-                              ))
-                            ) : (
-                              <span>No evidence yet</span>
-                            )}
-                          </td>
-                          <td>{evidenceList[0]?.statement || ""}</td>
-                          <td>{evidenceList[0]?.method || ""}</td>
-                          <td>
-                            {criteria.AC_number}: {criteria.description}
-                          </td>
-                          <td>*</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </Layout>
-  );
+                                            return (
+                                                <tr key={idx}>
+                                                    <td className="evidence-slots">
+                                                        {evidenceList.length > 0 ? (
+                                                            evidenceList.map((p) => (
+                                                                <a
+                                                                    key={p._id}
+                                                                    href={`/portfolio/view/${p._id}`}   // ✅ correct route
+                                                                    target="_blank"
+                                                                    rel="noopener noreferrer"
+                                                                >
+                                                                    {p.title || `Portfolio ${p.criteria?.number}`}
+                                                                </a>
+
+                                                            ))
+                                                        ) : (
+                                                            <span>No evidence yet</span>
+                                                        )}
+                                                    </td>
+                                                    <td>{evidenceList[0]?.statement || ""}</td>
+                                                    <td>{evidenceList[0]?.method || ""}</td>
+                                                    <td>
+                                                        {criteria.AC_number}: {criteria.description}
+                                                    </td>
+                                                    <td>*</td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+                        ))}
+                    </div>
+                ))}
+            </div>
+        </Layout>
+    );
 };
 
 export default StudentLogbook;
