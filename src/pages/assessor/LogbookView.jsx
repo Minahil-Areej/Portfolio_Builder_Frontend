@@ -352,22 +352,6 @@ const LogbookView = () => {
                                         <Card.Body>
                                             <div className="d-flex justify-content-between align-items-center">
                                                 <div>
-                                                    <p className="text-muted small mb-1">Student</p>
-                                                    <h5 className="mb-0 fw-bold">{selectedStudentData?.name}</h5>
-                                                </div>
-                                                <div className="rounded p-3" style={{ backgroundColor: 'rgba(108, 117, 125, 0.1)' }}>
-                                                    <BsPerson size={28} className="text-secondary" />
-                                                </div>
-                                            </div>
-                                        </Card.Body>
-                                    </Card>
-                                </Col>
-
-                                <Col md={4} className="mb-3">
-                                    <Card className="shadow-sm h-100">
-                                        <Card.Body>
-                                            <div className="d-flex justify-content-between align-items-center">
-                                                <div>
                                                     <p className="text-muted small mb-1">Total Evidence</p>
                                                     <h2 className="mb-0 fw-bold">{portfolios.length}</h2>
                                                 </div>
