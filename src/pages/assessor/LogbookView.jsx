@@ -591,7 +591,7 @@ const LogbookView = () => {
                                                                                                             {evidenceList.map((p) => (
                                                                                                                 <div key={p._id} className="border rounded p-3" style={{ backgroundColor: 'white' }}>
                                                                                                                     <a 
-                                                                                                                        href={`/portfolio/view/${p._id}`}
+                                                                                                                        href={`/portfolio/assessor/${p._id}`}
                                                                                                                         target="_blank"
                                                                                                                         rel="noopener noreferrer"
                                                                                                                         className="text-primary text-decoration-none fw-medium small d-flex align-items-center mb-2"
