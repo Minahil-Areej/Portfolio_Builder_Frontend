@@ -23,6 +23,7 @@ import StudentLogbook from "./pages/student/StudentLogbook";
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import './theme.css'; 
 
 function App() {
   return (
