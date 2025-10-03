@@ -1,125 +1,388 @@
-/* Dashboard.css */
+/* ============================================
+   DASHBOARD STYLES - UPDATED THEME
+   ============================================ */
+
 .dashboard-container {
-    max-width: 95%; /* Cover more of the page, but centered */
-    margin: 0 auto; /* Center the content horizontally */
+  max-width: 95%;
+  margin: 0 auto;
+  padding: var(--spacing-lg) 0;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  border-radius: var(--radius-lg);
+  color: var(--text-white);
+  box-shadow: var(--shadow-md);
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  font-weight: var(--fw-bold);
+  margin-bottom: var(--spacing-sm);
+}
+
+.dashboard-header p {
+  opacity: 0.9;
+  font-size: 1.05rem;
+}
+
+/* Filter Section */
+.filter-container {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+  padding: var(--spacing-lg);
+  background: var(--background-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.filter-item {
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-item label {
+  display: block;
+  font-weight: var(--fw-medium);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+  font-size: 0.9rem;
+}
+
+.filter-select,
+.filter-date {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  color: var(--text-primary);
+  background-color: var(--background-card);
+  transition: all var(--transition-base);
+}
+
+.filter-select:focus,
+.filter-date:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-lighter);
+}
+
+.filter-select:hover,
+.filter-date:hover {
+  border-color: var(--primary-light);
+}
+
+/* Portfolio Sections */
+.portfolio-section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+  padding-bottom: var(--spacing-md);
+  border-bottom: 3px solid var(--border-light);
+}
+
+.section-header h2 {
+  font-size: 1.5rem;
+  font-weight: var(--fw-bold);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 var(--spacing-sm);
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: var(--fw-semibold);
+}
+
+.section-badge.draft {
+  background-color: var(--text-secondary);
+  color: var(--text-white);
+}
+
+.section-badge.review {
+  background-color: var(--warning-color);
+  color: var(--text-primary);
+}
+
+.section-badge.reviewed {
+  background-color: var(--info-color);
+  color: var(--text-white);
+}
+
+.section-badge.done {
+  background-color: var(--success-color);
+  color: var(--text-white);
+}
+
+/* Portfolio Cards */
+.portfolio-cards {
+  margin-top: var(--spacing-lg);
+}
+
+.card {
+  border: none !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-sm) !important;
+  transition: all var(--transition-base);
+  overflow: hidden;
+  height: 100%;
+  background: var(--background-card);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg) !important;
+  transform: translateY(-4px);
+}
+
+/* Card Header with gradient */
+.card-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+  border: none !important;
+  padding: var(--spacing-lg) !important;
+  color: var(--text-white) !important;
+}
+
+.card-header h5 {
+  font-size: 1.1rem;
+  font-weight: var(--fw-semibold);
+  margin: 0;
+  color: var(--text-white);
+}
+
+/* Card Body */
+.card-body {
+  padding: var(--spacing-lg) !important;
+}
+
+.card-text {
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.card-text strong {
+  color: var(--text-primary);
+  font-weight: var(--fw-semibold);
+}
+
+/* Card Footer with actions */
+.card-footer {
+  background-color: var(--background-hover) !important;
+  border-top: 1px solid var(--border-light) !important;
+  padding: var(--spacing-md) var(--spacing-lg) !important;
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-lg);
+}
+
+/* Action Icons */
+.action-icons {
+  display: flex;
+  gap: var(--spacing-lg);
+  align-items: center;
+}
+
+.action-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+}
+
+.icon-view {
+  color: var(--info-color);
+}
+
+.icon-view:hover {
+  color: var(--info-dark);
+  background-color: var(--info-lighter);
+  transform: scale(1.1);
+}
+
+.icon-edit {
+  color: var(--warning-color);
+}
+
+.icon-edit:hover {
+  color: var(--warning-dark);
+  background-color: var(--warning-lighter);
+  transform: scale(1.1);
+}
+
+.icon-submit {
+  color: var(--success-color);
+}
+
+.icon-submit:hover {
+  color: var(--success-dark);
+  background-color: var(--success-lighter);
+  transform: scale(1.1);
+}
+
+.icon-delete {
+  color: var(--danger-color);
+}
+
+.icon-delete:hover {
+  color: var(--danger-dark);
+  background-color: var(--danger-lighter);
+  transform: scale(1.1);
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-block;
+  padding: 0.375rem 0.875rem;
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: var(--fw-semibold);
+  text-transform: capitalize;
+}
+
+.status-badge.draft {
+  background-color: var(--background-active);
+  color: var(--text-secondary);
+}
+
+.status-badge.to-be-reviewed {
+  background-color: var(--warning-lighter);
+  color: var(--warning-dark);
+}
+
+.status-badge.reviewed {
+  background-color: var(--info-lighter);
+  color: var(--info-dark);
+}
+
+.status-badge.done {
+  background-color: var(--success-lighter);
+  color: var(--success-dark);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  background: var(--background-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-md);
+}
+
+.empty-state h4 {
+  color: var(--text-secondary);
+  font-weight: var(--fw-semibold);
+  margin-bottom: var(--spacing-sm);
+}
+
+.empty-state p {
+  color: var(--text-muted);
+}
+
+/* Loading Spinner */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.3rem;
+  color: var(--primary-color) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .dashboard-container {
+    max-width: 100%;
+    padding: var(--spacing-md) 0;
   }
-  
+
   .filter-container {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .filter-item {
-    display: flex;
     flex-direction: column;
-    margin-right: 20px;
   }
-  
-  .filter-select, .filter-date {
-    padding: 10px;
-    margin-top: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 16px;
+
+  .filter-item {
+    min-width: 100%;
   }
-  
-  .filter-select:focus, .filter-date:focus {
-    outline: none;
-    border-color: #007bff;
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
   }
-  
-  .portfolio-cards {
-    margin-top: 30px; /* Add some spacing between header and cards */
-  }
-  
-  .card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 20px;
-  }
-  
-  .btn {
-    margin-right: 10px; /* Add margin to buttons */
-  }
-  
-  h2 {
-    font-size: 2rem;
-    font-weight: bold;
-  }
-  
+
   .card-footer {
-    background-color: #f8f9fa; /* Light gray footer background */
-    border-top: 1px solid #ddd; /* Subtle border to separate footer */
-    padding: 10px 15px; /* Padding for comfortable click area */
+    gap: var(--spacing-md);
   }
-  
-  .card-footer .icon-view {
-    font-size: 1.5em; /* Adjust icon size */
-    transition: color 0.2s ease; /* Smooth transition */
+
+  .action-icon {
+    font-size: 1.3rem;
   }
-  
-  .card-footer .icon-edit {
-    font-size: 1.5em;
-    transition: color 0.2s ease;
-  }
-  
-  .card-footer .icon-submit {
-    font-size: 1.5em;
-    transition: color 0.2s ease;
-  }
-  
-  .card-footer .icon-delete {
-    font-size: 1.5em;
-    transition: color 0.2s ease;
-  }
-  
-  .card-footer .icon-view:hover {
-    color: #0056b3; /* Darker blue on hover */
-  }
-  
-  .card-footer .icon-edit:hover {
-    color: #e0a800; /* Darker yellow on hover */
-  }
-  
-  .card-footer .icon-submit:hover {
-    color: #218838; /* Darker green on hover */
-  }
-  
-  .card-footer .icon-delete:hover {
-    color: #c82333; /* Darker red on hover */
-  }
-  
-  
-  .action-icons {
-    display: flex;
-    gap: 10px; /* Add space between icons */
-  }
-  
-  .action-icons .icon-view {
-    color: #007bff; /* Blue for view */
-    cursor: pointer;
-  }
-  
-  .action-icons .icon-edit {
-    color: #ffc107; /* Yellow for edit */
-    cursor: pointer;
-  }
-  
-  .action-icons .icon-submit {
-    color: #28a745; /* Green for submit */
-    cursor: pointer;
-  }
-  
-  .action-icons .icon-delete {
-    color: #dc3545; /* Red for delete */
-    cursor: pointer;
-  }
-  
-  .action-icons .icon-view:hover,
-  .action-icons .icon-edit:hover,
-  .action-icons .icon-submit:hover,
-  .action-icons .icon-delete:hover {
-    opacity: 0.8;
-  }
-  
+}
+
+/* Button Overrides for Dashboard */
+.btn {
+  border-radius: var(--radius-md);
+  padding: 0.625rem 1.25rem;
+  font-weight: var(--fw-medium);
+  transition: all var(--transition-base);
+  border: none;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, var(--success-color) 0%, var(--success-dark) 100%);
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, var(--danger-color) 0%, var(--danger-dark) 100%);
+}
+
+/* Card Column Spacing */
+.row {
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+}
+
+.row > [class*='col-'] {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  margin-bottom: 1.5rem;
+}
