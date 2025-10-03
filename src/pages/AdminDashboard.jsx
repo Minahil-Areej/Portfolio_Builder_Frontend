@@ -7,6 +7,7 @@ import nvqData from '../../public/Nvq_2357_13.json';
 import { CSVLink } from 'react-csv';
 import { FaFileDownload, FaChartLine } from 'react-icons/fa';
 import Layout from '../components/layout/Layout';
+import './SharedDashboard.css'; // Add this line
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
