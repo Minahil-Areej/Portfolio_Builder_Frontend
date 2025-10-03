@@ -386,3 +386,111 @@
   padding-right: 0.75rem;
   margin-bottom: 1.5rem;
 }
+
+/* ============================================
+   STATS CARDS FIX - Add to Dashboard.css
+   ============================================ */
+
+/* Stats Card Container */
+.stats-card,
+.card {
+  background: var(--background-card) !important;
+  border: none !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-sm) !important;
+  transition: all var(--transition-base) !important;
+  overflow: visible !important;
+}
+
+/* Card Body - Ensure content is visible */
+.card-body {
+  background: transparent !important;
+  color: var(--text-primary) !important;
+  padding: var(--spacing-xl) !important;
+}
+
+/* All text inside cards should be visible */
+.card h1, .card h2, .card h3, .card h4, .card h5, .card h6,
+.card p, .card span, .card div {
+  color: var(--text-primary) !important;
+}
+
+/* Stats Card Specific - Large numbers */
+.card-body h2,
+.card-body .h2,
+.stats-number {
+  font-size: 2.5rem !important;
+  font-weight: var(--fw-bold) !important;
+  color: var(--primary-color) !important;
+  margin: 0 !important;
+  line-height: 1 !important;
+}
+
+/* Stats Card Title */
+.card-body h5,
+.card-body .h5,
+.stats-title {
+  font-size: 1rem !important;
+  font-weight: var(--fw-semibold) !important;
+  color: var(--text-secondary) !important;
+  margin-bottom: var(--spacing-sm) !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Card Header if you have them */
+.card-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%) !important;
+  color: var(--text-white) !important;
+  border: none !important;
+  padding: var(--spacing-lg) !important;
+  font-weight: var(--fw-semibold) !important;
+}
+
+/* Hover effect for cards */
+.card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: var(--shadow-lg) !important;
+  cursor: pointer;
+}
+
+/* Chart Cards - specific styling */
+.card canvas {
+  max-height: 400px !important;
+}
+
+/* Ensure all card content is centered for stats */
+.stats-card .card-body,
+.card.text-center .card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Override any Bootstrap default that might hide content */
+.card * {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Fix for React-Bootstrap Card Title */
+.card-title {
+  color: var(--text-primary) !important;
+  font-weight: var(--fw-semibold) !important;
+  margin-bottom: var(--spacing-md) !important;
+}
+
+/* Fix for React-Bootstrap Card Text */
+.card-text {
+  color: var(--text-secondary) !important;
+  margin-bottom: var(--spacing-sm) !important;
+}
+
+/* Strong/Bold text in cards */
+.card strong,
+.card b {
+  color: var(--text-primary) !important;
+  font-weight: var(--fw-semibold) !important;
+}
