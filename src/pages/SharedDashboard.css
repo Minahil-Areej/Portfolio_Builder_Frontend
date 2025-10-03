@@ -35,6 +35,11 @@
 .card-body {
   background: transparent !important;
   padding: var(--spacing-xl) !important;
+}
+
+/* Stats Cards Only - Centered */
+.stats-card .card-body,
+.text-center .card-body {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -131,6 +136,7 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   margin-bottom: 0 !important;
+  text-align: left !important; /* Force left alignment */
 }
 
 .table thead th {
@@ -142,6 +148,7 @@
   text-transform: uppercase;
   font-size: 0.875rem;
   letter-spacing: 0.5px;
+  text-align: left !important; /* Force left alignment */
 }
 
 .table tbody tr {
@@ -157,6 +164,19 @@
   padding: 1rem;
   color: var(--text-primary);
   vertical-align: middle;
+  text-align: left !important; /* Force left alignment */
+}
+
+/* Table Container Card - Not Centered */
+.card .table-responsive,
+.card-body .table-responsive {
+  text-align: left !important;
+}
+
+.card-body:has(.table),
+.card-body:has(.table-responsive) {
+  display: block !important;
+  text-align: left !important;
 }
 
 /* ============================================
@@ -251,11 +271,13 @@
   background: var(--background-card);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
+  text-align: left !important;
 }
 
 .filter-item {
   flex: 1;
   min-width: 200px;
+  text-align: left !important;
 }
 
 .filter-item label {
@@ -264,6 +286,7 @@
   color: var(--text-primary);
   margin-bottom: var(--spacing-sm);
   font-size: 0.9rem;
+  text-align: left !important;
 }
 
 .form-control,
@@ -272,6 +295,7 @@
   border-radius: var(--radius-md) !important;
   padding: 0.75rem 1rem;
   transition: all var(--transition-base);
+  text-align: left !important;
 }
 
 .form-control:focus,
@@ -279,6 +303,13 @@
   border-color: var(--primary-color) !important;
   box-shadow: 0 0 0 3px var(--primary-lighter) !important;
   outline: none;
+}
+
+/* Form groups in cards - not centered */
+.card-body .form-group,
+.card-body .mb-3,
+.card-body form {
+  text-align: left !important;
 }
 
 /* ============================================
@@ -292,6 +323,7 @@
   margin-bottom: var(--spacing-lg);
   padding-bottom: var(--spacing-md);
   border-bottom: 3px solid var(--border-light);
+  text-align: left !important;
 }
 
 .section-header h2,
@@ -300,6 +332,25 @@
   font-weight: var(--fw-bold);
   color: var(--text-primary);
   margin: 0;
+  text-align: left !important;
+}
+
+/* Any heading in card body should be left-aligned by default */
+.card-body h1,
+.card-body h2,
+.card-body h3,
+.card-body h4 {
+  text-align: left !important;
+}
+
+/* Override for stats cards only */
+.stats-card .card-body h1,
+.stats-card .card-body h2,
+.stats-card .card-body h3,
+.text-center .card-body h1,
+.text-center .card-body h2,
+.text-center .card-body h3 {
+  text-align: center !important;
 }
 
 /* ============================================
