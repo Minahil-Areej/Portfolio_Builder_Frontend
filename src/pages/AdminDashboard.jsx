@@ -396,9 +396,9 @@ const AdminDashboard = () => {
       <Container className="mt-4">
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h1>Admin Dashboard</h1>
-          <Button variant="outline-danger" onClick={handleLogout}>
+          {/* <Button variant="outline-danger" onClick={handleLogout}>
             Logout
-          </Button>
+          </Button> */}
         </div>
 
         {/* Export Data Section */}

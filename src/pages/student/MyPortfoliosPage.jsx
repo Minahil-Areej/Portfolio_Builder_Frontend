@@ -283,9 +283,9 @@ const MyPortfoliosPage = () => {
     <Container className="mt-5 dashboard-container">
       <Row>
       <Col className="text-end">
-        <Button variant="outline-danger" onClick={handleLogout}>
+        {/* <Button variant="outline-danger" onClick={handleLogout}>
           Logout
-        </Button>
+        </Button> */}
       </Col>
     </Row>
       <Row className="justify-content-between align-items-center mb-3">

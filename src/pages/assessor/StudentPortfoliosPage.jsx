@@ -123,9 +123,9 @@ const StudentPortfoliosPage = () => {
           <h2>Student Portfolios</h2>
         </Col>
         <Col className="text-end">
-          <Button variant="outline-danger" onClick={handleLogout}>
+          {/* <Button variant="outline-danger" onClick={handleLogout}>
             Logout
-          </Button>
+          </Button> */}
         </Col>
       </Row>
       {/* Filter section */}
