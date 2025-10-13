@@ -533,8 +533,8 @@ import { Container, Card, Row, Col } from 'react-bootstrap';
 import Layout from '../components/layout/Layout';
 import { Chart as ChartJS, ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
 import { Pie, Bar } from 'react-chartjs-2';
-//import './Dashboard.css';
-import './SharedDashboard.css'; // Add this line
+import './Dashboard.css';
+//import './SharedDashboard.css'; // Add this line
 
 ChartJS.register(ArcElement, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
