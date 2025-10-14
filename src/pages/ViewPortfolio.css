@@ -1,4 +1,7 @@
-/* .view-portfolio-container {
+/*Before Claude
+
+
+.view-portfolio-container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
 }
@@ -61,61 +64,62 @@
   padding: 5px;
 } */
 
-
+/*CLAUDE SECOND VERSWION UI*/
 /* UPDATED: Container with better spacing */
 .view-portfolio-container {
     max-width: 1200px;
     padding: 20px 15px;
 }
 
-/* UPDATED: Compact, professional title */
-.portfolio-title {
-    font-size: 1.75rem;
-    font-weight: 600;
+/* UPDATED: Main title matching edit page style */
+.portfolio-main-title {
+    font-size: 1.5rem;
+    font-weight: 500;
     color: #2c3e50;
     margin-bottom: 0;
-    border-bottom: 2px solid #007bff;
     padding-bottom: 8px;
+    border-bottom: 2px solid #007bff;
 }
 
-/* UPDATED: Clean card styling */
-.portfolio-card {
+/* UPDATED: Section wrapper like edit page */
+.portfolio-section {
+    background: white;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
-    margin-bottom: 15px;
-    transition: box-shadow 0.3s ease;
+    overflow: hidden;
+    margin-bottom: 20px;
 }
 
-.portfolio-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* UPDATED: Blue section header matching edit page */
+.section-header {
+    background-color: #007bff;
+    padding: 12px 20px;
 }
 
-.portfolio-card .card-body {
+.section-header-title {
+    color: white;
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* UPDATED: Section content area */
+.section-content {
     padding: 20px;
 }
 
-/* UPDATED: Compact section titles */
-.portfolio-section-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #34495e;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #e9ecef;
-    padding-bottom: 8px;
-}
-
-/* UPDATED: Clean detail items layout */
-.portfolio-detail-item {
+/* UPDATED: Detail items layout */
+.detail-item {
     display: flex;
-    margin-bottom: 10px;
-    font-size: 0.95rem;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
     line-height: 1.5;
 }
 
 .detail-label {
     font-weight: 600;
     color: #495057;
-    min-width: 160px;
+    min-width: 150px;
     flex-shrink: 0;
 }
 
@@ -124,40 +128,44 @@
     flex: 1;
 }
 
-/* UPDATED: Feedback section styling */
-.feedback-section {
+/* UPDATED: Comment boxes */
+.comment-box {
     margin-bottom: 15px;
 }
 
-.feedback-subtitle {
-    font-size: 0.95rem;
+.comment-label {
+    font-size: 0.9rem;
     font-weight: 600;
     color: #495057;
     margin-bottom: 8px;
 }
 
-.feedback-text {
-    font-size: 0.9rem;
+.comment-text {
+    font-size: 0.85rem;
     color: #6c757d;
     line-height: 1.6;
-    margin-bottom: 0;
-    padding: 10px;
+    margin: 0;
+    padding: 12px;
     background-color: #f8f9fa;
     border-radius: 4px;
-    border-left: 3px solid #007bff;
+    border-left: 3px solid #6c757d;
 }
 
-/* UPDATED: Professional images grid */
+.comment-text.assessor-feedback {
+    border-left-color: #007bff;
+}
+
+/* UPDATED: Images grid */
 .images-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 15px;
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .portfolio-image-wrapper {
     position: relative;
-    border-radius: 8px;
+    border-radius: 6px;
     overflow: hidden;
     cursor: pointer;
     aspect-ratio: 1;
@@ -178,7 +186,7 @@
     display: block;
 }
 
-/* UPDATED: Better image overlay */
+/* UPDATED: Image overlay */
 .image-overlay {
     position: absolute;
     top: 0;
@@ -202,10 +210,10 @@
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-/* UPDATED: Professional export button */
+/* UPDATED: Export button */
 .export-btn {
     padding: 8px 24px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
     border-radius: 6px;
     transition: all 0.3s ease;
@@ -218,25 +226,29 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
-    .portfolio-title {
-        font-size: 1.5rem;
+    .portfolio-main-title {
+        font-size: 1.3rem;
     }
     
     .detail-label {
-        min-width: 120px;
-        font-size: 0.9rem;
+        min-width: 130px;
+        font-size: 0.85rem;
     }
     
     .detail-value {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
     
     .images-grid {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 10px;
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 12px;
     }
     
-    .portfolio-card .card-body {
+    .section-content {
         padding: 15px;
+    }
+    
+    .section-header {
+        padding: 10px 15px;
     }
 }
