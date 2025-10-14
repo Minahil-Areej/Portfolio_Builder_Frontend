@@ -504,11 +504,8 @@ const Portfolio = () => {
   const [postcode, setPostcode] = useState('');
   const [comments, setComments] = useState('');
   const [sections, setSections] = useState([]);
-
-  // 🔄 Replaced old image handling with new image logic
-  const [images, setImages] = useState([]); 
-  const [previewUrls, setPreviewUrls] = useState([]); // ✅ Added for previews
-
+  const [images, setImages] = useState([]);
+  const [previewUrls, setPreviewUrls] = useState([]);
   const [qualificationUnitsData, setQualificationUnitsData] = useState([]);
   const [dateTime, setDateTime] = useState(new Date().toISOString().substring(0, 16));
   const [locationError, setLocationError] = useState(null);
@@ -555,15 +552,13 @@ const Portfolio = () => {
     setSections(updatedSections);
   };
 
-  // 🔄 Replaced: old handleImageChange with preview-enabled version
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setImages((prev) => [...prev, ...files]); 
+    setImages((prev) => [...prev, ...files]);
     const urls = files.map((file) => URL.createObjectURL(file));
     setPreviewUrls((prev) => [...prev, ...urls]);
   };
 
-  // ✅ Added: function to remove an image before submission
   const removeNewImage = (index) => {
     const newFiles = images.filter((_, i) => i !== index);
     const newUrls = previewUrls.filter((_, i) => i !== index);
@@ -585,6 +580,7 @@ const Portfolio = () => {
       const formattedPostcode = postcode.trim().toUpperCase();
       const response = await fetch(`https://api.postcodes.io/postcodes/${formattedPostcode}/autocomplete`);
       const data = await response.json();
+
       if (data.result) {
         const detailedAddresses = await Promise.all(
           data.result.slice(0, 5).map(async (code) => {
@@ -639,13 +635,16 @@ const Portfolio = () => {
     formData.append('reasonForTask', reasonForTask);
     formData.append('objectiveOfJob', objectiveOfJob);
     formData.append('method', method);
-
-    images.forEach((image) => formData.append('images', image));
+    images.forEach((image) => {
+      formData.append('images', image);
+    });
 
     try {
       const response = await fetch(`${API_URL}/api/portfolios/save`, {
         method: 'POST',
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
         body: formData,
       });
 
@@ -653,7 +652,6 @@ const Portfolio = () => {
       if (response.ok) {
         alert(`Portfolio ${isSubmitForReview ? 'submitted for review' : 'saved as draft'} successfully!`);
         navigate('/dashboard');
-        console.log(result);
       } else {
         alert('Error creating portfolio: ' + result.message);
       }
@@ -667,16 +665,265 @@ const Portfolio = () => {
       <h1 className="text-center mb-4">Create a New Portfolio</h1>
       <Card className="shadow-sm p-4">
         <Form onSubmit={handleSubmit} encType="multipart/form-data">
+          <Row className="mb-3">
+            <Col md={4}>
+              <Form.Group>
+                <Form.Label>Title</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col md={4}>
+              <Form.Group className="position-relative">
+                <Form.Label>Postcode</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter postcode"
+                  value={postcode}
+                  onChange={(e) => {
+                    setPostcode(e.target.value);
+                    if (e.target.value.length >= 3) {
+                      fetchAddresses(e.target.value);
+                    } else {
+                      setShowAddresses(false);
+                    }
+                  }}
+                  onBlur={() => {
+                    setTimeout(() => setShowAddresses(false), 200);
+                  }}
+                  className={isPostcodeValid ? '' : 'is-invalid'}
+                  required
+                />
+                {locationError && (
+                  <Form.Text className="text-danger">{locationError}</Form.Text>
+                )}
+                {showAddresses && (
+                  <div className="address-dropdown">
+                    {isLoadingAddresses ? (
+                      <div className="address-loading">Looking up addresses...</div>
+                    ) : addresses.length > 0 ? (
+                      addresses.map((address, index) => (
+                        <div
+                          key={index}
+                          className="address-option"
+                          onClick={() => {
+                            setPostcode(address.fullAddress);
+                            setSelectedAddress(address.text);
+                            setShowAddresses(false);
+                            setLocationError(null);
+                            setIsPostcodeValid(true);
+                          }}
+                        >
+                          {address.text}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="address-empty">No addresses found</div>
+                    )}
+                  </div>
+                )}
+              </Form.Group>
+            </Col>
+            <Col md={4}>
+              <Form.Group className="mb-3">
+                <Form.Label>Select Date and Time</Form.Label>
+                <Form.Control
+                  type="datetime-local"
+                  value={dateTime}
+                  onChange={(e) => setDateTime(e.target.value)}
+                  required
+                />
+              </Form.Group>
+            </Col>
+          </Row>
 
-          {/* All your form fields remain unchanged */}
+          <Row className="mb-3">
+            <Col md={4}>
+              <Form.Group>
+                <Form.Label>Select Unit</Form.Label>
+                <Form.Select
+                  value={unit.number}
+                  onChange={(e) => {
+                    const selectedUnit = qualificationUnitsData.find((u) => u.unit === e.target.value);
+                    setUnit({ number: selectedUnit.unit, title: selectedUnit.title });
+                    setLearningOutcome({ number: '', description: '' });
+                    setCriteria({ number: '', description: '' });
+                  }}
+                >
+                  <option value="">Select a Unit</option>
+                  {qualificationUnitsData.map((unit) => (
+                    <option key={unit.unit} value={unit.unit}>
+                      {`Unit ${unit.unit} - ${unit.title}`}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
 
-          {/* 🔄 Replaced old image area with new version */}
+            <Col md={4}>
+              <Form.Group>
+                <Form.Label>Select Learning Outcome</Form.Label>
+                <Form.Select
+                  value={learningOutcome.number}
+                  onChange={(e) => {
+                    const selectedLO = getLearningOutcomes(unit.number).find(
+                      (lo) => lo.LO_number === parseFloat(e.target.value)
+                    );
+                    setLearningOutcome({ number: selectedLO.LO_number, description: selectedLO.description });
+                  }}
+                >
+                  <option value="">Select a Learning Outcome</option>
+                  {getLearningOutcomes(unit.number).map((lo) => (
+                    <option key={lo.LO_number} value={lo.LO_number}>
+                      {`LO ${lo.LO_number}: ${lo.description}`}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+
+            <Col md={4}>
+              <Form.Group>
+                <Form.Label>Select Criteria</Form.Label>
+                <Form.Select
+                  value={criteria.number}
+                  onChange={(e) => {
+                    const selectedCriteria = getCriteria(unit.number, learningOutcome.number).find(
+                      (c) => c.AC_number === e.target.value
+                    );
+                    if (selectedCriteria) {
+                      setCriteria({ number: selectedCriteria.AC_number, description: selectedCriteria.description });
+                    } else {
+                      setCriteria({ number: '', description: '' });
+                    }
+                  }}
+                >
+                  <option value="">Select Criteria</option>
+                  {getCriteria(unit.number, learningOutcome.number).map((criteria) => (
+                    <option key={criteria.AC_number} value={criteria.AC_number}>
+                      {`AC ${criteria.AC_number}: ${criteria.description}`}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Method</Form.Label>
+            <Form.Select
+              value={method}
+              onChange={(e) => setMethod(e.target.value)}
+              required
+            >
+              <option value="">Select Method</option>
+              <option value="Professional discussion">Professional discussion</option>
+              <option value="Witness testimony">Witness testimony</option>
+              <option value="Written questions">Written questions</option>
+              <option value="Work Product">Work Product</option>
+              <option value="Direct observation">Direct observation</option>
+              <option value="Oral questions">Oral questions</option>
+              <option value="APL / RPL">APL / RPL</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Task Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Describe the task"
+              value={taskDescription}
+              onChange={(e) => setTaskDescription(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Job Type</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Enter job type"
+              value={jobType}
+              onChange={(e) => setJobType(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Reason for Task</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Reason for performing the task"
+              value={reasonForTask}
+              onChange={(e) => setReasonForTask(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label>Objective of Job</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              placeholder="Objective of the job"
+              value={objectiveOfJob}
+              onChange={(e) => setObjectiveOfJob(e.target.value)}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Comments</Form.Label>
+            <Form.Control
+              as="textarea"
+              placeholder="Add comments"
+              rows={3}
+              value={comments}
+              onChange={(e) => setComments(e.target.value)}
+            />
+          </Form.Group>
+
+          <h2>Portfolio Sections</h2>
+          {sections.map((section, index) => (
+            <div key={index} className="mb-3">
+              <Form.Group>
+                <Form.Label>Section Heading</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter section heading"
+                  value={section.heading}
+                  onChange={(e) => handleSectionChange(index, 'heading', e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group className="mt-2">
+                <Form.Label>Section Content</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  placeholder="Enter section content"
+                  rows={3}
+                  value={section.content}
+                  onChange={(e) => handleSectionChange(index, 'content', e.target.value)}
+                />
+              </Form.Group>
+            </div>
+          ))}
+          <Button variant="outline-secondary" onClick={addSection} className="mb-3">
+            Add Section
+          </Button>
+
           <h2>Upload Images</h2>
           <Form.Group className="mb-3">
             <Form.Control type="file" multiple onChange={handleImageChange} accept="image/*" />
           </Form.Group>
 
-          {/* ✅ Added: Preview + Delete functionality */}
           {previewUrls.length > 0 && (
             <div className="mt-3">
               <h6>Image Preview:</h6>
@@ -692,7 +939,7 @@ const Portfolio = () => {
                           height: '150px',
                           objectFit: 'cover',
                           borderRadius: '8px',
-                          border: '2px solid #28a745',
+                          border: '2px solid #28a745'
                         }}
                       />
                       <Button
@@ -703,7 +950,7 @@ const Portfolio = () => {
                           position: 'absolute',
                           top: '5px',
                           right: '5px',
-                          padding: '5px 10px',
+                          padding: '5px 10px'
                         }}
                       >
                         ✕
@@ -718,7 +965,7 @@ const Portfolio = () => {
                           color: 'white',
                           padding: '2px 8px',
                           borderRadius: '4px',
-                          fontSize: '12px',
+                          fontSize: '12px'
                         }}
                       >
                         New
@@ -730,12 +977,8 @@ const Portfolio = () => {
             </div>
           )}
 
-          <Button variant="primary" onClick={(e) => handleSubmit(e, false)}>
-            Save as Draft
-          </Button>
-          <Button variant="success" className="ms-2" onClick={(e) => handleSubmit(e, true)}>
-            Submit for Review
-          </Button>
+          <Button variant="primary" onClick={(e) => handleSubmit(e, false)}>Save as Draft</Button>
+          <Button variant="success" className="ms-2" onClick={(e) => handleSubmit(e, true)}>Submit for Review</Button>
         </Form>
       </Card>
     </Container>
