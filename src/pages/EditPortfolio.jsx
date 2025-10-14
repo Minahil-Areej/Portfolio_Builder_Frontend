@@ -2554,7 +2554,6 @@ const EditPortfolio = () => {
                 value={portfolioData.title}
                 onChange={handleChange}
                 placeholder="Enter portfolio title"
-                size="lg"
                 required
               />
             </Form.Group>
