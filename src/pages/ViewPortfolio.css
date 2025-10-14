@@ -64,14 +64,14 @@
   padding: 5px;
 } */
 
-/*CLAUDE SECOND VERSWION UI*/
+/*CLAUDE V3 for standard sizing*/
 /* UPDATED: Container with better spacing */
 .view-portfolio-container {
     max-width: 1200px;
     padding: 20px 15px;
 }
 
-/* UPDATED: Main title matching edit page style */
+/* UPDATED: Main title matching edit page style - BOOTSTRAP DEFAULT SIZE */
 .portfolio-main-title {
     font-size: 1.5rem;
     font-weight: 500;
@@ -90,7 +90,7 @@
     margin-bottom: 20px;
 }
 
-/* UPDATED: Blue section header matching edit page */
+/* UPDATED: Blue section header matching edit page - BOOTSTRAP DEFAULT SIZE */
 .section-header {
     background-color: #007bff;
     padding: 12px 20px;
@@ -98,7 +98,7 @@
 
 .section-header-title {
     color: white;
-    font-size: 1rem;
+    font-size: 1rem; /* Bootstrap h5 default */
     font-weight: 500;
     margin: 0;
 }
@@ -108,11 +108,11 @@
     padding: 20px;
 }
 
-/* UPDATED: Detail items layout */
+/* UPDATED: Detail items layout - BOOTSTRAP DEFAULT SIZE */
 .detail-item {
     display: flex;
     margin-bottom: 12px;
-    font-size: 0.9rem;
+    font-size: 1rem; /* CHANGED from 0.9rem to Bootstrap default */
     line-height: 1.5;
 }
 
@@ -134,14 +134,14 @@
 }
 
 .comment-label {
-    font-size: 0.9rem;
+    font-size: 1rem; /* CHANGED from 0.9rem to Bootstrap default */
     font-weight: 600;
     color: #495057;
     margin-bottom: 8px;
 }
 
 .comment-text {
-    font-size: 0.85rem;
+    font-size: 1rem; /* CHANGED from 0.85rem to Bootstrap default */
     color: #6c757d;
     line-height: 1.6;
     margin: 0;
@@ -210,10 +210,10 @@
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-/* UPDATED: Export button */
+/* UPDATED: Export button - BOOTSTRAP DEFAULT SIZE */
 .export-btn {
     padding: 8px 24px;
-    font-size: 0.9rem;
+    font-size: 1rem; /* CHANGED from 0.9rem to Bootstrap default */
     font-weight: 500;
     border-radius: 6px;
     transition: all 0.3s ease;
@@ -232,11 +232,15 @@
     
     .detail-label {
         min-width: 130px;
-        font-size: 0.85rem;
+        font-size: 0.875rem; /* Slightly smaller on mobile */
     }
     
     .detail-value {
-        font-size: 0.85rem;
+        font-size: 0.875rem; /* Slightly smaller on mobile */
+    }
+    
+    .comment-text {
+        font-size: 0.875rem; /* Slightly smaller on mobile */
     }
     
     .images-grid {
