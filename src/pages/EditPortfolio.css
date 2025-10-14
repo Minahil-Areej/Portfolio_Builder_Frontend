@@ -1,0 +1,186 @@
+/* EditPortfolio.css - Professional Bootstrap Default Sizing */
+
+/* ================================
+   MAIN CONTAINER & BASE TEXT
+   ================================ */
+.container {
+    font-size: 1rem; /* Bootstrap default - 16px */
+    line-height: 1.5;
+}
+
+/* ================================
+   HEADINGS - Bootstrap Standards
+   ================================ */
+h2 {
+    font-size: 1.5rem; /* 24px - Page title */
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+h3 {
+    font-size: 1.25rem; /* 20px */
+    font-weight: 500;
+}
+
+h5 {
+    font-size: 1rem; /* 16px - Card headers */
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+h6 {
+    font-size: 1rem; /* CHANGED from 0.875rem - Bootstrap default */
+    font-weight: 600;
+}
+
+/* ================================
+   FORM ELEMENTS - Bootstrap Defaults
+   ================================ */
+.form-label {
+    font-size: 1rem; /* CHANGED - Bootstrap default 16px */
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #212529;
+}
+
+.fw-bold {
+    font-size: 1rem; /* CHANGED - Ensure all bold labels are 16px */
+}
+
+.form-control,
+.form-select,
+textarea.form-control {
+    font-size: 1rem; /* Bootstrap default - 16px */
+    padding: 0.375rem 0.75rem;
+    line-height: 1.5;
+}
+
+.form-text {
+    font-size: 0.875rem; /* 14px - Helper text, slightly smaller is OK */
+    color: #6c757d;
+}
+
+/* ================================
+   BUTTONS - Professional Sizing
+   ================================ */
+/* Override Bootstrap's size="lg" to reasonable size */
+.btn-lg {
+    padding: 0.5rem 1rem !important; /* CHANGED: Not too big */
+    font-size: 1rem !important; /* CHANGED: 16px instead of 20px */
+    font-weight: 500;
+}
+
+/* Normal buttons - Bootstrap default */
+.btn {
+    font-size: 1rem; /* 16px */
+    padding: 0.375rem 0.75rem;
+    font-weight: 500;
+}
+
+/* Small buttons for images */
+.btn-sm {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.875rem !important; /* 14px - OK for small actions */
+}
+
+/* ================================
+   CARD COMPONENTS
+   ================================ */
+.card-header {
+    font-size: 1rem; /* CHANGED - Bootstrap default */
+    font-weight: 500;
+    padding: 12px 20px;
+}
+
+.card-body {
+    font-size: 1rem; /* Bootstrap default */
+}
+
+.card-text {
+    font-size: 1rem; /* CHANGED - Bootstrap default 16px */
+}
+
+/* ================================
+   BADGES & ALERTS
+   ================================ */
+.badge {
+    font-size: 0.875rem; /* 14px - Standard for badges */
+    padding: 0.35em 0.65em;
+    font-weight: 500;
+}
+
+.alert {
+    font-size: 1rem; /* Bootstrap default */
+    padding: 0.75rem 1.25rem;
+}
+
+/* ================================
+   TEXT UTILITIES
+   ================================ */
+p {
+    font-size: 1rem; /* Bootstrap default */
+    margin-bottom: 1rem;
+}
+
+.text-muted {
+    font-size: 1rem; /* CHANGED - Same as body text */
+    color: #6c757d;
+}
+
+/* Smaller text only for very specific cases */
+small,
+.small {
+    font-size: 0.875rem; /* 14px - Only when explicitly marked small */
+}
+
+/* ================================
+   IMAGE PREVIEW SECTIONS
+   ================================ */
+.image-preview-container {
+    position: relative;
+}
+
+.image-preview-container img {
+    border-radius: 8px;
+    border: 2px solid #dee2e6;
+}
+
+/* Image section labels */
+.image-section-label {
+    font-size: 1rem; /* CHANGED - Match other labels */
+    font-weight: 600;
+}
+
+/* ================================
+   RESPONSIVE - Mobile Adjustments
+   ================================ */
+@media (max-width: 768px) {
+    h2 {
+        font-size: 1.3rem; /* Slightly smaller on mobile */
+    }
+    
+    .form-label {
+        font-size: 0.875rem; /* 14px on mobile */
+    }
+    
+    .form-control,
+    .form-select {
+        font-size: 0.875rem; /* 14px on mobile */
+    }
+    
+    .btn {
+        font-size: 0.875rem; /* 14px on mobile */
+    }
+}
+
+/* ================================
+   ENSURE NO OVERRIDES
+   ================================ */
+
+
+/* Paragraphs and text elements */
+.card-body p,
+.form-group p,
+.alert p {
+    font-size: 1rem; /* Bootstrap default everywhere */
+}

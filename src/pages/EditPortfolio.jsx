@@ -2337,6 +2337,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Container, Form, Button, Col, Row, Card, Alert, Badge } from 'react-bootstrap';
 import { FaTimes, FaSave, FaArrowLeft, FaImage, FaTrash } from 'react-icons/fa';
+import './EditPortfolio.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
