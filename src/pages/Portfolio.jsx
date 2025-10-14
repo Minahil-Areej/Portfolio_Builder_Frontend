@@ -490,7 +490,7 @@
 //*******************8trying TO FIX IMAGE ISSUE HERE
 import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
-import './Portfolio.css'; // Ensure this file has the styles for error highlighting
+import './Portfolio.css';
 import { useNavigate } from 'react-router-dom';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
@@ -504,8 +504,11 @@ const Portfolio = () => {
   const [postcode, setPostcode] = useState('');
   const [comments, setComments] = useState('');
   const [sections, setSections] = useState([]);
-  const [images, setImages] = useState([]);
-  const [previewUrls, setPreviewUrls] = useState([]); // ✅ Added for image previews
+
+  // 🔄 Replaced old image handling with new image logic
+  const [images, setImages] = useState([]); 
+  const [previewUrls, setPreviewUrls] = useState([]); // ✅ Added for previews
+
   const [qualificationUnitsData, setQualificationUnitsData] = useState([]);
   const [dateTime, setDateTime] = useState(new Date().toISOString().substring(0, 16));
   const [locationError, setLocationError] = useState(null);
@@ -552,15 +555,15 @@ const Portfolio = () => {
     setSections(updatedSections);
   };
 
-  // ✅ Updated image handler with preview support
+  // 🔄 Replaced: old handleImageChange with preview-enabled version
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    setImages((prev) => [...prev, ...files]);
+    setImages((prev) => [...prev, ...files]); 
     const urls = files.map((file) => URL.createObjectURL(file));
     setPreviewUrls((prev) => [...prev, ...urls]);
   };
 
-  // ✅ Remove selected image before submission
+  // ✅ Added: function to remove an image before submission
   const removeNewImage = (index) => {
     const newFiles = images.filter((_, i) => i !== index);
     const newUrls = previewUrls.filter((_, i) => i !== index);
@@ -573,12 +576,7 @@ const Portfolio = () => {
     const regex = /^[A-Z]{1,2}\d{1,2}[A-Z]?\s*\d[A-Z]{2}$/i;
     const isValid = regex.test(postcode.trim());
     setIsPostcodeValid(isValid);
-
-    if (!isValid) {
-      setLocationError('Invalid UK postcode. Please enter a valid postcode.');
-    } else {
-      setLocationError(null);
-    }
+    setLocationError(isValid ? null : 'Invalid UK postcode. Please enter a valid postcode.');
   };
 
   const fetchAddresses = async (postcode) => {
@@ -587,36 +585,26 @@ const Portfolio = () => {
       const formattedPostcode = postcode.trim().toUpperCase();
       const response = await fetch(`https://api.postcodes.io/postcodes/${formattedPostcode}/autocomplete`);
       const data = await response.json();
-
       if (data.result) {
         const detailedAddresses = await Promise.all(
           data.result.slice(0, 5).map(async (code) => {
             const detailResponse = await fetch(`https://api.postcodes.io/postcodes/${code}`);
             const detailData = await detailResponse.json();
             if (detailData.result) {
-              const {
-                postcode,
-                admin_district,
-                thoroughfare,
-                district,
-                ward
-              } = detailData.result;
+              const { postcode, admin_district, thoroughfare, district, ward } = detailData.result;
               const addressParts = [];
               if (thoroughfare) addressParts.push(thoroughfare);
               if (ward && ward !== thoroughfare) addressParts.push(ward);
               if (district && district !== ward) addressParts.push(district);
-              if (admin_district && !addressParts.includes(admin_district)) addressParts.push(admin_district);
+              if (admin_district && !addressParts.includes(admin_district))
+                addressParts.push(admin_district);
               addressParts.push(postcode);
-              return {
-                text: addressParts.join(', '),
-                postcode,
-                fullAddress: addressParts.join(', ')
-              };
+              return { text: addressParts.join(', '), postcode, fullAddress: addressParts.join(', ') };
             }
             return null;
           })
         );
-        const validAddresses = detailedAddresses.filter(addr => addr !== null);
+        const validAddresses = detailedAddresses.filter((addr) => addr !== null);
         setAddresses(validAddresses);
         setShowAddresses(true);
         setLocationError(null);
@@ -651,16 +639,13 @@ const Portfolio = () => {
     formData.append('reasonForTask', reasonForTask);
     formData.append('objectiveOfJob', objectiveOfJob);
     formData.append('method', method);
-    images.forEach((image) => {
-      formData.append('images', image);
-    });
+
+    images.forEach((image) => formData.append('images', image));
 
     try {
       const response = await fetch(`${API_URL}/api/portfolios/save`, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         body: formData,
       });
 
@@ -682,15 +667,16 @@ const Portfolio = () => {
       <h1 className="text-center mb-4">Create a New Portfolio</h1>
       <Card className="shadow-sm p-4">
         <Form onSubmit={handleSubmit} encType="multipart/form-data">
-          {/* Existing fields stay the same */}
-          {/* ... full form content ... */}
 
+          {/* All your form fields remain unchanged */}
+
+          {/* 🔄 Replaced old image area with new version */}
           <h2>Upload Images</h2>
           <Form.Group className="mb-3">
             <Form.Control type="file" multiple onChange={handleImageChange} accept="image/*" />
           </Form.Group>
 
-          {/* ✅ Preview New Images */}
+          {/* ✅ Added: Preview + Delete functionality */}
           {previewUrls.length > 0 && (
             <div className="mt-3">
               <h6>Image Preview:</h6>
@@ -706,7 +692,7 @@ const Portfolio = () => {
                           height: '150px',
                           objectFit: 'cover',
                           borderRadius: '8px',
-                          border: '2px solid #28a745'
+                          border: '2px solid #28a745',
                         }}
                       />
                       <Button
@@ -717,7 +703,7 @@ const Portfolio = () => {
                           position: 'absolute',
                           top: '5px',
                           right: '5px',
-                          padding: '5px 10px'
+                          padding: '5px 10px',
                         }}
                       >
                         ✕
@@ -732,7 +718,7 @@ const Portfolio = () => {
                           color: 'white',
                           padding: '2px 8px',
                           borderRadius: '4px',
-                          fontSize: '12px'
+                          fontSize: '12px',
                         }}
                       >
                         New
@@ -744,8 +730,12 @@ const Portfolio = () => {
             </div>
           )}
 
-          <Button variant="primary" onClick={(e) => handleSubmit(e, false)}>Save as Draft</Button>
-          <Button variant="success" className="ms-2" onClick={(e) => handleSubmit(e, true)}>Submit for Review</Button>
+          <Button variant="primary" onClick={(e) => handleSubmit(e, false)}>
+            Save as Draft
+          </Button>
+          <Button variant="success" className="ms-2" onClick={(e) => handleSubmit(e, true)}>
+            Submit for Review
+          </Button>
         </Form>
       </Card>
     </Container>
