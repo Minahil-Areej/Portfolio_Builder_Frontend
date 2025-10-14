@@ -2552,6 +2552,7 @@ const EditPortfolio = () => {
                 onChange={handleChange}
                 placeholder="Enter portfolio title"
                 size="lg"
+                required
               />
             </Form.Group>
 
@@ -2573,6 +2574,7 @@ const EditPortfolio = () => {
                         criteria: { number: '', description: '' },
                       });
                     }}
+                    required
                   >
                     <option value="">Select a Unit</option>
                     {qualificationUnitsData.map((unit) => (
@@ -2592,6 +2594,7 @@ const EditPortfolio = () => {
                     value={portfolioData.postcode}
                     onChange={handleChange}
                     placeholder="Enter postcode"
+                    required
                   />
                 </Form.Group>
               </Col>
@@ -2617,6 +2620,7 @@ const EditPortfolio = () => {
                         criteria: { number: '', description: '' },
                       });
                     }}
+                    required
                   >
                     <option value="">Select Learning Outcome</option>
                     {getLearningOutcomes(portfolioData.unit.number).map((lo) => (
@@ -2653,6 +2657,7 @@ const EditPortfolio = () => {
                           : { number: '', description: '' },
                       });
                     }}
+                    required
                   >
                     <option value="">Select Criteria</option>
                     {getCriteria(
@@ -2674,6 +2679,7 @@ const EditPortfolio = () => {
                 name="method"
                 value={portfolioData.method}
                 onChange={handleChange}
+                required
               >
                 <option value="">Select Method</option>
                 <option value="Professional discussion">Professional discussion</option>
