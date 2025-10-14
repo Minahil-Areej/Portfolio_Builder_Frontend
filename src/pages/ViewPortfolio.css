@@ -1,4 +1,4 @@
-.view-portfolio-container {
+/* .view-portfolio-container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
 }
@@ -59,4 +59,184 @@
   background-color: #007bff;
   border-radius: 50%;
   padding: 5px;
+} */
+
+
+/* UPDATED: Container with better spacing */
+.view-portfolio-container {
+    max-width: 1200px;
+    padding: 20px 15px;
+}
+
+/* UPDATED: Compact, professional title */
+.portfolio-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 8px;
+}
+
+/* UPDATED: Clean card styling */
+.portfolio-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    transition: box-shadow 0.3s ease;
+}
+
+.portfolio-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio-card .card-body {
+    padding: 20px;
+}
+
+/* UPDATED: Compact section titles */
+.portfolio-section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 8px;
+}
+
+/* UPDATED: Clean detail items layout */
+.portfolio-detail-item {
+    display: flex;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: #495057;
+    min-width: 160px;
+    flex-shrink: 0;
+}
+
+.detail-value {
+    color: #6c757d;
+    flex: 1;
+}
+
+/* UPDATED: Feedback section styling */
+.feedback-section {
+    margin-bottom: 15px;
+}
+
+.feedback-subtitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+.feedback-text {
+    font-size: 0.9rem;
+    color: #6c757d;
+    line-height: 1.6;
+    margin-bottom: 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    border-left: 3px solid #007bff;
+}
+
+/* UPDATED: Professional images grid */
+.images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.portfolio-image-wrapper {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: 1;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.portfolio-image-wrapper:hover {
+    border-color: #007bff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+
+.portfolio-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* UPDATED: Better image overlay */
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.portfolio-image-wrapper:hover .image-overlay {
+    opacity: 1;
+}
+
+.zoom-icon {
+    color: white;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* UPDATED: Professional export button */
+.export-btn {
+    padding: 8px 24px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.export-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .portfolio-title {
+        font-size: 1.5rem;
+    }
+    
+    .detail-label {
+        min-width: 120px;
+        font-size: 0.9rem;
+    }
+    
+    .detail-value {
+        font-size: 0.9rem;
+    }
+    
+    .images-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+    }
+    
+    .portfolio-card .card-body {
+        padding: 15px;
+    }
 }
