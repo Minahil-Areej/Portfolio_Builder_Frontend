@@ -264,7 +264,7 @@ const PortfoliosPage = () => {
                                             <th>Status</th>
                                             <th>Created Date</th>
                                             <th>Last Updated</th>
-                                            <th>Actions</th>  {/* Add this column */}
+                                            {/* <th>Actions</th>  Add this column */}
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -280,7 +280,7 @@ const PortfoliosPage = () => {
                                                     </td>
                                                     <td>{new Date(portfolio.createdAt).toLocaleDateString()}</td>
                                                     <td>{new Date(portfolio.updatedAt).toLocaleDateString()}</td>
-                                                    <td>
+                                                    {/* <td>
                                                         <Button
                                                             size="sm"
                                                             variant="outline-primary"
@@ -288,7 +288,7 @@ const PortfoliosPage = () => {
                                                         >
                                                             View
                                                         </Button>
-                                                    </td>
+                                                    </td> */}
                                                 </tr>
                                             ))}
                                     </tbody>

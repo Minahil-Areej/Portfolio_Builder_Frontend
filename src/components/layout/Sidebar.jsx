@@ -15,7 +15,7 @@ const menuConfig = {
     { path: '/admin-dashboard', icon: <FaHome />, label: 'Dashboard' },
     { path: '/admin/users', icon: <FaUsers />, label: 'Users' },
     { path: '/admin/portfolios', icon: <FaFolderOpen />, label: 'Portfolios' },
-    { path: '/admin/applications', icon: <FaClipboardList />, label: 'Applications' }
+    // { path: '/admin/applications', icon: <FaClipboardList />, label: 'Applications' }
   ],
   assessor: [
     { path: '/assessor', icon: <FaHome />, label: 'Dashboard' },
