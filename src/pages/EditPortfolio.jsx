@@ -3411,12 +3411,11 @@ const EditPortfolio = () => {
                 </h6>
                 <Row>
                   {portfolioData.images.map((image, index) => {
-                    const isMarked = imagesToDelete.includes(image);
-                    const imgUrl = image.url || image; // support old format
-                    const caption = image.caption || ''; // optional caption text
+                    const imgUrl = image.url || image; // ✅ support both old and new format
+                    const isMarked = imagesToDelete.includes(imgUrl); // ✅ updated check
 
                     return (
-                      <Col md={3} sm={6} key={index} className="mb-4">
+                      <Col md={3} sm={6} key={index} className="mb-3">
                         <div style={{ position: 'relative' }}>
                           <img
                             src={`${API_URL}/${imgUrl}`}
@@ -3432,7 +3431,6 @@ const EditPortfolio = () => {
                             }}
                           />
 
-                          {/* Delete / Undo Button */}
                           <Button
                             variant={isMarked ? 'success' : 'danger'}
                             size="sm"
@@ -3444,14 +3442,13 @@ const EditPortfolio = () => {
                             }}
                             onClick={() =>
                               isMarked
-                                ? unmarkImageForDeletion(image)
-                                : markImageForDeletion(image)
+                                ? unmarkImageForDeletion(imgUrl)
+                                : markImageForDeletion(imgUrl)
                             }
                           >
                             {isMarked ? 'Undo' : <FaTrash />}
                           </Button>
 
-                          {/* Marked for deletion overlay */}
                           {isMarked && (
                             <div
                               style={{
@@ -3471,25 +3468,10 @@ const EditPortfolio = () => {
                             </div>
                           )}
                         </div>
-
-                        {/* Optional Caption Input */}
-                        <Form.Control
-                          type="text"
-                          placeholder="Add caption (optional)"
-                          value={caption}
-                          className="mt-2"
-                          onChange={(e) => {
-                            const updatedImages = [...portfolioData.images];
-                            updatedImages[index] = {
-                              url: imgUrl,
-                              caption: e.target.value,
-                            };
-                            setPortfolioData({ ...portfolioData, images: updatedImages });
-                          }}
-                        />
                       </Col>
                     );
                   })}
+
                 </Row>
               </div>
             )}
