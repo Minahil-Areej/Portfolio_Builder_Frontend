@@ -2332,624 +2332,6 @@
 
 
 ///1*********perfect version just updated UI afterand before doing image caption thimgy
-// import React, { useState, useEffect } from 'react';
-// import { useParams, useNavigate } from 'react-router-dom';
-// import axios from 'axios';
-// import { Container, Form, Button, Col, Row, Card, Alert, Badge } from 'react-bootstrap';
-// import { FaTimes, FaSave, FaArrowLeft, FaImage, FaTrash } from 'react-icons/fa';
-// import './EditPortfolio.css';
-
-// const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
-// const EditPortfolio = () => {
-//   const { id } = useParams();
-//   const navigate = useNavigate();
-//   const [portfolioData, setPortfolioData] = useState({
-//     title: '',
-//     unit: { number: '', title: '' },
-//     learningOutcome: { number: '', description: '' },
-//     criteria: { number: '', description: '' },
-//     postcode: '',
-//     comments: '',
-//     images: [],
-//     taskDescription: '',
-//     jobType: '',
-//     reasonForTask: '',
-//     objectiveOfJob: '',
-//     method: '',
-//   });
-
-//   const [selectedFiles, setSelectedFiles] = useState([]);
-//   const [previewUrls, setPreviewUrls] = useState([]);
-//   const [imagesToDelete, setImagesToDelete] = useState([]);
-//   const [qualificationUnitsData, setQualificationUnitsData] = useState([]);
-//   const [updateMessage, setUpdateMessage] = useState('');
-//   const [messageType, setMessageType] = useState('');
-
-//   useEffect(() => {
-//     const fetchPortfolio = async () => {
-//       try {
-//         const { data } = await axios.get(`${API_URL}/api/portfolios/${id}`, {
-//           headers: {
-//             Authorization: `Bearer ${localStorage.getItem('token')}`,
-//           },
-//         });
-//         setPortfolioData(data);
-//       } catch (err) {
-//         console.error('Error fetching portfolio', err);
-//       }
-//     };
-
-//     const fetchQualificationUnits = async () => {
-//       try {
-//         const response = await fetch('/Nvq_2357_13.json');
-//         const data = await response.json();
-//         setQualificationUnitsData(data.performance_units);
-//       } catch (error) {
-//         console.error('Error loading JSON data:', error);
-//       }
-//     };
-
-//     fetchPortfolio();
-//     fetchQualificationUnits();
-//   }, [id]);
-
-//   const handleFileChange = (e) => {
-//     const files = Array.from(e.target.files);
-//     setSelectedFiles((prev) => [...prev, ...files]);
-//     const urls = files.map((file) => URL.createObjectURL(file));
-//     setPreviewUrls((prev) => [...prev, ...urls]);
-//   };
-
-//   const removeNewImage = (index) => {
-//     const newFiles = selectedFiles.filter((_, i) => i !== index);
-//     const newUrls = previewUrls.filter((_, i) => i !== index);
-//     URL.revokeObjectURL(previewUrls[index]);
-//     setSelectedFiles(newFiles);
-//     setPreviewUrls(newUrls);
-//   };
-
-//   const markImageForDeletion = (imagePath) => {
-//     if (!imagesToDelete.includes(imagePath)) {
-//       setImagesToDelete([...imagesToDelete, imagePath]);
-//     }
-//   };
-
-//   const unmarkImageForDeletion = (imagePath) => {
-//     setImagesToDelete(imagesToDelete.filter((img) => img !== imagePath));
-//   };
-
-//   useEffect(() => {
-//     return () => {
-//       previewUrls.forEach((url) => URL.revokeObjectURL(url));
-//     };
-//   }, [previewUrls]);
-
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-
-//     if (
-//       name.startsWith('unit.') ||
-//       name.startsWith('learningOutcome.') ||
-//       name.startsWith('criteria.')
-//     ) {
-//       const [objectName, key] = name.split('.');
-//       setPortfolioData({
-//         ...portfolioData,
-//         [objectName]: {
-//           ...portfolioData[objectName],
-//           [key]: value,
-//         },
-//       });
-//     } else {
-//       setPortfolioData({ ...portfolioData, [name]: value });
-//     }
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setUpdateMessage('');
-
-//     const formData = new FormData();
-//     formData.append('title', portfolioData.title);
-//     formData.append('unit', JSON.stringify(portfolioData.unit));
-//     formData.append('learningOutcome', JSON.stringify(portfolioData.learningOutcome));
-//     formData.append('criteria', JSON.stringify(portfolioData.criteria));
-//     formData.append('postcode', portfolioData.postcode);
-//     formData.append('comments', portfolioData.comments);
-//     formData.append('taskDescription', portfolioData.taskDescription);
-//     formData.append('jobType', portfolioData.jobType);
-//     formData.append('reasonForTask', portfolioData.reasonForTask);
-//     formData.append('objectiveOfJob', portfolioData.objectiveOfJob);
-//     formData.append('method', portfolioData.method);
-
-//     const remainingImages = portfolioData.images.filter(
-//       (img) => !imagesToDelete.includes(img)
-//     );
-//     formData.append('existingImages', JSON.stringify(remainingImages));
-
-//     for (let i = 0; i < selectedFiles.length; i++) {
-//       formData.append('images', selectedFiles[i]);
-//     }
-
-//     try {
-//       await axios.put(`${API_URL}/api/portfolios/${id}`, formData, {
-//         headers: {
-//           Authorization: `Bearer ${localStorage.getItem('token')}`,
-//           'Content-Type': 'multipart/form-data',
-//         },
-//       });
-
-//       setUpdateMessage('Portfolio updated successfully!');
-//       setMessageType('success');
-//       setImagesToDelete([]);
-//       setSelectedFiles([]);
-//       setPreviewUrls([]);
-
-//       // Refresh data
-//       const { data } = await axios.get(`${API_URL}/api/portfolios/${id}`, {
-//         headers: {
-//           Authorization: `Bearer ${localStorage.getItem('token')}`,
-//         },
-//       });
-//       setPortfolioData(data);
-
-//       window.scrollTo(0, 0);
-//     } catch (err) {
-//       console.error('Error updating portfolio', err);
-//       setUpdateMessage('Error updating portfolio. Please try again.');
-//       setMessageType('danger');
-//     }
-//   };
-
-//   const getLearningOutcomes = (unitNumber) => {
-//     const selectedUnitData = qualificationUnitsData.find((u) => u.unit === unitNumber);
-//     return selectedUnitData ? selectedUnitData.learning_outcomes : [];
-//   };
-
-//   const getCriteria = (unitNumber, learningOutcomeNumber) => {
-//     const selectedUnitData = qualificationUnitsData.find((u) => u.unit === unitNumber);
-//     const selectedLO = selectedUnitData?.learning_outcomes.find(
-//       (lo) => lo.LO_number === parseInt(learningOutcomeNumber)
-//     );
-//     return selectedLO ? selectedLO.assessment_criteria : [];
-//   };
-
-//   return (
-//     <Container className="py-4" style={{ maxWidth: '1200px' }}>
-//       {/* Header */}
-//       <div className="d-flex justify-content-between align-items-center mb-4">
-//         <div>
-//           <h2 className="mb-1">Edit Portfolio</h2>
-//           <p className="text-muted mb-0">Update your portfolio information</p>
-//         </div>
-//         <Button 
-//           variant="outline-secondary" 
-//           onClick={() => navigate(-1)}
-//           className="d-flex align-items-center gap-2"
-//         >
-//           <FaArrowLeft /> Back
-//         </Button>
-//       </div>
-
-//       {/* Alert Message */}
-//       {updateMessage && (
-//         <Alert variant={messageType} dismissible onClose={() => setUpdateMessage('')}>
-//           {updateMessage}
-//         </Alert>
-//       )}
-
-//       <Form onSubmit={handleSubmit}>
-//         {/* Basic Information Card */}
-//         <Card className="mb-4 shadow-sm">
-//           <Card.Header className="bg-primary text-white">
-//             <h5 className="mb-0">Basic Information</h5>
-//           </Card.Header>
-//           <Card.Body>
-//             <Form.Group className="mb-3">
-//               <Form.Label className="fw-bold">Portfolio Title</Form.Label>
-//               <Form.Control
-//                 type="text"
-//                 name="title"
-//                 value={portfolioData.title}
-//                 onChange={handleChange}
-//                 placeholder="Enter portfolio title"
-//                 required
-//               />
-//             </Form.Group>
-
-//             <Row>
-//               <Col md={6}>
-//                 <Form.Group className="mb-3">
-//                   <Form.Label className="fw-bold">Unit</Form.Label>
-//                   <Form.Select
-//                     name="unit.number"
-//                     value={portfolioData.unit.number}
-//                     onChange={(e) => {
-//                       const selectedUnit = qualificationUnitsData.find(
-//                         (u) => u.unit === e.target.value
-//                       );
-//                       setPortfolioData({
-//                         ...portfolioData,
-//                         unit: { number: selectedUnit.unit, title: selectedUnit.title },
-//                         learningOutcome: { number: '', description: '' },
-//                         criteria: { number: '', description: '' },
-//                       });
-//                     }}
-//                     required
-//                   >
-//                     <option value="">Select a Unit</option>
-//                     {qualificationUnitsData.map((unit) => (
-//                       <option key={unit.unit} value={unit.unit}>
-//                         Unit {unit.unit} - {unit.title}
-//                       </option>
-//                     ))}
-//                   </Form.Select>
-//                 </Form.Group>
-//               </Col>
-//               <Col md={6}>
-//                 <Form.Group className="mb-3">
-//                   <Form.Label className="fw-bold">Postcode</Form.Label>
-//                   <Form.Control
-//                     type="text"
-//                     name="postcode"
-//                     value={portfolioData.postcode}
-//                     onChange={handleChange}
-//                     placeholder="Enter postcode"
-//                     required
-//                   />
-//                 </Form.Group>
-//               </Col>
-//             </Row>
-
-//             <Row>
-//               <Col md={6}>
-//                 <Form.Group className="mb-3">
-//                   <Form.Label className="fw-bold">Learning Outcome</Form.Label>
-//                   <Form.Select
-//                     name="learningOutcome.number"
-//                     value={portfolioData.learningOutcome.number}
-//                     onChange={(e) => {
-//                       const selectedLO = getLearningOutcomes(portfolioData.unit.number).find(
-//                         (lo) => lo.LO_number === parseInt(e.target.value)
-//                       );
-//                       setPortfolioData({
-//                         ...portfolioData,
-//                         learningOutcome: {
-//                           number: selectedLO.LO_number,
-//                           description: selectedLO.description,
-//                         },
-//                         criteria: { number: '', description: '' },
-//                       });
-//                     }}
-//                     required
-//                   >
-//                     <option value="">Select Learning Outcome</option>
-//                     {getLearningOutcomes(portfolioData.unit.number).map((lo) => (
-//                       <option key={lo.LO_number} value={lo.LO_number}>
-//                         LO {lo.LO_number}: {lo.description}
-//                       </option>
-//                     ))}
-//                   </Form.Select>
-//                 </Form.Group>
-//               </Col>
-//               <Col md={6}>
-//                 <Form.Group className="mb-3">
-//                   <Form.Label className="fw-bold">Assessment Criteria</Form.Label>
-//                   <Form.Select
-//                     name="criteria"
-//                     value={portfolioData.criteria?.number || ''}
-//                     onChange={(e) => {
-//                       const selectedCriteria = getCriteria(
-//                         portfolioData.unit.number,
-//                         portfolioData.learningOutcome.number
-//                       ).find(
-//                         (c) =>
-//                           (c.number?.toString?.() || c.AC_number?.toString?.()) ===
-//                           e.target.value
-//                       );
-
-//                       setPortfolioData({
-//                         ...portfolioData,
-//                         criteria: selectedCriteria
-//                           ? {
-//                               number: selectedCriteria.number || selectedCriteria.AC_number,
-//                               description: selectedCriteria.description,
-//                             }
-//                           : { number: '', description: '' },
-//                       });
-//                     }}
-//                     required
-//                   >
-//                     <option value="">Select Criteria</option>
-//                     {getCriteria(
-//                       portfolioData.unit.number,
-//                       portfolioData.learningOutcome.number
-//                     ).map((criteria, idx) => (
-//                       <option key={idx} value={criteria.number || criteria.AC_number}>
-//                         {(criteria.number || criteria.AC_number)} - {criteria.description}
-//                       </option>
-//                     ))}
-//                   </Form.Select>
-//                 </Form.Group>
-//               </Col>
-//             </Row>
-
-//             <Form.Group className="mb-3">
-//               <Form.Label className="fw-bold">Method</Form.Label>
-//               <Form.Select
-//                 name="method"
-//                 value={portfolioData.method}
-//                 onChange={handleChange}
-//                 required
-//               >
-//                 <option value="">Select Method</option>
-//                 <option value="Professional discussion">Professional discussion</option>
-//                 <option value="Witness testimony">Witness testimony</option>
-//                 <option value="Written questions">Written questions</option>
-//                 <option value="Work Product">Work Product</option>
-//                 <option value="Direct observation">Direct observation</option>
-//                 <option value="Oral questions">Oral questions</option>
-//                 <option value="APL / RPL">APL / RPL</option>
-//               </Form.Select>
-//             </Form.Group>
-//           </Card.Body>
-//         </Card>
-
-//         {/* Task Details Card */}
-//         <Card className="mb-4 shadow-sm">
-//           <Card.Header className="bg-primary text-white">
-//             <h5 className="mb-0">Task Details</h5>
-//           </Card.Header>
-//           <Card.Body>
-//             <Row>
-//               <Col md={6}>
-//                 <Form.Group className="mb-3">
-//                   <Form.Label className="fw-bold">Task Description</Form.Label>
-//                   <Form.Control
-//                     as="textarea"
-//                     name="taskDescription"
-//                     rows={3}
-//                     value={portfolioData.taskDescription}
-//                     onChange={handleChange}
-//                     placeholder="Describe the task..."
-//                   />
-//                 </Form.Group>
-//               </Col>
-//               <Col md={6}>
-//                 <Form.Group className="mb-3">
-//                   <Form.Label className="fw-bold">Job Type</Form.Label>
-//                   <Form.Control
-//                     as="textarea"
-//                     name="jobType"
-//                     rows={3}
-//                     value={portfolioData.jobType}
-//                     onChange={handleChange}
-//                     placeholder="Enter job type..."
-//                   />
-//                 </Form.Group>
-//               </Col>
-//             </Row>
-
-//             <Row>
-//               <Col md={6}>
-//                 <Form.Group className="mb-3">
-//                   <Form.Label className="fw-bold">Reason for Task</Form.Label>
-//                   <Form.Control
-//                     as="textarea"
-//                     name="reasonForTask"
-//                     rows={3}
-//                     value={portfolioData.reasonForTask}
-//                     onChange={handleChange}
-//                     placeholder="Why was this task performed?"
-//                   />
-//                 </Form.Group>
-//               </Col>
-//               <Col md={6}>
-//                 <Form.Group className="mb-3">
-//                   <Form.Label className="fw-bold">Objective of Job</Form.Label>
-//                   <Form.Control
-//                     as="textarea"
-//                     name="objectiveOfJob"
-//                     rows={3}
-//                     value={portfolioData.objectiveOfJob}
-//                     onChange={handleChange}
-//                     placeholder="What was the goal?"
-//                   />
-//                 </Form.Group>
-//               </Col>
-//             </Row>
-
-//             <Form.Group className="mb-3">
-//               <Form.Label className="fw-bold">Additional Comments</Form.Label>
-//               <Form.Control
-//                 as="textarea"
-//                 name="comments"
-//                 rows={3}
-//                 value={portfolioData.comments}
-//                 onChange={handleChange}
-//                 placeholder="Any additional comments..."
-//               />
-//             </Form.Group>
-//           </Card.Body>
-//         </Card>
-
-//         {/* Images Card */}
-//         <Card className="mb-4 shadow-sm">
-//           <Card.Header className="bg-primary text-white">
-//             <div className="d-flex justify-content-between align-items-center">
-//               <h5 className="mb-0"><FaImage className="me-2" />Portfolio Images</h5>
-//               <Badge bg="light" text="dark">
-//                 {portfolioData.images.length - imagesToDelete.length + selectedFiles.length} total
-//               </Badge>
-//             </div>
-//           </Card.Header>
-//           <Card.Body>
-//             {/* Existing Images */}
-//             {portfolioData.images.length > 0 && (
-//               <div className="mb-4">
-//                 <h6 className="mb-3 text-muted">Current Images ({portfolioData.images.length - imagesToDelete.length} of {portfolioData.images.length})</h6>
-//                 <Row>
-//                   {portfolioData.images.map((image, index) => {
-//                     const isMarked = imagesToDelete.includes(image);
-//                     return (
-//                       <Col md={3} sm={6} key={index} className="mb-3">
-//                         <div style={{ position: 'relative' }}>
-//                           <img
-//                             src={`${API_URL}/${image}`}
-//                             alt={`Portfolio ${index + 1}`}
-//                             style={{
-//                               width: '100%',
-//                               height: '180px',
-//                               objectFit: 'cover',
-//                               border: isMarked ? '3px solid #dc3545' : '1px solid #dee2e6',
-//                               opacity: isMarked ? 0.4 : 1,
-//                               borderRadius: '8px',
-//                               transition: 'all 0.3s ease'
-//                             }}
-//                           />
-//                           <Button
-//                             variant={isMarked ? 'success' : 'danger'}
-//                             size="sm"
-//                             style={{
-//                               position: 'absolute',
-//                               top: '8px',
-//                               right: '8px',
-//                               boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
-//                             }}
-//                             onClick={() =>
-//                               isMarked
-//                                 ? unmarkImageForDeletion(image)
-//                                 : markImageForDeletion(image)
-//                             }
-//                           >
-//                             {isMarked ? 'Undo' : <FaTrash />}
-//                           </Button>
-//                           {isMarked && (
-//                             <div
-//                               style={{
-//                                 position: 'absolute',
-//                                 bottom: '8px',
-//                                 left: '50%',
-//                                 transform: 'translateX(-50%)',
-//                                 backgroundColor: 'rgba(220, 53, 69, 0.95)',
-//                                 color: 'white',
-//                                 padding: '4px 12px',
-//                                 borderRadius: '4px',
-//                                 fontSize: '12px',
-//                                 fontWeight: 'bold'
-//                               }}
-//                             >
-//                               Will be deleted
-//                             </div>
-//                           )}
-//                         </div>
-//                       </Col>
-//                     );
-//                   })}
-//                 </Row>
-//               </div>
-//             )}
-
-//             {/* Upload New Images */}
-//             <div>
-//               <h6 className="mb-3 text-muted">
-//                 Add New Images 
-//                 {selectedFiles.length > 0 && (
-//                   <Badge bg="success" className="ms-2">{selectedFiles.length} selected</Badge>
-//                 )}
-//               </h6>
-//               <Form.Group className="mb-3">
-//                 <Form.Control
-//                   type="file"
-//                   multiple
-//                   onChange={handleFileChange}
-//                   accept="image/*"
-//                 />
-//                 <Form.Text className="text-muted">
-//                   Select multiple images (JPG, PNG). You can add more images by selecting again.
-//                 </Form.Text>
-//               </Form.Group>
-
-//               {/* Preview New Images */}
-//               {previewUrls.length > 0 && (
-//                 <div className="mt-3">
-//                   <h6 className="mb-3 text-success">Preview ({previewUrls.length} new images)</h6>
-//                   <Row>
-//                     {previewUrls.map((url, index) => (
-//                       <Col md={3} sm={6} key={index} className="mb-3">
-//                         <div style={{ position: 'relative' }}>
-//                           <img
-//                             src={url}
-//                             alt={`New ${index + 1}`}
-//                             style={{
-//                               width: '100%',
-//                               height: '180px',
-//                               objectFit: 'cover',
-//                               borderRadius: '8px',
-//                               border: '3px solid #28a745'
-//                             }}
-//                           />
-//                           <Button
-//                             variant="danger"
-//                             size="sm"
-//                             style={{
-//                               position: 'absolute',
-//                               top: '8px',
-//                               right: '8px',
-//                               boxShadow: '0 2px 4px rgba(0,0,0,0.2)'
-//                             }}
-//                             onClick={() => removeNewImage(index)}
-//                           >
-//                             <FaTimes />
-//                           </Button>
-//                           <Badge
-//                             bg="success"
-//                             style={{
-//                               position: 'absolute',
-//                               bottom: '8px',
-//                               left: '8px'
-//                             }}
-//                           >
-//                             New #{index + 1}
-//                           </Badge>
-//                         </div>
-//                       </Col>
-//                     ))}
-//                   </Row>
-//                 </div>
-//               )}
-//             </div>
-//           </Card.Body>
-//         </Card>
-
-//         {/* Action Buttons */}
-//         <div className="d-flex gap-3 justify-content-end">
-//           <Button 
-//             variant="outline-secondary" 
-//             onClick={() => navigate(-1)}
-//             size="lg"
-//           >
-//             Cancel
-//           </Button>
-//           <Button 
-//             variant="primary" 
-//             type="submit"
-//             size="lg"
-//             className="d-flex align-items-center gap-2"
-//           >
-//             <FaSave /> Update Portfolio
-//           </Button>
-//         </div>
-//       </Form>
-//     </Container>
-//   );
-// };
-
-// export default EditPortfolio;
-
-
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -3141,8 +2523,8 @@ const EditPortfolio = () => {
           <h2 className="mb-1">Edit Portfolio</h2>
           <p className="text-muted mb-0">Update your portfolio information</p>
         </div>
-        <Button
-          variant="outline-secondary"
+        <Button 
+          variant="outline-secondary" 
           onClick={() => navigate(-1)}
           className="d-flex align-items-center gap-2"
         >
@@ -3271,9 +2653,9 @@ const EditPortfolio = () => {
                         ...portfolioData,
                         criteria: selectedCriteria
                           ? {
-                            number: selectedCriteria.number || selectedCriteria.AC_number,
-                            description: selectedCriteria.description,
-                          }
+                              number: selectedCriteria.number || selectedCriteria.AC_number,
+                              description: selectedCriteria.description,
+                            }
                           : { number: '', description: '' },
                       });
                     }}
@@ -3406,19 +2788,15 @@ const EditPortfolio = () => {
             {/* Existing Images */}
             {portfolioData.images.length > 0 && (
               <div className="mb-4">
-                <h6 className="mb-3 text-muted">
-                  Current Images ({portfolioData.images.length - imagesToDelete.length} of {portfolioData.images.length})
-                </h6>
+                <h6 className="mb-3 text-muted">Current Images ({portfolioData.images.length - imagesToDelete.length} of {portfolioData.images.length})</h6>
                 <Row>
                   {portfolioData.images.map((image, index) => {
-                    const imgUrl = image.url || image; // ✅ support both old and new format
-                    const isMarked = imagesToDelete.includes(imgUrl); // ✅ updated check
-
+                    const isMarked = imagesToDelete.includes(image);
                     return (
                       <Col md={3} sm={6} key={index} className="mb-3">
                         <div style={{ position: 'relative' }}>
                           <img
-                            src={`${API_URL}/${imgUrl}`}
+                            src={`${API_URL}/${image}`}
                             alt={`Portfolio ${index + 1}`}
                             style={{
                               width: '100%',
@@ -3430,7 +2808,6 @@ const EditPortfolio = () => {
                               transition: 'all 0.3s ease'
                             }}
                           />
-
                           <Button
                             variant={isMarked ? 'success' : 'danger'}
                             size="sm"
@@ -3442,13 +2819,12 @@ const EditPortfolio = () => {
                             }}
                             onClick={() =>
                               isMarked
-                                ? unmarkImageForDeletion(imgUrl)
-                                : markImageForDeletion(imgUrl)
+                                ? unmarkImageForDeletion(image)
+                                : markImageForDeletion(image)
                             }
                           >
                             {isMarked ? 'Undo' : <FaTrash />}
                           </Button>
-
                           {isMarked && (
                             <div
                               style={{
@@ -3471,16 +2847,14 @@ const EditPortfolio = () => {
                       </Col>
                     );
                   })}
-
                 </Row>
               </div>
             )}
 
-
             {/* Upload New Images */}
             <div>
               <h6 className="mb-3 text-muted">
-                Add New Images
+                Add New Images 
                 {selectedFiles.length > 0 && (
                   <Badge bg="success" className="ms-2">{selectedFiles.length} selected</Badge>
                 )}
@@ -3551,15 +2925,15 @@ const EditPortfolio = () => {
 
         {/* Action Buttons */}
         <div className="d-flex gap-3 justify-content-end">
-          <Button
-            variant="outline-secondary"
+          <Button 
+            variant="outline-secondary" 
             onClick={() => navigate(-1)}
             size="lg"
           >
             Cancel
           </Button>
-          <Button
-            variant="primary"
+          <Button 
+            variant="primary" 
             type="submit"
             size="lg"
             className="d-flex align-items-center gap-2"
